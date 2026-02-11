@@ -1,22 +1,201 @@
 import { useParams, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { FiArrowLeft, FiArrowRight } from 'react-icons/fi'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useMemo, useRef, useEffect } from 'react'
+import {
+  FiArrowLeft,
+  FiArrowRight,
+  FiCopy,
+  FiCheck,
+  FiSidebar,
+  FiChevronDown,
+  FiChevronUp,
+} from 'react-icons/fi'
+import { SiFramer, SiReact, SiTailwindcss } from 'react-icons/si'
+import { TbPalette, TbPencil, TbRulerMeasure } from 'react-icons/tb'
 import { componentRegistry } from '../registry'
-import ComponentShowcase from '../components/layout/ComponentShowcase'
+
+/* ═══════════════════════════════════════════════════
+   ANIMATION CONFIG — cinematic stagger system
+   ═══════════════════════════════════════════════════ */
+const spring = { type: 'spring', stiffness: 80, damping: 20, mass: 0.8 }
+const smoothEase = [0.22, 1, 0.36, 1]
+
+const stagger = {
+  container: {
+    initial: {},
+    animate: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+  },
+  item: {
+    initial: { opacity: 0, y: 30 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: smoothEase },
+    },
+  },
+  itemSlow: {
+    initial: { opacity: 0, y: 50 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.9, ease: smoothEase },
+    },
+  },
+}
+
+const panelVariants = {
+  open: {
+    width: '50%',
+    opacity: 1,
+    transition: { duration: 0.5, ease: smoothEase },
+  },
+  closed: {
+    width: 0,
+    opacity: 0,
+    transition: { duration: 0.4, ease: smoothEase },
+  },
+}
+
+const previewCardVariants = {
+  initial: { opacity: 0, scale: 0.95 },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.8, ease: smoothEase, delay: 0.15 },
+  },
+}
+
+// Lightweight code colorizer — subtle tints, not full syntax highlighting
+function colorizeCode(code) {
+  const lines = code.split('\n')
+  return lines.map((line, i) => {
+    let segments = []
+    let remaining = line
+    let key = 0
+
+    // Process the line character by character through patterns
+    const patterns = [
+      // Comments
+      { regex: /(^\/\/.*|\/\/.*$)/, cls: 'text-white/20 italic' },
+      { regex: /(\/\*[\s\S]*?\*\/)/, cls: 'text-white/20 italic' },
+      // Strings (single/double/backtick)
+      { regex: /(`[^`]*`|'[^']*'|"[^"]*")/, cls: 'text-emerald-400/60' },
+      // JSX tags
+      { regex: /(<\/?[A-Z][a-zA-Z0-9.]*)/, cls: 'text-cyan-400/70' },
+      { regex: /(<\/?[a-z][a-zA-Z0-9-]*)/, cls: 'text-red-400/50' },
+      // Keywords
+      {
+        regex: /\b(import|from|export|default|const|let|var|function|return|if|else|switch|case|break|new|class|extends|typeof|instanceof|async|await|try|catch|throw|for|while|do|in|of|null|undefined|true|false)\b/,
+        cls: 'text-purple-400/70',
+      },
+      // Arrow / Operators
+      { regex: /(=>|===|!==|&&|\|\||\?\.|\.\.\.|\.\?)/, cls: 'text-amber-400/50' },
+      // Numbers
+      { regex: /\b(\d+\.?\d*)\b/, cls: 'text-amber-400/60' },
+      // Braces & parens
+      { regex: /([{}()\[\]])/, cls: 'text-white/25' },
+    ]
+
+    // Simple pass: split by first matching pattern, recurse
+    function tokenize(text) {
+      if (!text) return
+      let earliest = null
+      let earliestIdx = Infinity
+      let matchResult = null
+
+      for (const p of patterns) {
+        const m = text.match(p.regex)
+        if (m && m.index < earliestIdx) {
+          earliest = p
+          earliestIdx = m.index
+          matchResult = m
+        }
+      }
+
+      if (!earliest || !matchResult) {
+        segments.push(
+          <span key={key++} className="text-white/45">
+            {text}
+          </span>
+        )
+        return
+      }
+
+      // Text before match
+      if (earliestIdx > 0) {
+        segments.push(
+          <span key={key++} className="text-white/45">
+            {text.slice(0, earliestIdx)}
+          </span>
+        )
+      }
+
+      // Matched token
+      segments.push(
+        <span key={key++} className={earliest.cls}>
+          {matchResult[0]}
+        </span>
+      )
+
+      // Continue with rest
+      tokenize(text.slice(earliestIdx + matchResult[0].length))
+    }
+
+    tokenize(remaining)
+
+    return (
+      <div key={i} className="leading-relaxed whitespace-pre">
+        {segments.length > 0 ? segments : '\u00A0'}
+      </div>
+    )
+  })
+}
 
 export default function ComponentDetail() {
   const { slug } = useParams()
+  const [panelOpen, setPanelOpen] = useState(true)
+  const [copied, setCopied] = useState(false)
+  const [depsCopied, setDepsCopied] = useState(false)
+  const [codeExpanded, setCodeExpanded] = useState(false)
+  const CODE_COLLAPSE_LINES = 15
+  const codeContentRef = useRef(null)
+  const mobileCodeContentRef = useRef(null)
+  const [codeHeight, setCodeHeight] = useState(0)
+  const [mobileCodeHeight, setMobileCodeHeight] = useState(0)
+  const COLLAPSED_HEIGHT = 280
+  const MOBILE_COLLAPSED_HEIGHT = 200
 
-  const index = componentRegistry.findIndex(c => c.slug === slug)
+  const index = componentRegistry.findIndex((c) => c.slug === slug)
   const comp = componentRegistry[index]
+
+  // Memoize colorized code so it doesn't re-run on every render
+  const colorizedCode = useMemo(
+    () => (comp ? colorizeCode(comp.code) : null),
+    [comp?.code]
+  )
+
+  // Measure code content height on mount and when code changes
+  useEffect(() => {
+    if (codeContentRef.current) {
+      setCodeHeight(codeContentRef.current.scrollHeight)
+    }
+    if (mobileCodeContentRef.current) {
+      setMobileCodeHeight(mobileCodeContentRef.current.scrollHeight)
+    }
+  }, [comp?.code])
 
   if (!comp) {
     return (
       <div className="min-h-screen bg-[#0a0a0a] pt-20">
         <div className="max-w-4xl mx-auto px-6 text-center py-20">
           <h1 className="text-2xl font-bold mb-3">Component Not Found</h1>
-          <p className="text-white/40 mb-6">The component you're looking for doesn't exist.</p>
-          <Link to="/components" className="text-cyan-400 hover:underline text-sm">
+          <p className="text-white/40 mb-6">
+            The component you're looking for doesn't exist.
+          </p>
+          <Link
+            to="/components"
+            className="text-cyan-400 hover:underline text-sm"
+          >
             ← Back to Components
           </Link>
         </div>
@@ -25,105 +204,526 @@ export default function ComponentDetail() {
   }
 
   const prev = index > 0 ? componentRegistry[index - 1] : null
-  const next = index < componentRegistry.length - 1 ? componentRegistry[index + 1] : null
+  const next =
+    index < componentRegistry.length - 1 ? componentRegistry[index + 1] : null
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(comp.code)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const depsString = 'npm install framer-motion react-icons'
+  const handleDepsCopy = () => {
+    navigator.clipboard.writeText(depsString)
+    setDepsCopied(true)
+    setTimeout(() => setDepsCopied(false), 2000)
+  }
+
+  // Extract dependency names from the code
+  const deps = []
+  if (comp.code.includes('framer-motion'))
+    deps.push({ name: 'framer-motion', icon: <SiFramer size={11} className="text-[#e846ff]" /> })
+  if (comp.code.includes('react-icons'))
+    deps.push({ name: 'react-icons', icon: <TbPalette size={13} className="text-red-400" /> })
+  if (comp.code.includes('lucide-react'))
+    deps.push({ name: 'lucide-react', icon: <TbPencil size={13} className="text-orange-400" /> })
+  if (comp.code.includes('react-use-measure'))
+    deps.push({ name: 'react-use-measure', icon: <TbRulerMeasure size={13} className="text-rose-400" /> })
+  deps.push({ name: 'react', icon: <SiReact size={12} className="text-[#61dafb]" /> })
+
+  // Deduplicate
+  const uniqueDeps = [...new Map(deps.map((d) => [d.name, d])).values()]
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pt-24 sm:pt-28 pb-12 sm:pb-16">
-      <div className="max-w-4xl mx-auto px-5 sm:px-6 md:px-8">
+    <div className="min-h-screen bg-[#0a0a0a] pt-16 sm:pt-20">
+      {/* ── Desktop split layout ── */}
+      <div className="hidden md:flex h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)]">
+        {/* ═══════════════════════════════════════════
+            LEFT PANEL — Info & Details (collapsible)
+            ═══════════════════════════════════════════ */}
+        <AnimatePresence initial={false}>
+          {panelOpen && (
+            <motion.aside
+              variants={panelVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="flex flex-col overflow-hidden flex-shrink-0"
+            >
+              <motion.div
+                variants={stagger.container}
+                initial="initial"
+                animate="animate"
+                className="flex-1 overflow-y-auto p-8 lg:p-12 xl:p-16 scrollbar-hidden"
+                data-lenis-prevent
+              >
+                {/* Subtle label */}
+                <motion.span
+                  variants={stagger.item}
+                  className="inline-block text-[10px] font-mono tracking-[0.3em] uppercase text-white/20 mb-6"
+                >
+                  Component
+                </motion.span>
 
-        {/* Breadcrumb */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex items-center gap-2 text-[11px] sm:text-xs text-white/30 mb-6 sm:mb-8"
-        >
-          <Link to="/components" className="hover:text-white transition-colors">
-            Components
-          </Link>
-          <span className="text-white/15">/</span>
-          <span className="text-white/70">{comp.name}</span>
-        </motion.div>
+                {/* Component Name — cinematic scale */}
+                <motion.h1
+                  variants={stagger.itemSlow}
+                  className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white tracking-[-0.03em] leading-[1.05] mb-8"
+                >
+                  {comp.name}
+                </motion.h1>
 
-        {/* Title & Description */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-6 sm:mb-8"
-        >
-          <div className="flex items-center gap-2.5 sm:gap-3 mb-2 sm:mb-3 flex-wrap">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">{comp.name}</h1>
-            <span className="text-[9px] sm:text-[10px] text-white/40 bg-white/[0.04] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg border border-white/[0.06] uppercase tracking-wider font-medium">
-              {comp.category}
-            </span>
-          </div>
-          <p className="text-white/40 text-xs sm:text-sm md:text-base leading-relaxed">{comp.description}</p>
-        </motion.div>
+                {/* Decorative line */}
+                <motion.div
+                  variants={stagger.item}
+                  className="w-12 h-[1.5px] bg-gradient-to-r from-white/20 to-transparent mb-10"
+                />
 
-        {/* Preview + Code */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <ComponentShowcase
-            title={comp.name}
-            description={comp.description}
-            code={comp.code}
+                {/* Description */}
+                <motion.p
+                  variants={stagger.item}
+                  className="text-base sm:text-lg lg:text-xl text-white/40 leading-[1.8] mb-16 max-w-md font-light"
+                >
+                  {comp.description}
+                </motion.p>
+
+                {/* Dependencies */}
+                <motion.div variants={stagger.item} className="mb-16">
+                  <h3 className="text-[10px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono mb-6">
+                    Dependencies
+                  </h3>
+                  <div className="flex flex-wrap gap-2.5">
+                    {uniqueDeps.map((dep, i) => (
+                      <motion.span
+                        key={dep.name}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.3 + i * 0.06, duration: 0.5, ease: smoothEase }}
+                        className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-white/[0.02] border border-white/[0.05] text-[13px] text-white/45 hover:text-white/70 hover:border-white/[0.12] hover:bg-white/[0.04] transition-all duration-500 cursor-default"
+                      >
+                        {dep.icon}
+                        {dep.name}
+                      </motion.span>
+                    ))}
+                    <motion.span
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3 + uniqueDeps.length * 0.06, duration: 0.5, ease: smoothEase }}
+                      className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-white/[0.02] border border-white/[0.05] text-[13px] text-white/45 hover:text-white/70 hover:border-white/[0.12] hover:bg-white/[0.04] transition-all duration-500 cursor-default"
+                    >
+                      <SiTailwindcss size={12} className="text-[#06b6d4]" />
+                      tailwindcss
+                    </motion.span>
+                  </div>
+                </motion.div>
+
+                {/* Install */}
+                <motion.div variants={stagger.item} className="mb-16">
+                  <h3 className="text-[10px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono mb-5">
+                    Quick Install
+                  </h3>
+                  <motion.div
+                    onClick={handleDepsCopy}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    className="group flex items-center justify-between bg-white/[0.015] border border-white/[0.05] rounded-2xl px-6 py-4 cursor-pointer hover:border-white/[0.1] hover:bg-white/[0.03] transition-all duration-500"
+                  >
+                    <code className="text-[13px] text-white/30 font-mono group-hover:text-white/50 transition-colors duration-500">
+                      {depsString}
+                    </code>
+                    <span className="text-white/10 group-hover:text-white/40 transition-all duration-500">
+                      {depsCopied ? (
+                        <motion.span
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={spring}
+                        >
+                          <FiCheck size={15} className="text-emerald-400" />
+                        </motion.span>
+                      ) : (
+                        <FiCopy size={15} />
+                      )}
+                    </span>
+                  </motion.div>
+                </motion.div>
+
+                {/* Code Section */}
+                <motion.div variants={stagger.item} className="mb-16">
+                  <div className="flex items-center justify-between mb-5">
+                    <h3 className="text-[10px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono">
+                      Source Code
+                    </h3>
+                    <motion.button
+                      onClick={handleCopy}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-medium text-white/20 hover:text-white/70 hover:bg-white/[0.04] border border-transparent hover:border-white/[0.08] transition-all duration-500"
+                    >
+                      {copied ? (
+                        <FiCheck size={12} className="text-emerald-400" />
+                      ) : (
+                        <FiCopy size={12} />
+                      )}
+                      <span>{copied ? 'Copied!' : 'Copy'}</span>
+                    </motion.button>
+                  </div>
+                  <div className="relative rounded-2xl overflow-hidden border border-white/[0.05] bg-[#0b0b0b]">
+                    <motion.div
+                      animate={{
+                        height: codeExpanded
+                          ? codeHeight || 'auto'
+                          : Math.min(COLLAPSED_HEIGHT, codeHeight || COLLAPSED_HEIGHT),
+                      }}
+                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div ref={codeContentRef} className="p-6 text-[12px] font-mono overflow-x-auto leading-relaxed">
+                        {colorizedCode}
+                      </div>
+                    </motion.div>
+                    {comp.code.split('\n').length > CODE_COLLAPSE_LINES && (
+                      <>
+                        <AnimatePresence>
+                          {!codeExpanded && (
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="absolute bottom-12 left-0 right-0 h-24 bg-gradient-to-t from-[#0b0b0b] via-[#0b0b0b]/80 to-transparent pointer-events-none"
+                            />
+                          )}
+                        </AnimatePresence>
+                        <motion.button
+                          onClick={() => setCodeExpanded(!codeExpanded)}
+                          whileHover={{ backgroundColor: 'rgba(255,255,255,0.03)' }}
+                          className="w-full py-3.5 text-[11px] font-semibold text-white/30 hover:text-white/60 bg-[#0b0b0b] border-t border-white/[0.04] transition-colors duration-500 flex items-center justify-center gap-2"
+                        >
+                          {codeExpanded ? (
+                            <><FiChevronUp size={13} /> Collapse</>
+                          ) : (
+                            <><FiChevronDown size={13} /> Expand  ·  {comp.code.split('\n').length} lines</>
+                          )}
+                        </motion.button>
+                      </>
+                    )}
+                  </div>
+                </motion.div>
+
+                {/* Prev / Next — elevated card style */}
+                <motion.div
+                  variants={stagger.item}
+                  className="grid grid-cols-2 gap-3 pt-10 border-t border-white/[0.03]"
+                >
+                  {prev ? (
+                    <Link to={`/components/${prev.slug}`}>
+                      <motion.div
+                        whileHover={{ y: -2, backgroundColor: 'rgba(255,255,255,0.03)' }}
+                        whileTap={{ scale: 0.98 }}
+                        className="flex flex-col p-5 rounded-2xl border border-white/[0.04] hover:border-white/[0.08] transition-all duration-500 group"
+                      >
+                        <div className="flex items-center gap-2 mb-3">
+                          <FiArrowLeft
+                            size={12}
+                            className="text-white/15 group-hover:text-white/50 group-hover:-translate-x-1 transition-all duration-500"
+                          />
+                          <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-white/15 group-hover:text-white/30 transition-colors duration-500">
+                            Previous
+                          </span>
+                        </div>
+                        <span className="text-sm font-semibold text-white/30 group-hover:text-white/80 transition-colors duration-500">
+                          {prev.name}
+                        </span>
+                      </motion.div>
+                    </Link>
+                  ) : (
+                    <div />
+                  )}
+                  {next ? (
+                    <Link to={`/components/${next.slug}`}>
+                      <motion.div
+                        whileHover={{ y: -2, backgroundColor: 'rgba(255,255,255,0.03)' }}
+                        whileTap={{ scale: 0.98 }}
+                        className="flex flex-col items-end p-5 rounded-2xl border border-white/[0.04] hover:border-white/[0.08] transition-all duration-500 group text-right"
+                      >
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-[9px] font-mono tracking-[0.2em] uppercase text-white/15 group-hover:text-white/30 transition-colors duration-500">
+                            Next
+                          </span>
+                          <FiArrowRight
+                            size={12}
+                            className="text-white/15 group-hover:text-white/50 group-hover:translate-x-1 transition-all duration-500"
+                          />
+                        </div>
+                        <span className="text-sm font-semibold text-white/30 group-hover:text-white/80 transition-colors duration-500">
+                          {next.name}
+                        </span>
+                      </motion.div>
+                    </Link>
+                  ) : (
+                    <div />
+                  )}
+                </motion.div>
+              </motion.div>
+            </motion.aside>
+          )}
+        </AnimatePresence>
+
+        {/* ═══════════════════════════════════════════
+            RIGHT PANEL — Preview card
+            ═══════════════════════════════════════════ */}
+        <div className="flex-1 flex flex-col min-w-0 p-4 lg:p-6">
+          {/* Top bar — floating controls */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.5, ease: smoothEase }}
+            className="flex items-center justify-between mb-4 flex-shrink-0"
           >
-            {comp.component}
-          </ComponentShowcase>
-        </motion.div>
-
-        {/* Usage Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mt-8 sm:mt-10"
-        >
-          <h2 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4 tracking-tight">Usage</h2>
-          <div className="rounded-xl sm:rounded-2xl border border-white/[0.06] bg-[#111] p-4 sm:p-5 md:p-6">
-            <p className="text-xs sm:text-sm text-white/40 mb-2.5 sm:mb-3 leading-relaxed">
-              Copy the component code and paste it into your project. Required dependencies:
-            </p>
-            <div className="bg-black/60 rounded-lg sm:rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 font-mono text-[11px] sm:text-xs md:text-sm text-cyan-400/80 border border-white/[0.04] overflow-x-auto">
-              npm install framer-motion react-icons
-            </div>
-            <p className="text-[10px] sm:text-xs text-white/25 mt-2.5 sm:mt-3 leading-relaxed">
-              Import and use in your React app. All components use Tailwind CSS for styling.
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Prev / Next Navigation */}
-        <div className="flex items-center justify-between mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/[0.04]">
-          {prev ? (
-            <Link
-              to={`/components/${prev.slug}`}
-              className="flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm text-white/35 hover:text-white transition-colors group"
+            <motion.button
+              onClick={() => setPanelOpen(!panelOpen)}
+              whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.06)' }}
+              whileTap={{ scale: 0.9 }}
+              className="flex w-9 h-9 items-center justify-center rounded-xl text-white/15 hover:text-white/60 transition-all duration-500"
+              title={panelOpen ? 'Collapse panel' : 'Expand panel'}
             >
-              <FiArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform flex-shrink-0" />
-              <div>
-                <div className="text-[9px] sm:text-[10px] text-white/20 uppercase tracking-wider">Previous</div>
-                <div className="font-medium text-xs sm:text-sm">{prev.name}</div>
-              </div>
-            </Link>
-          ) : <div />}
-
-          {next ? (
-            <Link
-              to={`/components/${next.slug}`}
-              className="flex items-center gap-2 sm:gap-2.5 text-xs sm:text-sm text-white/35 hover:text-white transition-colors group text-right"
+              <FiSidebar size={16} />
+            </motion.button>
+            <motion.button
+              onClick={handleCopy}
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-medium text-white/15 hover:text-white/60 hover:bg-white/[0.04] border border-transparent hover:border-white/[0.06] transition-all duration-500"
             >
-              <div>
-                <div className="text-[9px] sm:text-[10px] text-white/20 uppercase tracking-wider">Next</div>
-                <div className="font-medium text-xs sm:text-sm">{next.name}</div>
+              {copied ? (
+                <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={spring}>
+                  <FiCheck size={13} className="text-emerald-400" />
+                </motion.span>
+              ) : (
+                <FiCopy size={13} />
+              )}
+              <span>{copied ? 'Copied!' : 'Copy code'}</span>
+            </motion.button>
+          </motion.div>
+
+          {/* Preview card */}
+          <motion.div
+            variants={previewCardVariants}
+            initial="initial"
+            animate="animate"
+            className="flex-1 rounded-3xl bg-[#0f0f0f] border border-white/[0.05] overflow-hidden relative"
+          >
+            {/* Subtle ambient glow at top */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="absolute inset-0 flex items-center justify-center p-8 md:p-16 overflow-auto"
+              data-lenis-prevent
+            >
+              <div className="flex flex-col items-center gap-4">
+                {comp.component}
               </div>
-              <FiArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-          ) : <div />}
+            </motion.div>
+          </motion.div>
         </div>
       </div>
+
+      {/* ═══════════════════════════════════════════
+          MOBILE LAYOUT — stacked (shown on small screens)
+          ═══════════════════════════════════════════ */}
+      <motion.div
+        variants={stagger.container}
+        initial="initial"
+        animate="animate"
+        className="md:hidden pb-16"
+      >
+        {/* Preview Card — full width, at top like reference */}
+        <motion.div
+          variants={previewCardVariants}
+          className="mx-4 sm:mx-5 rounded-3xl bg-[#0f0f0f] border border-white/[0.05] relative mb-10 mt-2"
+          style={{
+            boxShadow: '0 0 60px -15px rgba(255,255,255,0.02), inset 0 1px 0 0 rgba(255,255,255,0.03)',
+          }}
+        >
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+          <div className="p-6 sm:p-8 flex flex-col items-center justify-center min-h-[320px] sm:min-h-[380px]">
+            <div className="flex flex-col items-center gap-4 w-full">
+              {comp.component}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Content sections */}
+        <div className="px-5 sm:px-6">
+          {/* Title */}
+          <motion.h1
+            variants={stagger.itemSlow}
+            className="text-2xl sm:text-3xl font-bold text-white tracking-[-0.02em] leading-[1.1] mb-3"
+          >
+            {comp.name}
+          </motion.h1>
+
+          {/* Decorative line */}
+          <motion.div
+            variants={stagger.item}
+            className="w-10 h-[1.5px] bg-gradient-to-r from-white/20 to-transparent mb-5"
+          />
+
+          {/* Description */}
+          <motion.p
+            variants={stagger.item}
+            className="text-sm sm:text-base text-white/35 leading-[1.8] mb-10 font-light"
+          >
+            {comp.description}
+          </motion.p>
+
+          {/* Dependencies */}
+          <motion.div variants={stagger.item} className="mb-10">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-[9px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono">
+                Dependencies
+              </h3>
+              <motion.button
+                onClick={handleDepsCopy}
+                whileTap={{ scale: 0.9 }}
+                className="text-white/10 hover:text-white/40 transition-all duration-500"
+              >
+                {depsCopied ? (
+                  <FiCheck size={13} className="text-emerald-400" />
+                ) : (
+                  <FiCopy size={13} />
+                )}
+              </motion.button>
+            </div>
+            <div className="flex flex-wrap gap-2 mb-0">
+              {uniqueDeps.map((dep) => (
+                <span
+                  key={dep.name}
+                  className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-white/[0.02] border border-white/[0.05] text-[12px] text-white/40"
+                >
+                  {dep.icon}
+                  {dep.name}
+                </span>
+              ))}
+              <span className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-white/[0.02] border border-white/[0.05] text-[12px] text-white/40">
+                <SiTailwindcss size={11} className="text-[#06b6d4]" />
+                tailwindcss
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Install */}
+          <motion.div variants={stagger.item} className="mb-10">
+            <h3 className="text-[9px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono mb-4">
+              Quick Install
+            </h3>
+            <motion.div
+              onClick={handleDepsCopy}
+              whileTap={{ scale: 0.98 }}
+              className="group flex items-center justify-between bg-white/[0.015] border border-white/[0.05] rounded-2xl px-5 py-3.5 cursor-pointer hover:border-white/[0.1] transition-all duration-500"
+            >
+              <code className="text-[11px] text-white/25 font-mono">
+                {depsString}
+              </code>
+              <span className="text-white/10 group-hover:text-white/40 transition-all duration-500">
+                {depsCopied ? (
+                  <FiCheck size={13} className="text-emerald-400" />
+                ) : (
+                  <FiCopy size={13} />
+                )}
+              </span>
+            </motion.div>
+          </motion.div>
+
+          {/* Code Section (mobile) */}
+          <motion.div variants={stagger.item} className="mb-12">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-[9px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono">
+                Source Code
+              </h3>
+              <motion.button
+                onClick={handleCopy}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-[11px] font-medium text-white/20 hover:text-white/60 hover:bg-white/[0.04] transition-all duration-500"
+              >
+                {copied ? (
+                  <FiCheck size={11} className="text-emerald-400" />
+                ) : (
+                  <FiCopy size={11} />
+                )}
+                <span>{copied ? 'Copied!' : 'Copy'}</span>
+              </motion.button>
+            </div>
+            <div className="relative rounded-2xl overflow-hidden border border-white/[0.05] bg-[#0b0b0b]">
+              <motion.div
+                animate={{
+                  height: codeExpanded
+                    ? mobileCodeHeight || 'auto'
+                    : Math.min(MOBILE_COLLAPSED_HEIGHT, mobileCodeHeight || MOBILE_COLLAPSED_HEIGHT),
+                }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden"
+              >
+                <div ref={mobileCodeContentRef} className="p-5 text-[11px] font-mono overflow-x-auto leading-relaxed">
+                  {colorizedCode}
+                </div>
+              </motion.div>
+              {comp.code.split('\n').length > CODE_COLLAPSE_LINES && (
+                <>
+                  <AnimatePresence>
+                    {!codeExpanded && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute bottom-12 left-0 right-0 h-20 bg-gradient-to-t from-[#0b0b0b] via-[#0b0b0b]/80 to-transparent pointer-events-none"
+                      />
+                    )}
+                  </AnimatePresence>
+                  <button
+                    onClick={() => setCodeExpanded(!codeExpanded)}
+                    className="w-full py-3.5 text-[11px] font-semibold text-white/30 hover:text-white/60 bg-[#0b0b0b] border-t border-white/[0.04] transition-colors duration-500 flex items-center justify-center gap-2"
+                  >
+                    {codeExpanded ? (
+                      <><FiChevronUp size={13} /> Collapse</>
+                    ) : (
+                      <><FiChevronDown size={13} /> Expand  ·  {comp.code.split('\n').length} lines</>
+                    )}
+                  </button>
+                </>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Prev / Next — card style */}
+          <motion.div
+            variants={stagger.item}
+            className="flex items-center justify-between pt-8 border-t border-white/[0.03]"
+          >
+            {prev ? (
+              <Link to={`/components/${prev.slug}`} className="group flex items-center gap-2">
+                <FiArrowLeft size={14} className="text-white/15 group-hover:text-white/50 group-hover:-translate-x-1 transition-all duration-500" />
+                <span className="text-[13px] text-white/25 group-hover:text-white/70 transition-colors duration-500">Previous</span>
+              </Link>
+            ) : (
+              <div />
+            )}
+            {next ? (
+              <Link to={`/components/${next.slug}`} className="group flex items-center gap-2">
+                <span className="text-[13px] text-white/25 group-hover:text-white/70 transition-colors duration-500">Next</span>
+                <FiArrowRight size={14} className="text-white/15 group-hover:text-white/50 group-hover:translate-x-1 transition-all duration-500" />
+              </Link>
+            ) : (
+              <div />
+            )}
+          </motion.div>
+        </div>
+      </motion.div>
     </div>
   )
 }
