@@ -15,7 +15,7 @@ export default function Sidebar() {
   })
 
   return (
-    <aside className="fixed left-0 top-16 bottom-0 w-64 border-r border-dark-400/50 bg-dark-800/50 backdrop-blur-xl overflow-y-auto hidden lg:block">
+    <aside className="fixed left-0 top-16 bottom-0 w-64 border-r border-white/5 bg-black/90 backdrop-blur-xl overflow-y-auto hidden lg:block">
       <div className="p-4 space-y-6">
         {/* Getting Started */}
         <div>
@@ -26,8 +26,8 @@ export default function Sidebar() {
             to="/components"
             className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
               location.pathname === '/components'
-                ? 'bg-brand-600/10 text-brand-400 font-medium'
-                : 'text-dark-50 hover:text-white hover:bg-dark-500/50'
+                ? 'bg-blue-600/10 text-cyan-400 font-medium'
+                : 'text-white/50 hover:text-white hover:bg-white/5'
             }`}
           >
             All Components
@@ -49,14 +49,14 @@ export default function Sidebar() {
                     to={`/components/${comp.slug}`}
                     className={`relative block px-3 py-2 rounded-lg text-sm transition-colors ${
                       isActive
-                        ? 'bg-brand-600/10 text-brand-400 font-medium'
-                        : 'text-dark-50 hover:text-white hover:bg-dark-500/50'
+                        ? 'bg-blue-600/10 text-cyan-400 font-medium'
+                        : 'text-white/50 hover:text-white hover:bg-white/5'
                     }`}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="sidebar-active"
-                        className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-brand-500 rounded-full"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-cyan-400 rounded-full"
                         transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
                       />
                     )}

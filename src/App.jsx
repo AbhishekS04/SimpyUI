@@ -9,7 +9,7 @@ export default function App() {
   const location = useLocation()
 
   return (
-    <div className="min-h-screen bg-dark-900 text-white">
+    <div className="min-h-screen bg-black text-white">
       <Navbar />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>

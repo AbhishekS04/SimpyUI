@@ -1,67 +1,80 @@
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FiGithub, FiBox } from 'react-icons/fi'
+import { FiGithub, FiCommand, FiMaximize2, FiStar } from 'react-icons/fi'
 
 export default function Navbar() {
   const location = useLocation()
 
-  const links = [
-    { to: '/', label: 'Home' },
-    { to: '/components', label: 'Components' },
-  ]
-
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-dark-400/50 bg-dark-900/80 backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <motion.nav
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 sm:px-6"
+    >
+      <div className="floating-nav rounded-2xl px-4 sm:px-6 py-2.5 flex items-center justify-between w-full max-w-3xl">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center font-bold text-sm group-hover:bg-brand-500 transition-colors">
-            S
+        <Link to="/" className="flex items-center gap-2 sm:gap-2.5 group flex-shrink-0">
+          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/20">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" fill="url(#logoGrad)" />
+              <path d="M12 6C12 6 8 10 8 14c0 2.2 1.8 4 4 4s4-1.8 4-4c0-4-4-8-4-8z" fill="rgba(255,255,255,0.9)" />
+              <defs>
+                <linearGradient id="logoGrad" x1="0" y1="0" x2="24" y2="24">
+                  <stop stopColor="#00d4ff" />
+                  <stop offset="1" stopColor="#0066ff" />
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
-          <span className="text-lg font-bold tracking-tight">
-            Simpy<span className="text-brand-400">UI</span>
+          <span className="text-sm font-bold tracking-wider text-white/90 uppercase hidden sm:inline">
+            SimpyUI
           </span>
         </Link>
 
-        {/* Nav Links */}
-        <div className="flex items-center gap-1">
-          {links.map(link => {
-            const isActive = location.pathname === link.to ||
-              (link.to === '/components' && location.pathname.startsWith('/components'))
-            return (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                  isActive
-                    ? 'text-white'
-                    : 'text-dark-100 hover:text-white'
-                }`}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-active"
-                    className="absolute inset-0 bg-dark-500 rounded-lg"
-                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-                <span className="relative z-10">{link.label}</span>
-              </Link>
-            )
-          })}
+        {/* Center Nav Links */}
+        <div className="flex items-center gap-0.5 sm:gap-1">
+          <Link
+            to="/"
+            className={`px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-[13px] rounded-lg transition-all duration-200 ${
+              location.pathname === '/'
+                ? 'text-white bg-white/[0.06]'
+                : 'text-white/50 hover:text-white hover:bg-white/[0.04]'
+            }`}
+          >
+            Home
+          </Link>
+          <Link
+            to="/components"
+            className={`px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-[13px] rounded-lg transition-all duration-200 ${
+              location.pathname.startsWith('/components')
+                ? 'text-white bg-white/[0.06]'
+                : 'text-white/50 hover:text-white hover:bg-white/[0.04]'
+            }`}
+          >
+            Components
+          </Link>
+        </div>
 
-          <div className="w-px h-6 bg-dark-400 mx-2" />
-
+        {/* Right Side Icons */}
+        <div className="flex items-center gap-0.5">
+          <button
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-white/40 hover:text-white/80 hover:bg-white/5 transition-all duration-200"
+            title="Command"
+          >
+            <FiCommand size={14} />
+          </button>
           <a
             href="https://github.com"
             target="_blank"
             rel="noreferrer"
-            className="p-2 text-dark-100 hover:text-white transition-colors rounded-lg hover:bg-dark-500"
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-white/40 hover:text-white/80 hover:bg-white/5 transition-all duration-200"
+            title="GitHub"
           >
-            <FiGithub size={18} />
+            <FiStar size={14} />
           </a>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   )
 }

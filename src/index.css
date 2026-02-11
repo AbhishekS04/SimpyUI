@@ -15,8 +15,9 @@ html {
 
 body {
   min-height: 100vh;
-  background-color: #101113;
+  background-color: #000000;
   color: #fff;
+  overflow-x: hidden;
 }
 
 /* ============ SCROLLBAR ============ */
@@ -26,16 +27,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1A1B1E;
+  background: #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #373A40;
+  background: #333;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #5C5F66;
+  background: #555;
 }
 
 /* ============ CODE BLOCK OVERRIDES ============ */
@@ -51,22 +52,29 @@ code {
 
 /* ============ SELECTION ============ */
 ::selection {
-  background: rgba(76, 110, 245, 0.3);
+  background: rgba(0, 150, 255, 0.3);
   color: #fff;
 }
 
 /* ============ GLOW EFFECTS ============ */
 .glow {
-  box-shadow: 0 0 60px rgba(76, 110, 245, 0.15);
+  box-shadow: 0 0 60px rgba(0, 150, 255, 0.15);
 }
 
 .glow-sm {
-  box-shadow: 0 0 30px rgba(76, 110, 245, 0.1);
+  box-shadow: 0 0 30px rgba(0, 150, 255, 0.1);
 }
 
 /* ============ GRADIENT TEXT ============ */
 .gradient-text {
-  background: linear-gradient(135deg, #748ffc, #5c7cfa, #4c6ef5, #9775fa);
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-blue {
+  background: linear-gradient(180deg, #00d4ff 0%, #0088ff 50%, #0055cc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -90,4 +98,318 @@ code {
     linear-gradient(-45deg, transparent 75%, #25262B 75%);
   background-size: 20px 20px;
   background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+/* ============ HERO FIRE / FLAMES ANIMATION ============ */
+@keyframes flame-flicker {
+  0%, 100% {
+    transform: scaleY(1) scaleX(1) translateY(0);
+    opacity: 0.8;
+  }
+  25% {
+    transform: scaleY(1.15) scaleX(0.95) translateY(-8px);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleY(0.9) scaleX(1.05) translateY(3px);
+    opacity: 0.7;
+  }
+  75% {
+    transform: scaleY(1.1) scaleX(0.97) translateY(-5px);
+    opacity: 0.9;
+  }
+}
+
+@keyframes flame-rise {
+  0% {
+    transform: translateY(20px) scale(1);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120px) scale(0.3);
+    opacity: 0;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes smoke-drift {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-80px) translateX(30px) scale(1.5);
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateY(-160px) translateX(-20px) scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-flame-flicker {
+  animation: flame-flicker 3s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 4s ease-in-out infinite;
+}
+
+.animate-smoke {
+  animation: smoke-drift 6s ease-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ============ HERO FIRE CONTAINER ============ */
+.hero-fire {
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 55%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.hero-fire::before {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: -10%;
+  right: -10%;
+  height: 100%;
+  background: radial-gradient(ellipse 80% 60% at 50% 100%, 
+    rgba(0, 170, 255, 0.5) 0%, 
+    rgba(0, 120, 255, 0.3) 25%, 
+    rgba(0, 80, 220, 0.15) 45%, 
+    transparent 70%);
+  animation: flame-flicker 3s ease-in-out infinite;
+}
+
+.hero-fire::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: 5%;
+  right: 5%;
+  height: 80%;
+  background: radial-gradient(ellipse 60% 50% at 50% 100%, 
+    rgba(0, 200, 255, 0.6) 0%, 
+    rgba(0, 150, 255, 0.25) 30%, 
+    transparent 60%);
+  animation: flame-flicker 2.5s ease-in-out infinite 0.5s;
+}
+
+/* Extra flame layers */
+.flame-layer-1 {
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  width: 30%;
+  height: 45%;
+  background: radial-gradient(ellipse at 50% 100%, 
+    rgba(0, 180, 255, 0.4) 0%, 
+    transparent 70%);
+  animation: flame-flicker 2s ease-in-out infinite 0.3s;
+  filter: blur(20px);
+}
+
+.flame-layer-2 {
+  position: absolute;
+  bottom: 0;
+  right: 15%;
+  width: 35%;
+  height: 50%;
+  background: radial-gradient(ellipse at 50% 100%, 
+    rgba(0, 140, 255, 0.35) 0%, 
+    transparent 70%);
+  animation: flame-flicker 2.8s ease-in-out infinite 0.8s;
+  filter: blur(25px);
+}
+
+.flame-layer-3 {
+  position: absolute;
+  bottom: 0;
+  left: 30%;
+  width: 40%;
+  height: 60%;
+  background: radial-gradient(ellipse at 50% 100%, 
+    rgba(100, 200, 255, 0.2) 0%, 
+    transparent 50%);
+  animation: flame-flicker 3.5s ease-in-out infinite 0.2s;
+  filter: blur(40px);
+}
+
+.flame-particle {
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  height: 4px;
+  background: rgba(100, 200, 255, 0.8);
+  border-radius: 50%;
+  filter: blur(2px);
+  animation: flame-rise 3s ease-out infinite;
+}
+
+/* ============ BENTO GRID ============ */
+.bento-outer {
+  background: #1a1a1e;
+  border-radius: 3rem;
+  padding: 2.5rem;
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+}
+
+@media (min-width: 640px) {
+  .bento-outer { padding: 3rem; }
+}
+@media (min-width: 1024px) {
+  .bento-outer { padding: 3.5rem; }
+}
+@media (max-width: 639px) {
+  .bento-outer {
+    border-radius: 1.5rem;
+    padding: 1rem;
+  }
+}
+
+.bento-card {
+  background: #121212;
+  border: 1px solid #262626;
+  border-radius: 2rem;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  height: 100%;
+}
+
+@media (max-width: 639px) {
+  .bento-card { border-radius: 1.25rem; }
+}
+
+.bento-card:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.bento-card-title {
+  padding: 1rem 1.25rem;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #e2e2e2;
+}
+@media (min-width: 640px) {
+  .bento-card-title {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+.bento-card-preview {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  position: relative;
+  overflow: hidden;
+  background: rgba(0,0,0,0.35);
+  min-height: 160px;
+}
+@media (min-width: 640px) {
+  .bento-card-preview {
+    padding: 1.5rem;
+    min-height: 180px;
+  }
+}
+@media (min-width: 1024px) {
+  .bento-card-preview { min-height: 200px; }
+}
+
+/* ============ CTA SECTION ============ */
+.cta-gradient {
+  background: radial-gradient(ellipse 50% 80% at 50% 120%, 
+    rgba(0, 120, 255, 0.15) 0%, 
+    transparent 60%);
+}
+
+/* ============ FLOATING NAV ============ */
+.floating-nav {
+  background: rgba(15, 15, 15, 0.8);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ============ CMD BOX ============ */
+.cmd-box {
+  background: rgba(20, 20, 20, 0.9);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* Blue dot indicator */
+.blue-dot {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  background: #3b82f6;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+  z-index: 5;
+}
+
+/* Cursor blink for bento demo */
+@keyframes cursor-blink {
+  from, to { border-color: transparent; }
+  50% { border-color: white; }
+}
+.cursor-blink {
+  animation: cursor-blink 1s step-end infinite;
+}
+
+/* Card gradient overlay */
+.card-gradient {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
 }

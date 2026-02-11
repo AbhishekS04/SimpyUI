@@ -15,16 +15,16 @@ export default function ComponentShowcase({ title, description, code, children }
   }
 
   return (
-    <div className="rounded-xl border border-dark-400/50 bg-dark-700/30 overflow-hidden">
+    <div className="rounded-xl border border-white/8 bg-[#111] overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-dark-400/50">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-white/8">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('preview')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               activeTab === 'preview'
-                ? 'bg-dark-500 text-white'
-                : 'text-dark-100 hover:text-white'
+                ? 'bg-white/10 text-white'
+                : 'text-white/40 hover:text-white'
             }`}
           >
             <FiEye size={14} />
@@ -34,8 +34,8 @@ export default function ComponentShowcase({ title, description, code, children }
             onClick={() => setActiveTab('code')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               activeTab === 'code'
-                ? 'bg-dark-500 text-white'
-                : 'text-dark-100 hover:text-white'
+                ? 'bg-white/10 text-white'
+                : 'text-white/40 hover:text-white'
             }`}
           >
             <FiCode size={14} />
@@ -45,7 +45,7 @@ export default function ComponentShowcase({ title, description, code, children }
 
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-dark-100 hover:text-white hover:bg-dark-500 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-white/40 hover:text-white hover:bg-white/10 transition-colors"
         >
           {copied ? <FiCheck size={14} className="text-green-400" /> : <FiCopy size={14} />}
           {copied ? 'Copied!' : 'Copy'}
@@ -80,7 +80,7 @@ export default function ComponentShowcase({ title, description, code, children }
               customStyle={{
                 margin: 0,
                 borderRadius: 0,
-                background: '#141517',
+                background: '#0a0a0a',
                 padding: '1.5rem',
               }}
             >
