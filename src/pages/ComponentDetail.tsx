@@ -162,8 +162,8 @@ export default function ComponentDetail() {
   const comp = componentRegistry[index]
 
   const colorizedCode = useMemo(
-    () => (comp ? colorizeCode(comp.code) : null),
-    [comp?.code]
+    () => (comp ? colorizeCode(comp.demoCode) : null),
+    [comp?.demoCode]
   )
 
   useEffect(() => {
@@ -173,7 +173,7 @@ export default function ComponentDetail() {
     if (mobileCodeContentRef.current) {
       setMobileCodeHeight(mobileCodeContentRef.current.scrollHeight)
     }
-  }, [comp?.code])
+  }, [comp?.demoCode])
 
   if (!comp) {
     return (
@@ -199,7 +199,7 @@ export default function ComponentDetail() {
     index < componentRegistry.length - 1 ? componentRegistry[index + 1] : null
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(comp.code)
+    navigator.clipboard.writeText(comp.demoCode)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -376,7 +376,7 @@ export default function ComponentDetail() {
                 <motion.div variants={stagger.item} className="mb-16">
                   <div className="flex items-center justify-between mb-5">
                     <h3 className="text-[10px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono">
-                      Source Code
+                      Usage Example
                     </h3>
                     <motion.button
                       onClick={handleCopy}
@@ -406,7 +406,7 @@ export default function ComponentDetail() {
                         {colorizedCode}
                       </div>
                     </motion.div>
-                    {comp.code.split('\n').length > CODE_COLLAPSE_LINES && (
+                    {comp.demoCode.split('\n').length > CODE_COLLAPSE_LINES && (
                       <>
                         <AnimatePresence>
                           {!codeExpanded && (
@@ -427,7 +427,7 @@ export default function ComponentDetail() {
                           {codeExpanded ? (
                             <><FiChevronUp size={13} /> Collapse</>
                           ) : (
-                            <><FiChevronDown size={13} /> Expand  ·  {comp.code.split('\n').length} lines</>
+                            <><FiChevronDown size={13} /> Expand  ·  {comp.demoCode.split('\n').length} lines</>
                           )}
                         </motion.button>
                       </>
@@ -678,7 +678,7 @@ export default function ComponentDetail() {
           <motion.div variants={stagger.item} className="mb-12">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-[9px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono">
-                Source Code
+                Usage Example
               </h3>
               <motion.button
                 onClick={handleCopy}
@@ -707,7 +707,7 @@ export default function ComponentDetail() {
                   {colorizedCode}
                 </div>
               </motion.div>
-              {comp.code.split('\n').length > CODE_COLLAPSE_LINES && (
+              {comp.demoCode.split('\n').length > CODE_COLLAPSE_LINES && (
                 <>
                   <AnimatePresence>
                     {!codeExpanded && (
@@ -727,7 +727,7 @@ export default function ComponentDetail() {
                     {codeExpanded ? (
                       <><FiChevronUp size={13} /> Collapse</>
                     ) : (
-                      <><FiChevronDown size={13} /> Expand  ·  {comp.code.split('\n').length} lines</>
+                      <><FiChevronDown size={13} /> Expand  ·  {comp.demoCode.split('\n').length} lines</>
                     )}
                   </button>
                 </>

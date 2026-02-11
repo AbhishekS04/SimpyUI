@@ -46,7 +46,7 @@ export function getDefaultConfig(): SimpyConfig {
   const project = detectProject()
   switch (project) {
     case 'nextjs':
-      return { componentDir: 'components/ui', utilsDir: 'lib', typescript: true }
+      return { componentDir: 'src/components/ui', utilsDir: 'src/lib', typescript: true }
     case 'vite':
       return { componentDir: 'src/components/ui', utilsDir: 'src/lib', typescript: true }
     default:
@@ -62,7 +62,7 @@ export function loadConfig(): SimpyConfig | null {
     // Backfill utilsDir for old configs
     if (!raw.utilsDir) {
       const project = detectProject()
-      raw.utilsDir = project === 'nextjs' ? 'lib' : 'src/lib'
+      raw.utilsDir = project === 'nextjs' ? 'src/lib' : 'src/lib'
     }
     return raw
   } catch {

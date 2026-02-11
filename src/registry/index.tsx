@@ -32,6 +32,24 @@ import AlertCode from './alert/alert.tsx?raw'
 import TooltipCode from './tooltip/tooltip.tsx?raw'
 import SocialStoriesCode from './social-stories/social-stories.tsx?raw'
 
+/* ── Raw demo code (Vite ?raw imports) ── */
+
+import ButtonDemoCode from './button/button.demo.tsx?raw'
+import CardDemoCode from './card/card.demo.tsx?raw'
+import BadgeDemoCode from './badge/badge.demo.tsx?raw'
+import AvatarDemoCode from './avatar/avatar.demo.tsx?raw'
+import InputDemoCode from './input/input.demo.tsx?raw'
+import ToggleDemoCode from './toggle/toggle.demo.tsx?raw'
+import AccordionDemoCode from './accordion/accordion.demo.tsx?raw'
+import TabsDemoCode from './tabs/tabs.demo.tsx?raw'
+import ProgressDemoCode from './progress/progress.demo.tsx?raw'
+import SkeletonDemoCode from './skeleton/skeleton.demo.tsx?raw'
+import ModalDemoCode from './modal/modal.demo.tsx?raw'
+import ToastDemoCode from './toast/toast.demo.tsx?raw'
+import AlertDemoCode from './alert/alert.demo.tsx?raw'
+import TooltipDemoCode from './tooltip/tooltip.demo.tsx?raw'
+import SocialStoriesDemoCode from './social-stories/social-stories.demo.tsx?raw'
+
 /* ── Lazy-loaded demos ── */
 
 const ButtonDemo = lazy(() => import('./button/button.demo'))
@@ -59,6 +77,7 @@ export interface ComponentRegistryEntry {
   description: string
   component: ReactNode
   code: string
+  demoCode: string
 }
 
 /* ── Helper: wrap lazy demo in Suspense ── */
@@ -75,29 +94,29 @@ function demo(Component: React.LazyExoticComponent<React.ComponentType>) {
 
 export const componentRegistry: ComponentRegistryEntry[] = [
   // ─── GENERAL ──────────────────────────────────
-  { name: 'Button',    slug: 'button',    category: 'General',      description: 'Animated button with multiple variants and sizes.',     component: demo(ButtonDemo),    code: ButtonCode },
-  { name: 'Card',      slug: 'card',      category: 'General',      description: 'Versatile card container with hover and glow effects.', component: demo(CardDemo),      code: CardCode },
-  { name: 'Badge',     slug: 'badge',     category: 'General',      description: 'Small status indicators with colorful variants.',       component: demo(BadgeDemo),     code: BadgeCode },
-  { name: 'Avatar',    slug: 'avatar',    category: 'General',      description: 'User avatar with image support and fallback initials.', component: demo(AvatarDemo),    code: AvatarCode },
+  { name: 'Button',    slug: 'button',    category: 'General',      description: 'Animated button with multiple variants and sizes.',     component: demo(ButtonDemo),    code: ButtonCode, demoCode: ButtonDemoCode },
+  { name: 'Card',      slug: 'card',      category: 'General',      description: 'Versatile card container with hover and glow effects.', component: demo(CardDemo),      code: CardCode, demoCode: CardDemoCode },
+  { name: 'Badge',     slug: 'badge',     category: 'General',      description: 'Small status indicators with colorful variants.',       component: demo(BadgeDemo),     code: BadgeCode, demoCode: BadgeDemoCode },
+  { name: 'Avatar',    slug: 'avatar',    category: 'General',      description: 'User avatar with image support and fallback initials.', component: demo(AvatarDemo),    code: AvatarCode, demoCode: AvatarDemoCode },
 
   // ─── INPUTS ───────────────────────────────────
-  { name: 'Input',     slug: 'input',     category: 'Inputs',       description: 'Styled text input with label and error states.',        component: demo(InputDemo),     code: InputCode },
-  { name: 'Toggle',    slug: 'toggle',    category: 'Inputs',       description: 'Smooth animated toggle switch.',                       component: demo(ToggleDemo),    code: ToggleCode },
+  { name: 'Input',     slug: 'input',     category: 'Inputs',       description: 'Styled text input with label and error states.',        component: demo(InputDemo),     code: InputCode, demoCode: InputDemoCode },
+  { name: 'Toggle',    slug: 'toggle',    category: 'Inputs',       description: 'Smooth animated toggle switch.',                       component: demo(ToggleDemo),    code: ToggleCode, demoCode: ToggleDemoCode },
 
   // ─── DATA DISPLAY ─────────────────────────────
-  { name: 'Accordion', slug: 'accordion', category: 'Data Display', description: 'Collapsible content sections with smooth animations.',  component: demo(AccordionDemo), code: AccordionCode },
-  { name: 'Tabs',      slug: 'tabs',      category: 'Data Display', description: 'Animated tab navigation with smooth underline indicator.', component: demo(TabsDemo),  code: TabsCode },
-  { name: 'Progress',  slug: 'progress',  category: 'Data Display', description: 'Animated progress bar with multiple colors and sizes.', component: demo(ProgressDemo),  code: ProgressCode },
-  { name: 'Skeleton',  slug: 'skeleton',  category: 'Data Display', description: 'Animated loading placeholder with pulsing effect.',     component: demo(SkeletonDemo),  code: SkeletonCode },
+  { name: 'Accordion', slug: 'accordion', category: 'Data Display', description: 'Collapsible content sections with smooth animations.',  component: demo(AccordionDemo), code: AccordionCode, demoCode: AccordionDemoCode },
+  { name: 'Tabs',      slug: 'tabs',      category: 'Data Display', description: 'Animated tab navigation with smooth underline indicator.', component: demo(TabsDemo),  code: TabsCode, demoCode: TabsDemoCode },
+  { name: 'Progress',  slug: 'progress',  category: 'Data Display', description: 'Animated progress bar with multiple colors and sizes.', component: demo(ProgressDemo),  code: ProgressCode, demoCode: ProgressDemoCode },
+  { name: 'Skeleton',  slug: 'skeleton',  category: 'Data Display', description: 'Animated loading placeholder with pulsing effect.',     component: demo(SkeletonDemo),  code: SkeletonCode, demoCode: SkeletonDemoCode },
 
   // ─── FEEDBACK ─────────────────────────────────
-  { name: 'Modal',     slug: 'modal',     category: 'Feedback',     description: 'Animated dialog with backdrop blur.',                  component: demo(ModalDemo),     code: ModalCode },
-  { name: 'Toast',     slug: 'toast',     category: 'Feedback',     description: 'Notification toast with animated entrance.',            component: demo(ToastDemo),     code: ToastCode },
-  { name: 'Alert',     slug: 'alert',     category: 'Feedback',     description: 'Contextual alert banners with icons.',                 component: demo(AlertDemo),     code: AlertCode },
+  { name: 'Modal',     slug: 'modal',     category: 'Feedback',     description: 'Animated dialog with backdrop blur.',                  component: demo(ModalDemo),     code: ModalCode, demoCode: ModalDemoCode },
+  { name: 'Toast',     slug: 'toast',     category: 'Feedback',     description: 'Notification toast with animated entrance.',            component: demo(ToastDemo),     code: ToastCode, demoCode: ToastDemoCode },
+  { name: 'Alert',     slug: 'alert',     category: 'Feedback',     description: 'Contextual alert banners with icons.',                 component: demo(AlertDemo),     code: AlertCode, demoCode: AlertDemoCode },
 
   // ─── OVERLAY ──────────────────────────────────
-  { name: 'Tooltip',   slug: 'tooltip',   category: 'Overlay',      description: 'Hover tooltip with multiple positions.',               component: demo(TooltipDemo),   code: TooltipCode },
+  { name: 'Tooltip',   slug: 'tooltip',   category: 'Overlay',      description: 'Hover tooltip with multiple positions.',               component: demo(TooltipDemo),   code: TooltipCode, demoCode: TooltipDemoCode },
 
   // ─── ANIMATION ────────────────────────────────
-  { name: 'Social Stories', slug: 'social-stories', category: 'Animation', description: 'Instagram/LinkedIn-style stories viewer with progress bars, video support, and swipe navigation.', component: demo(SocialStoriesDemo), code: SocialStoriesCode },
+  { name: 'Social Stories', slug: 'social-stories', category: 'Animation', description: 'Instagram/LinkedIn-style stories viewer with progress bars, video support, and swipe navigation.', component: demo(SocialStoriesDemo), code: SocialStoriesCode, demoCode: SocialStoriesDemoCode },
 ]
