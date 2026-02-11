@@ -518,55 +518,9 @@ export default function Home() {
 
             {/* ── Center rotating badge ── */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-              {/* Rotating outer ring with text */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-                className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28"
-              >
-                <svg viewBox="0 0 120 120" className="w-full h-full">
-                  {/* Gear/badge teeth */}
-                  {Array.from({ length: 24 }).map((_, i) => {
-                    const angle = (i * 15) * Math.PI / 180
-                    const inner = 42
-                    const outer = i % 2 === 0 ? 50 : 46
-                    return (
-                      <line
-                        key={i}
-                        x1={60 + inner * Math.cos(angle)}
-                        y1={60 + inner * Math.sin(angle)}
-                        x2={60 + outer * Math.cos(angle)}
-                        y2={60 + outer * Math.sin(angle)}
-                        stroke="rgba(255,255,255,0.15)"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                      />
-                    )
-                  })}
-                  {/* Outer circle */}
-                  <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
-                  <circle cx="60" cy="60" r="42" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
-                  {/* Rotating text */}
-                  <defs>
-                    <path id="badgeTextPath" d="M 60, 60 m -38, 0 a 38,38 0 1,1 76,0 a 38,38 0 1,1 -76,0" />
-                  </defs>
-                  <text fill="rgba(255,255,255,0.2)" fontSize="6" fontWeight="600" letterSpacing="3" fontFamily="monospace">
-                    <textPath href="#badgeTextPath">
-                      SIMPYUI · SIMPYUI · SIMPYUI ·{' '}
-                    </textPath>
-                  </text>
-                </svg>
-              </motion.div>
-
-              {/* Center logo */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-xl shadow-blue-600/30">
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.15)" />
-                    <path d="M12 6C12 6 8 10 8 14c0 2.2 1.8 4 4 4s4-1.8 4-4c0-4-4-8-4-8z" fill="white" />
-                  </svg>
-                </div>
-              </div>
+              <span className="text-lg sm:text-xl md:text-2xl font-bold tracking-wider text-white/90 uppercase">
+                SimpyUI
+              </span>
             </div>
 
           </div>
