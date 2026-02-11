@@ -1,1 +1,0 @@
-import{j as a,a as r}from"./index-BW0aMnOn.js";function n(){return a.jsxs("div",{className:"flex flex-wrap gap-3 items-center",children:[a.jsx(r,{children:"Default"}),a.jsx(r,{variant:"primary",children:"Primary"}),a.jsx(r,{variant:"success",children:"Success"}),a.jsx(r,{variant:"warning",children:"Warning"}),a.jsx(r,{variant:"danger",children:"Danger"})]})}export{n as default};

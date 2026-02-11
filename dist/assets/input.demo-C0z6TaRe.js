@@ -1,1 +1,0 @@
-import{j as e,I as s}from"./index-BW0aMnOn.js";function r(){return e.jsxs("div",{className:"w-full max-w-72 space-y-4",children:[e.jsx(s,{label:"Email",placeholder:"you@example.com"}),e.jsx(s,{label:"Password",type:"password",placeholder:"••••••••",error:"Password is required"})]})}export{r as default};

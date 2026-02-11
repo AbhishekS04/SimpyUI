@@ -1,1 +1,0 @@
-import{j as s,A as a}from"./index-BW0aMnOn.js";function e(){return s.jsxs("div",{className:"flex items-center gap-4",children:[s.jsx(a,{alt:"John",size:"sm"}),s.jsx(a,{alt:"Alice",size:"md"}),s.jsx(a,{alt:"Bob",size:"lg"}),s.jsx(a,{src:"https://i.pravatar.cc/150?img=32",alt:"User",size:"lg"})]})}export{e as default};
