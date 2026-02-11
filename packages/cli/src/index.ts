@@ -17,7 +17,8 @@ import { join, dirname } from 'node:path'
 import {
   bold, green, cyan, yellow, red, dim,
   loadConfig, saveConfig, getConfigOrExit,
-  getInstalledDeps, installPackages,
+  getInstalledDeps, installPackages, ensureUtils,
+  detectProject, getDefaultConfig,
   fetchFileFromGitHub, spinner,
   prompt, confirm,
   type SimpyConfig,
@@ -51,17 +52,27 @@ async function cmdInit() {
     }
   }
 
-  console.log(dim('  Configure where SimpyUI components will be installed.\n'))
+  const project = detectProject()
+  const defaults = getDefaultConfig()
+  const projectLabel = project === 'nextjs' ? 'Next.js' : project === 'vite' ? 'Vite' : 'React'
+
+  console.log(dim(`  Detected ${bold(projectLabel)} project\n`))
 
   const componentDir = await prompt(
     `  ${bold('Component directory')}`,
-    'src/components/ui'
+    defaults.componentDir
+  )
+
+  const utilsDir = await prompt(
+    `  ${bold('Utils directory')}`,
+    defaults.utilsDir
   )
 
   const useTs = await confirm(`  ${bold('Use TypeScript?')}`, true)
 
   const config: SimpyConfig = {
     componentDir,
+    utilsDir,
     typescript: useTs,
   }
 
@@ -69,9 +80,10 @@ async function cmdInit() {
 
   console.log()
   console.log(green('  ✓ Created simpyui.json'))
-  console.log(dim(`    Components will be added to: ${componentDir}/`))
+  console.log(dim(`    Components → ${componentDir}/`))
+  console.log(dim(`    Utils      → ${utilsDir}/`))
   console.log()
-  console.log(`  ${bold('Next step:')} Run ${cyan('npx simpyui add button')} to add your first component.`)
+  console.log(`  ${bold('Next step:')} Run ${cyan('npx simpyui@latest add button')} to add your first component.`)
   console.log()
 }
 
@@ -178,6 +190,10 @@ async function cmdAdd(args: string[]) {
       allDeps.add(dep)
     }
   }
+
+  // Create lib/utils.ts if it doesn't exist
+  const utilsDeps = ensureUtils(config)
+  for (const d of utilsDeps) allDeps.add(d)
 
   // Check which are already installed
   const installed = getInstalledDeps()

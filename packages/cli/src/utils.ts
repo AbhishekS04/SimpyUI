@@ -1,6 +1,6 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { execSync } from 'node:child_process'
-import { join } from 'node:path'
+import { join, dirname } from 'node:path'
 
 /* ── Colors (no deps needed) ── */
 
@@ -17,21 +17,54 @@ export { bold, green, cyan, yellow, red, dim }
 
 export interface SimpyConfig {
   componentDir: string
+  utilsDir: string
   typescript: boolean
 }
 
 const CONFIG_FILE = 'simpyui.json'
 
-const DEFAULT_CONFIG: SimpyConfig = {
-  componentDir: 'src/components/ui',
-  typescript: true,
+/* ── Project Detection ── */
+
+export type ProjectType = 'nextjs' | 'vite' | 'unknown'
+
+export function detectProject(): ProjectType {
+  const cwd = process.cwd()
+  if (
+    existsSync(join(cwd, 'next.config.js')) ||
+    existsSync(join(cwd, 'next.config.mjs')) ||
+    existsSync(join(cwd, 'next.config.ts'))
+  ) return 'nextjs'
+  if (
+    existsSync(join(cwd, 'vite.config.js')) ||
+    existsSync(join(cwd, 'vite.config.ts')) ||
+    existsSync(join(cwd, 'vite.config.mjs'))
+  ) return 'vite'
+  return 'unknown'
+}
+
+export function getDefaultConfig(): SimpyConfig {
+  const project = detectProject()
+  switch (project) {
+    case 'nextjs':
+      return { componentDir: 'components/ui', utilsDir: 'lib', typescript: true }
+    case 'vite':
+      return { componentDir: 'src/components/ui', utilsDir: 'src/lib', typescript: true }
+    default:
+      return { componentDir: 'src/components/ui', utilsDir: 'src/lib', typescript: true }
+  }
 }
 
 export function loadConfig(): SimpyConfig | null {
   const configPath = join(process.cwd(), CONFIG_FILE)
   if (!existsSync(configPath)) return null
   try {
-    return JSON.parse(readFileSync(configPath, 'utf-8'))
+    const raw = JSON.parse(readFileSync(configPath, 'utf-8'))
+    // Backfill utilsDir for old configs
+    if (!raw.utilsDir) {
+      const project = detectProject()
+      raw.utilsDir = project === 'nextjs' ? 'lib' : 'src/lib'
+    }
+    return raw
   } catch {
     return null
   }
@@ -42,17 +75,74 @@ export function saveConfig(config: SimpyConfig): void {
   writeFileSync(configPath, JSON.stringify(config, null, 2) + '\n')
 }
 
+export function hasPackageJson(): boolean {
+  return existsSync(join(process.cwd(), 'package.json'))
+}
+
 export function getConfigOrExit(): SimpyConfig {
+  if (!hasPackageJson()) {
+    console.log(red('  ✗ No package.json found in current directory.'))
+    console.log()
+    console.log(dim('  Run this inside a React project:'))
+    console.log(cyan('    npx create-next-app@latest my-app'))
+    console.log(dim('    or'))
+    console.log(cyan('    npm create vite@latest my-app'))
+    console.log()
+    process.exit(1)
+  }
+
   const config = loadConfig()
   if (!config) {
-    console.log(dim('  No simpyui.json found — using defaults:'))
-    console.log(dim(`    components → ${DEFAULT_CONFIG.componentDir}`))
-    console.log(dim(`    typescript → ${DEFAULT_CONFIG.typescript}`))
+    const project = detectProject()
+    const defaults = getDefaultConfig()
+    const projectLabel = project === 'nextjs' ? 'Next.js' : project === 'vite' ? 'Vite' : 'React'
+
+    console.log(dim(`  Detected ${projectLabel} project`))
+    console.log(dim('  Creating simpyui.json with defaults:'))
+    console.log(dim(`    components → ${defaults.componentDir}`))
+    console.log(dim(`    utils      → ${defaults.utilsDir}`))
+    console.log(dim(`    typescript → ${defaults.typescript}`))
     console.log()
-    saveConfig(DEFAULT_CONFIG)
-    return DEFAULT_CONFIG
+    saveConfig(defaults)
+    return defaults
   }
   return config
+}
+
+/* ── Utils file creation ── */
+
+const UTILS_TS = `import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+`
+
+const UTILS_JS = `import { clsx } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs) {
+  return twMerge(clsx(inputs))
+}
+`
+
+export function ensureUtils(config: SimpyConfig): string[] {
+  const ext = config.typescript ? 'ts' : 'js'
+  const utilsPath = join(process.cwd(), config.utilsDir, `utils.${ext}`)
+  const depsNeeded: string[] = []
+
+  if (!existsSync(utilsPath)) {
+    mkdirSync(dirname(utilsPath), { recursive: true })
+    writeFileSync(utilsPath, config.typescript ? UTILS_TS : UTILS_JS)
+    console.log(green('  ✓ Created ') + dim(`${config.utilsDir}/utils.${ext}`))
+
+    const installed = getInstalledDeps()
+    if (!installed.has('clsx')) depsNeeded.push('clsx')
+    if (!installed.has('tailwind-merge')) depsNeeded.push('tailwind-merge')
+  }
+
+  return depsNeeded
 }
 
 /* ── Package Manager Detection ── */
