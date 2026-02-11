@@ -12,7 +12,7 @@
  * =============================================
  */
 
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import {
   bold, green, cyan, yellow, red, dim,
@@ -267,12 +267,28 @@ async function cmdAdd(args: string[]) {
   // Usage hint
   const first = componentsToAdd[0]
   const firstComp = registry[first]
-  const importName = firstComp.name.replace(/\s+/g, '')
   const importPath = firstComp.files[0].split('/').pop()!.replace('.tsx', '').replace('.jsx', '')
+  const filePath = join(process.cwd(), config.componentDir, firstComp.files[0].split('/').pop()!)
+
+  // Detect export style from the actual file
+  let importLine = ''
+  try {
+    const src = readFileSync(filePath, 'utf-8')
+    const importName = firstComp.name.replace(/\s+/g, '')
+    if (src.includes('export default')) {
+      importLine = `import ${importName} from "@/${config.componentDir}/${importPath}"`
+    } else {
+      importLine = `import { ${importName} } from "@/${config.componentDir}/${importPath}"`
+    }
+  } catch {
+    const importName = firstComp.name.replace(/\s+/g, '')
+    importLine = `import ${importName} from "@/${config.componentDir}/${importPath}"`
+  }
+
   console.log(dim('  Import:'))
-  console.log(cyan(`    import { ${importName} } from '@/${config.componentDir}/${importPath}'`))
+  console.log(cyan(`    ${importLine}`))
   console.log()
-  console.log(dim(`  Usage & examples → ${cyan(`https://simpyui.vercel.app/components/${first}`)}`))
+  console.log(dim(`  Docs → ${cyan(`https://simpyui.vercel.app/components/${first}`)}`))
   console.log()
 }
 
