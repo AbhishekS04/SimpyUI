@@ -303,7 +303,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════
           OUTSTANDING COMPONENTS — Bento Grid
           ═══════════════════════════════════════════ */}
-      <section className="relative py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8">
+      <section className="relative py-20 sm:py-24 md:py-32 lg:py-40 px-4 sm:px-6 md:px-8 md:min-h-screen md:flex md:items-center">
         <div className="max-w-[1400px] mx-auto">
 
           {/* Section Header */}
@@ -402,7 +402,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════
           CTA SECTION — Hands reaching toward badge
           ═══════════════════════════════════════════ */}
-      <section className="relative py-14 sm:py-20 md:py-28 lg:py-32 px-4 sm:px-6 overflow-hidden bg-black">
+      <section className="relative py-20 sm:py-24 md:py-32 lg:py-40 overflow-hidden bg-black md:min-h-screen md:flex md:flex-col md:justify-center">
         {/* Subtle radial glow behind badge */}
         <div className="absolute inset-0 pointer-events-none">
           <div
@@ -416,115 +416,66 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="relative z-10 text-center max-w-3xl mx-auto"
+          className="relative z-10 text-center max-w-3xl mx-auto px-4 sm:px-6"
         >
           {/* Subtitle */}
           <p className="text-[9px] sm:text-[10px] md:text-xs font-semibold tracking-[0.35em] uppercase text-white/40 mb-4 sm:mb-5">
             Join Us
           </p>
 
-          {/* Heading */}
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.15] mb-10 sm:mb-14 md:mb-20 lg:mb-24">
-            Get your SimpyUI's{' '}
-            <span className="gradient-text-blue">Pro badge</span>
-            <br />
-            now
-          </h2>
+        {/* Heading */}
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.15] mb-10 sm:mb-14 md:mb-20 lg:mb-24">
+                    Unlock your{' '}
+                    <span className="gradient-text-blue">Pro badge</span>
+                    <br />
+                    and join the elite
+                  </h2>
+                </motion.div>
 
-          {/* ── Hands + Badge Composition ── */}
-          <div className="relative w-full max-w-4xl mx-auto h-[280px] sm:h-[340px] md:h-[420px] select-none">
+                {/* ── Hands + Text — full viewport width ── */}
+        <div className="relative w-full select-none">
+          <div className="flex items-center w-full">
 
-            {/* Left Hand — ASCII Art */}
-            <motion.pre
-              initial={{ opacity: 0, x: -60 }}
+            {/* Left hand — flush to left screen edge */}
+            <motion.img
+              initial={{ opacity: 0, x: -120 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.2 }}
-              className="absolute left-0 bottom-0 text-[3.5px] sm:text-[5px] md:text-[6.5px] lg:text-[8px] leading-[1.05] text-white/[0.65] pointer-events-none font-mono whitespace-pre"
-              style={{ textShadow: '0 0 20px rgba(255,255,255,0.08)' }}
-            >{`
-                                          .:
-                                        .:::.
-                                       .:::::.
-                                      .:::::::.
-                                     .:::::::::.
-                                    ::::::::::::.
-                                   .:::::::::::::
-                                  .::::::::::::-
-                                  ::::::::::::
-                                 ::::::::::::
-                                .::::::::::
-                               .:::::::::-
-                 .::::::..    .::::::::::
-                :::::::::::::::::::::::::
-               .:::::::::::::::::::::::::
-              .:::::::::::::::::::::::::::
-             .::::::::::::::::::::::::::::.
-            .:::::::::::::::::::::::::::::::
-           .::::::::::::::::::::::::::::::::
-          .:::::::::::::::::::::::::::::::::
-          ::::::::::::::::::::::::::::::::::
-         :::::::::::::::::::::::::::::::::::
-         .::::::::::::::::::::::::::::::::::
-          .:::::::::::::::::::::::::::::::::
-           .::::::::::::::::::::::::::::::-
-            :::::::::::::::::::::::::::::
-             .::::::::::::::::::::::::-
-              .::::::::::::::::::::::.
-                .::::::::::::::::::.
-                  .::::::::::::::.
-                     ..::::::..`}</motion.pre>
+              transition={{ duration: 1, delay: 0.2 }}
+              src="/left.png"
+              alt=""
+              aria-hidden="true"
+              className="w-[42%] sm:w-[40%] md:w-[38%] object-contain select-none pointer-events-none flex-shrink-0"
+              draggable={false}
+            />
 
-            {/* Right Hand — ASCII Art */}
-            <motion.pre
-              initial={{ opacity: 0, x: 60 }}
+            {/* Center text */}
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="flex-1 text-center text-2xl sm:text-3xl md:text-5xl lg:text-6xl italic tracking-wide text-white/90 whitespace-nowrap z-10"
+              style={{ fontFamily: "'Instrument Serif', serif" }}
+            >
+              SimpyUI
+            </motion.span>
+
+            {/* Right hand — flush to right screen edge */}
+            <motion.img
+              initial={{ opacity: 0, x: 120 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.3 }}
-              className="absolute right-0 bottom-0 text-[3.5px] sm:text-[5px] md:text-[6.5px] lg:text-[8px] leading-[1.05] text-white/[0.65] pointer-events-none font-mono whitespace-pre"
-              style={{ textShadow: '0 0 20px rgba(255,255,255,0.08)' }}
-            >{`
-              :.
-            .:::.
-           .:::::.
-          .:::::::.
-         .:::::::::.
-        .:::::::::::
-        :::::::::::.
-         -:::::::::.
-          ::::::::.
-          ::::::::.
-           :::::::::
-            -:::::::::.
-             :::::::::::.   ..:::::::.
-             ::::::::::::::::::::::::::
-            .::::::::::::::::::::::::::.
-           .::::::::::::::::::::::::::::
-          .::::::::::::::::::::::::::::::
-         ::::::::::::::::::::::::::::::::.
-        .:::::::::::::::::::::::::::::::::.
-        .::::::::::::::::::::::::::::::::::.
-        :::::::::::::::::::::::::::::::::::
-       :::::::::::::::::::::::::::::::::::.
-       ::::::::::::::::::::::::::::::::::.
-       ::::::::::::::::::::::::::::::::.
-        -:::::::::::::::::::::::::::::.
-          ::::::::::::::::::::::::::::
-           .::::::::::::::::::::::::.
-            .::::::::::::::::::::.
-              .:::::::::::::::::
-                ..:::::::::::..
-                    ..:::::..`}</motion.pre>
-
-            {/* ── Center rotating badge ── */}
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-              <span className="text-lg sm:text-xl md:text-2xl font-bold tracking-wider text-white/90 uppercase">
-                SimpyUI
-              </span>
-            </div>
+              transition={{ duration: 1, delay: 0.3 }}
+              src="/right.png"
+              alt=""
+              aria-hidden="true"
+              className="w-[42%] sm:w-[40%] md:w-[38%] object-contain select-none pointer-events-none flex-shrink-0"
+              draggable={false}
+            />
 
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* ═══════════════════════════════════════════
