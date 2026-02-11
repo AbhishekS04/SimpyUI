@@ -213,14 +213,7 @@ export default function ComponentDetail() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const depsString = 'npm install framer-motion react-icons'
-  const handleDepsCopy = () => {
-    navigator.clipboard.writeText(depsString)
-    setDepsCopied(true)
-    setTimeout(() => setDepsCopied(false), 2000)
-  }
-
-  // Extract dependency names from the code
+  // Extract dependency names from the code — drives both badges AND install command
   const deps = []
   if (comp.code.includes('framer-motion'))
     deps.push({ name: 'framer-motion', icon: <SiFramer size={11} className="text-[#e846ff]" /> })
@@ -230,10 +223,24 @@ export default function ComponentDetail() {
     deps.push({ name: 'lucide-react', icon: <TbPencil size={13} className="text-orange-400" /> })
   if (comp.code.includes('react-use-measure'))
     deps.push({ name: 'react-use-measure', icon: <TbRulerMeasure size={13} className="text-rose-400" /> })
+  if (comp.code.includes('gsap'))
+    deps.push({ name: 'gsap', icon: <TbPalette size={13} className="text-green-400" /> })
   deps.push({ name: 'react', icon: <SiReact size={12} className="text-[#61dafb]" /> })
 
   // Deduplicate
   const uniqueDeps = [...new Map(deps.map((d) => [d.name, d])).values()]
+
+  // Build accurate install command from detected deps (exclude react — already in every project)
+  const installableDeps = uniqueDeps.filter((d) => d.name !== 'react').map((d) => d.name)
+  const depsString = installableDeps.length > 0
+    ? `npm install ${installableDeps.join(' ')}`
+    : 'No extra dependencies needed'
+
+  const handleDepsCopy = () => {
+    navigator.clipboard.writeText(depsString)
+    setDepsCopied(true)
+    setTimeout(() => setDepsCopied(false), 2000)
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] pt-16 sm:pt-20">
