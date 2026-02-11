@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import Lenis from 'lenis'
 import Navbar from './components/layout/Navbar'
 import Home from './pages/Home'
@@ -9,6 +9,7 @@ import ComponentDetail from './pages/ComponentDetail'
 
 export default function App() {
   const location = useLocation()
+  const lenisRef = useRef<Lenis | null>(null)
 
   // Lenis smooth scroll
   useEffect(() => {
@@ -17,6 +18,7 @@ export default function App() {
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     })
+    lenisRef.current = lenis
 
     function raf(time: number) {
       lenis.raf(time)
@@ -24,12 +26,19 @@ export default function App() {
     }
     requestAnimationFrame(raf)
 
-    return () => lenis.destroy()
+    return () => {
+      lenis.destroy()
+      lenisRef.current = null
+    }
   }, [])
 
   // Scroll to top on route change
   useEffect(() => {
-    window.scrollTo(0, 0)
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true })
+    } else {
+      window.scrollTo(0, 0)
+    }
   }, [location.pathname])
 
   return (
