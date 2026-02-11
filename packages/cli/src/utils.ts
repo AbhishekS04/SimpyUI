@@ -45,8 +45,12 @@ export function saveConfig(config: SimpyConfig): void {
 export function getConfigOrExit(): SimpyConfig {
   const config = loadConfig()
   if (!config) {
-    console.log(red('✗ No simpyui.json found. Run ') + bold('simpyui init') + red(' first.'))
-    process.exit(1)
+    console.log(dim('  No simpyui.json found — using defaults:'))
+    console.log(dim(`    components → ${DEFAULT_CONFIG.componentDir}`))
+    console.log(dim(`    typescript → ${DEFAULT_CONFIG.typescript}`))
+    console.log()
+    saveConfig(DEFAULT_CONFIG)
+    return DEFAULT_CONFIG
   }
   return config
 }

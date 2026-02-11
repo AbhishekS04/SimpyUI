@@ -18,7 +18,7 @@ import Tooltip from '../registry/tooltip/tooltip'
 
 function CopyCommand() {
   const [copied, setCopied] = useState(false)
-  const command = 'npx simpyui init'
+  const command = 'npx simpyui@latest add button'
 
   const handleCopy = () => {
     navigator.clipboard.writeText(command)
@@ -35,8 +35,9 @@ function CopyCommand() {
     >
       <code className="text-sm text-white/70 font-mono">
         <span className="text-white/40">npx</span>{' '}
-        <span className="text-cyan-400/70">simpyui</span>{' '}
-        <span className="text-white/60">init</span>
+        <span className="text-cyan-400/70">simpyui@latest</span>{' '}
+        <span className="text-white/60">add</span>{' '}
+        <span className="text-white/40">button</span>
       </code>
       <div className="text-white/30 group-hover:text-white/60 transition-colors">
         {copied ? <FiCheck size={14} className="text-green-400" /> : <FiCopy size={14} />}

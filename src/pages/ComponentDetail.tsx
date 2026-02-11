@@ -230,7 +230,7 @@ export default function ComponentDetail() {
     setTimeout(() => setDepsCopied(false), 2000)
   }
 
-  const npxCommand = `npx simpyui add ${comp?.slug ?? ''}`
+  const npxCommand = `npx simpyui@latest add ${comp?.slug ?? ''}`
   const handleNpxCopy = () => {
     navigator.clipboard.writeText(npxCommand)
     setNpxCopied(true)
