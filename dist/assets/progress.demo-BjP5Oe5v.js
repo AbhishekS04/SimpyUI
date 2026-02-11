@@ -1,0 +1,1 @@
+import{j as s,P as e}from"./index-BW0aMnOn.js";function o(){return s.jsxs("div",{className:"w-full max-w-80 space-y-4",children:[s.jsx(e,{value:75,color:"brand",size:"sm"}),s.jsx(e,{value:50,color:"green",size:"md"}),s.jsx(e,{value:30,color:"red",size:"lg"}),s.jsx(e,{value:90,color:"yellow",size:"md"})]})}export{o as default};
