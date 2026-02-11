@@ -148,6 +148,7 @@ export default function ComponentDetail() {
   const [panelOpen, setPanelOpen] = useState(true)
   const [copied, setCopied] = useState(false)
   const [depsCopied, setDepsCopied] = useState(false)
+  const [npxCopied, setNpxCopied] = useState(false)
   const [codeExpanded, setCodeExpanded] = useState(false)
   const CODE_COLLAPSE_LINES = 15
   const codeContentRef = useRef<HTMLDivElement>(null)
@@ -227,6 +228,13 @@ export default function ComponentDetail() {
     navigator.clipboard.writeText(depsString)
     setDepsCopied(true)
     setTimeout(() => setDepsCopied(false), 2000)
+  }
+
+  const npxCommand = `npx simpyui add ${comp?.slug ?? ''}`
+  const handleNpxCopy = () => {
+    navigator.clipboard.writeText(npxCommand)
+    setNpxCopied(true)
+    setTimeout(() => setNpxCopied(false), 2000)
   }
 
   return (
@@ -313,6 +321,32 @@ export default function ComponentDetail() {
                   <h3 className="text-[10px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono mb-5">
                     Quick Install
                   </h3>
+                  <motion.div
+                    onClick={handleNpxCopy}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    className="group flex items-center justify-between bg-white/[0.015] border border-white/[0.05] rounded-2xl px-6 py-4 cursor-pointer hover:border-white/[0.1] hover:bg-white/[0.03] transition-all duration-500 mb-3"
+                  >
+                    <code className="text-[13px] text-white/30 font-mono group-hover:text-white/50 transition-colors duration-500">
+                      {npxCommand}
+                    </code>
+                    <span className="text-white/10 group-hover:text-white/40 transition-all duration-500">
+                      {npxCopied ? (
+                        <motion.span
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={spring}
+                        >
+                          <FiCheck size={15} className="text-emerald-400" />
+                        </motion.span>
+                      ) : (
+                        <FiCopy size={15} />
+                      )}
+                    </span>
+                  </motion.div>
+                  <p className="text-[10px] font-mono tracking-wide uppercase text-white/10 mb-3 mt-5">
+                    Or install dependencies manually
+                  </p>
                   <motion.div
                     onClick={handleDepsCopy}
                     whileHover={{ scale: 1.01 }}
@@ -603,6 +637,25 @@ export default function ComponentDetail() {
             <h3 className="text-[9px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono mb-4">
               Quick Install
             </h3>
+            <motion.div
+              onClick={handleNpxCopy}
+              whileTap={{ scale: 0.98 }}
+              className="group flex items-center justify-between bg-white/[0.015] border border-white/[0.05] rounded-2xl px-5 py-3.5 cursor-pointer hover:border-white/[0.1] transition-all duration-500 mb-2.5"
+            >
+              <code className="text-[11px] text-white/25 font-mono">
+                {npxCommand}
+              </code>
+              <span className="text-white/10 group-hover:text-white/40 transition-all duration-500">
+                {npxCopied ? (
+                  <FiCheck size={13} className="text-emerald-400" />
+                ) : (
+                  <FiCopy size={13} />
+                )}
+              </span>
+            </motion.div>
+            <p className="text-[9px] font-mono tracking-wide uppercase text-white/10 mb-2.5 mt-4">
+              Or install dependencies manually
+            </p>
             <motion.div
               onClick={handleDepsCopy}
               whileTap={{ scale: 0.98 }}

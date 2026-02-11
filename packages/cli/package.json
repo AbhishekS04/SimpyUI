@@ -1,0 +1,36 @@
+{
+  "name": "simpyui",
+  "version": "0.1.0",
+  "description": "CLI to add SimpyUI components to your project",
+  "type": "module",
+  "bin": {
+    "simpyui": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "node scripts/build.js --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "simpyui",
+    "react",
+    "components",
+    "ui",
+    "cli",
+    "tailwindcss",
+    "framer-motion"
+  ],
+  "author": "Abhishek Singh",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AbhishekS04/SimpyUI.git"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "esbuild": "^0.20.0"
+  }
+}
