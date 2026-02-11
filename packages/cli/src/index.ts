@@ -45,7 +45,7 @@ async function cmdInit() {
 
   const existing = loadConfig()
   if (existing) {
-    const overwrite = await confirm(yellow('  simpyui.json already exists. Overwrite?'), false)
+    const overwrite = await confirm(yellow('  components.json already exists. Overwrite?'), false)
     if (!overwrite) {
       console.log(dim('  Cancelled.'))
       process.exit(0)
@@ -79,7 +79,7 @@ async function cmdInit() {
   saveConfig(config)
 
   console.log()
-  console.log(green('  ✓ Created simpyui.json'))
+  console.log(green('  ✓ Created components.json'))
   console.log(dim(`    Components → ${componentDir}/`))
   console.log(dim(`    Utils      → ${utilsDir}/`))
   console.log()
@@ -265,11 +265,15 @@ async function cmdAdd(args: string[]) {
   console.log()
 
   // Usage hint
-  if (componentsToAdd.includes('button')) {
-    console.log(dim('  Import example:'))
-    console.log(cyan(`    import Button from './${config.componentDir}/button'`))
-    console.log()
-  }
+  const first = componentsToAdd[0]
+  const firstComp = registry[first]
+  const importName = firstComp.name.replace(/\s+/g, '')
+  const importPath = firstComp.files[0].split('/').pop()!.replace('.tsx', '').replace('.jsx', '')
+  console.log(dim('  Import:'))
+  console.log(cyan(`    import { ${importName} } from '@/${config.componentDir}/${importPath}'`))
+  console.log()
+  console.log(dim(`  Usage & examples → ${cyan(`https://simpyui.vercel.app/components/${first}`)}`))
+  console.log()
 }
 
 /* ── Basic type stripping for JS users ── */

@@ -21,7 +21,7 @@ export interface SimpyConfig {
   typescript: boolean
 }
 
-const CONFIG_FILE = 'simpyui.json'
+const CONFIG_FILE = 'components.json'
 
 /* ── Project Detection ── */
 
@@ -98,7 +98,7 @@ export function getConfigOrExit(): SimpyConfig {
     const projectLabel = project === 'nextjs' ? 'Next.js' : project === 'vite' ? 'Vite' : 'React'
 
     console.log(dim(`  Detected ${projectLabel} project`))
-    console.log(dim('  Creating simpyui.json with defaults:'))
+    console.log(dim('  Creating components.json with defaults:'))
     console.log(dim(`    components → ${defaults.componentDir}`))
     console.log(dim(`    utils      → ${defaults.utilsDir}`))
     console.log(dim(`    typescript → ${defaults.typescript}`))
