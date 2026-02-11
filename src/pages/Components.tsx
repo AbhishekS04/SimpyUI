@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FiArrowRight, FiSearch } from 'react-icons/fi'
 import { useState } from 'react'
-import { componentRegistry, type ComponentRegistryEntry } from '@/registry'
+import { componentRegistry, type ComponentRegistryEntry } from '../registry'
 
 /* ── Component Preview Card ── */
 interface ComponentCardProps {
