@@ -239,21 +239,7 @@ export default function Home() {
         className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
         style={{ background: '#000' }}
       >
-        {/* GIF fire background — fades in with the page */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2 }}
-          className="absolute inset-0 z-[1] pointer-events-none overflow-hidden"
-        >
-          <img
-            src="/fire-bg.gif"
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover"
-            draggable={false}
-          />
-        </motion.div>
+
 
         {/* Parallax scroll effect — uncomment later:
           style={{ opacity: heroOpacity, y: heroY }} */}
