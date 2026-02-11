@@ -550,8 +550,8 @@ export default function ComponentDetail() {
           }}
         >
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-          <div className="p-6 sm:p-8 flex flex-col items-center justify-center min-h-[320px] sm:min-h-[380px]">
-            <div className="flex flex-col items-center gap-4 w-full">
+          <div className="p-6 sm:p-8 flex flex-col items-center justify-center min-h-[320px] sm:min-h-[380px] overflow-hidden">
+            <div className="flex flex-col items-center gap-4 w-full max-w-full overflow-x-auto">
               {comp.component}
             </div>
           </div>

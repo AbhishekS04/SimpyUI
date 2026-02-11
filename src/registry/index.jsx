@@ -130,12 +130,12 @@ export default function Button({ children, variant = 'primary', size = 'md', ...
     category: 'General',
     description: 'Versatile card container with hover and glow effects.',
     component: (
-      <div className="flex gap-4">
-        <Card className="w-64">
+      <div className="flex flex-col sm:flex-row gap-4 w-full">
+        <Card className="w-full sm:w-64">
           <h3 className="font-semibold mb-2">Default Card</h3>
           <p className="text-sm text-dark-100">A simple card with hover effect.</p>
         </Card>
-        <Card className="w-64" glow>
+        <Card className="w-full sm:w-64" glow>
           <h3 className="font-semibold mb-2">Glow Card</h3>
           <p className="text-sm text-dark-100">This card has a subtle glow.</p>
         </Card>
@@ -241,7 +241,7 @@ export default function Avatar({ src, alt = '', fallback, size = 'md' }) {
     category: 'Inputs',
     description: 'Styled text input with label and error states.',
     component: (
-      <div className="w-72 space-y-4">
+      <div className="w-full max-w-72 space-y-4">
         <Input label="Email" placeholder="you@example.com" />
         <Input label="Password" type="password" placeholder="••••••••" error="Password is required" />
       </div>
@@ -295,7 +295,7 @@ export default function Toggle({ enabled, onChange, label }) {
     category: 'Data Display',
     description: 'Collapsible content sections with smooth animations.',
     component: (
-      <div className="w-96">
+      <div className="w-full max-w-96">
         <Accordion
           items={[
             { title: 'What is SimpyUI?', content: 'A beautiful React component library with animations.' },
@@ -346,7 +346,7 @@ export default function Accordion({ items }) {
     category: 'Data Display',
     description: 'Animated tab navigation with smooth underline indicator.',
     component: (
-      <div className="w-96">
+      <div className="w-full max-w-96">
         <Tabs
           tabs={[
             { label: 'Overview', content: <p className="text-sm text-dark-100">This is the overview tab content.</p> },
@@ -392,7 +392,7 @@ export default function Tabs({ tabs }) {
     category: 'Data Display',
     description: 'Animated progress bar with multiple colors and sizes.',
     component: (
-      <div className="w-80 space-y-4">
+      <div className="w-full max-w-80 space-y-4">
         <Progress value={75} color="brand" size="sm" />
         <Progress value={50} color="green" size="md" />
         <Progress value={30} color="red" size="lg" />
@@ -425,7 +425,7 @@ export default function Progress({ value = 0, max = 100, size = 'md', color = 'b
     category: 'Data Display',
     description: 'Animated loading placeholder with pulsing effect.',
     component: (
-      <div className="w-72 space-y-3">
+      <div className="w-full max-w-72 space-y-3">
         <Skeleton width="100%" height="12px" />
         <Skeleton width="80%" height="12px" />
         <Skeleton width="60%" height="12px" />
@@ -531,7 +531,7 @@ export default function Toast({ show, onClose, message, variant = 'info' }) {
     category: 'Feedback',
     description: 'Contextual alert banners with icons.',
     component: (
-      <div className="w-96 space-y-3">
+      <div className="w-full max-w-96 space-y-3">
         <Alert variant="info" title="Info">This is an informational alert.</Alert>
         <Alert variant="success" title="Success">Operation completed!</Alert>
         <Alert variant="warning" title="Warning">Please check your input.</Alert>
@@ -570,15 +570,15 @@ export default function Alert({ variant = 'info', title, children }) {
     category: 'Overlay',
     description: 'Hover tooltip with multiple positions.',
     component: (
-      <div className="flex gap-6 items-center">
+      <div className="flex flex-wrap gap-4 items-center justify-center">
         <Tooltip text="Top tooltip" position="top">
-          <Button variant="outline" size="sm">Hover me (top)</Button>
+          <Button variant="outline" size="sm">Top</Button>
         </Tooltip>
         <Tooltip text="Bottom tooltip" position="bottom">
-          <Button variant="outline" size="sm">Hover me (bottom)</Button>
+          <Button variant="outline" size="sm">Bottom</Button>
         </Tooltip>
         <Tooltip text="Right tooltip" position="right">
-          <Button variant="outline" size="sm">Hover me (right)</Button>
+          <Button variant="outline" size="sm">Right</Button>
         </Tooltip>
       </div>
     ),
