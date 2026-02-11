@@ -1,1 +1,5 @@
 /node_modules
+
+# Large GIF files
+*.gif
+public/fire-bg.gif

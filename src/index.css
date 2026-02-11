@@ -67,17 +67,11 @@ code {
 
 /* ============ GRADIENT TEXT ============ */
 .gradient-text {
-  background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffffff;
 }
 
 .gradient-text-blue {
-  background: linear-gradient(180deg, #00d4ff 0%, #0088ff 50%, #0055cc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #00d4ff;
 }
 
 /* ============ GRID BACKGROUND ============ */
@@ -192,116 +186,27 @@ code {
 }
 
 /* ============ HERO FIRE CONTAINER ============ */
-.hero-fire {
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  right: 0;
-  height: 55%;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-}
-
-.hero-fire::before {
-  content: '';
-  position: absolute;
-  bottom: -20%;
-  left: -10%;
-  right: -10%;
-  height: 100%;
-  background: radial-gradient(ellipse 80% 60% at 50% 100%, 
-    rgba(0, 170, 255, 0.5) 0%, 
-    rgba(0, 120, 255, 0.3) 25%, 
-    rgba(0, 80, 220, 0.15) 45%, 
-    transparent 70%);
-  animation: flame-flicker 3s ease-in-out infinite;
-}
-
-.hero-fire::after {
-  content: '';
-  position: absolute;
-  bottom: -10%;
-  left: 5%;
-  right: 5%;
-  height: 80%;
-  background: radial-gradient(ellipse 60% 50% at 50% 100%, 
-    rgba(0, 200, 255, 0.6) 0%, 
-    rgba(0, 150, 255, 0.25) 30%, 
-    transparent 60%);
-  animation: flame-flicker 2.5s ease-in-out infinite 0.5s;
-}
-
-/* Extra flame layers */
-.flame-layer-1 {
-  position: absolute;
-  bottom: 0;
-  left: 15%;
-  width: 30%;
-  height: 45%;
-  background: radial-gradient(ellipse at 50% 100%, 
-    rgba(0, 180, 255, 0.4) 0%, 
-    transparent 70%);
-  animation: flame-flicker 2s ease-in-out infinite 0.3s;
-  filter: blur(20px);
-}
-
-.flame-layer-2 {
-  position: absolute;
-  bottom: 0;
-  right: 15%;
-  width: 35%;
-  height: 50%;
-  background: radial-gradient(ellipse at 50% 100%, 
-    rgba(0, 140, 255, 0.35) 0%, 
-    transparent 70%);
-  animation: flame-flicker 2.8s ease-in-out infinite 0.8s;
-  filter: blur(25px);
-}
-
-.flame-layer-3 {
-  position: absolute;
-  bottom: 0;
-  left: 30%;
-  width: 40%;
-  height: 60%;
-  background: radial-gradient(ellipse at 50% 100%, 
-    rgba(100, 200, 255, 0.2) 0%, 
-    transparent 50%);
-  animation: flame-flicker 3.5s ease-in-out infinite 0.2s;
-  filter: blur(40px);
-}
-
-.flame-particle {
-  position: absolute;
-  bottom: 0;
-  width: 4px;
-  height: 4px;
-  background: rgba(100, 200, 255, 0.8);
-  border-radius: 50%;
-  filter: blur(2px);
-  animation: flame-rise 3s ease-out infinite;
-}
+/* Hero background uses GIF — no custom fire CSS needed */
 
 /* ============ BENTO GRID ============ */
 .bento-outer {
   background: #1a1a1e;
   border-radius: 3rem;
-  padding: 2.5rem;
+  padding: 2rem;
   border: 1px solid rgba(255,255,255,0.04);
   box-shadow: 0 25px 80px rgba(0,0,0,0.5);
 }
 
 @media (min-width: 640px) {
-  .bento-outer { padding: 3rem; }
+  .bento-outer { padding: 2.5rem; }
 }
 @media (min-width: 1024px) {
-  .bento-outer { padding: 3.5rem; }
+  .bento-outer { padding: 3rem; }
 }
 @media (max-width: 639px) {
   .bento-outer {
-    border-radius: 1.5rem;
-    padding: 1rem;
+    border-radius: 1.25rem;
+    padding: 0.75rem;
   }
 }
 
@@ -329,9 +234,9 @@ code {
 }
 
 .bento-card-title {
-  padding: 1rem 1.25rem;
+  padding: 0.875rem 1rem;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -339,7 +244,13 @@ code {
 }
 @media (min-width: 640px) {
   .bento-card-title {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.75rem;
+  }
+}
+@media (min-width: 1024px) {
+  .bento-card-title {
+    padding: 1.125rem 1.5rem;
     font-size: 0.8rem;
   }
 }
@@ -349,20 +260,29 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
+  padding: 1rem;
   position: relative;
   overflow: hidden;
   background: rgba(0,0,0,0.35);
-  min-height: 160px;
+  min-height: 140px;
 }
-@media (min-width: 640px) {
+@media (min-width: 480px) {
+  .bento-card-preview {
+    padding: 1.25rem;
+    min-height: 160px;
+  }
+}
+@media (min-width: 768px) {
   .bento-card-preview {
     padding: 1.5rem;
     min-height: 180px;
   }
 }
 @media (min-width: 1024px) {
-  .bento-card-preview { min-height: 200px; }
+  .bento-card-preview {
+    padding: 1.75rem;
+    min-height: 200px;
+  }
 }
 
 /* ============ CTA SECTION ============ */
@@ -390,14 +310,22 @@ code {
 /* Blue dot indicator */
 .blue-dot {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  width: 8px;
-  height: 8px;
+  top: 10px;
+  right: 10px;
+  width: 6px;
+  height: 6px;
   background: #3b82f6;
   border-radius: 50%;
   box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
   z-index: 5;
+}
+@media (min-width: 640px) {
+  .blue-dot {
+    top: 12px;
+    right: 12px;
+    width: 8px;
+    height: 8px;
+  }
 }
 
 /* Cursor blink for bento demo */

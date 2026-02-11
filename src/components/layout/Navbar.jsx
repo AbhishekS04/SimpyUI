@@ -10,13 +10,13 @@ export default function Navbar() {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 sm:px-6"
+      className="fixed top-3 sm:top-4 left-0 right-0 z-50 flex justify-center px-3 sm:px-4 md:px-6"
     >
-      <div className="floating-nav rounded-2xl px-4 sm:px-6 py-2.5 flex items-center justify-between w-full max-w-3xl">
+      <div className="floating-nav rounded-2xl px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 flex items-center justify-between w-full max-w-3xl">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 sm:gap-2.5 group flex-shrink-0">
-          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/20">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-blue-500/20">
+            <svg width="12" height="12" className="sm:w-[14px] sm:h-[14px]" viewBox="0 0 24 24" fill="none">
               <circle cx="12" cy="12" r="10" fill="url(#logoGrad)" />
               <path d="M12 6C12 6 8 10 8 14c0 2.2 1.8 4 4 4s4-1.8 4-4c0-4-4-8-4-8z" fill="rgba(255,255,255,0.9)" />
               <defs>
