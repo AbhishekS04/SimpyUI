@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============ BASE STYLES ============ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background-color: #101113;
+  color: #fff;
+}
+
+/* ============ SCROLLBAR ============ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1A1B1E;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #373A40;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5C5F66;
+}
+
+/* ============ CODE BLOCK OVERRIDES ============ */
+pre {
+  border-radius: 12px !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+}
+
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+}
+
+/* ============ SELECTION ============ */
+::selection {
+  background: rgba(76, 110, 245, 0.3);
+  color: #fff;
+}
+
+/* ============ GLOW EFFECTS ============ */
+.glow {
+  box-shadow: 0 0 60px rgba(76, 110, 245, 0.15);
+}
+
+.glow-sm {
+  box-shadow: 0 0 30px rgba(76, 110, 245, 0.1);
+}
+
+/* ============ GRADIENT TEXT ============ */
+.gradient-text {
+  background: linear-gradient(135deg, #748ffc, #5c7cfa, #4c6ef5, #9775fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============ GRID BACKGROUND ============ */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(76, 110, 245, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(76, 110, 245, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ============ PREVIEW CHECKERBOARD ============ */
+.preview-bg {
+  background-color: #1A1B1E;
+  background-image:
+    linear-gradient(45deg, #25262B 25%, transparent 25%),
+    linear-gradient(-45deg, #25262B 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #25262B 75%),
+    linear-gradient(-45deg, transparent 75%, #25262B 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
