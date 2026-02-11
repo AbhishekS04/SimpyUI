@@ -2,8 +2,17 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FiChevronDown } from 'react-icons/fi'
 
-export default function Accordion({ items }) {
-  const [openIndex, setOpenIndex] = useState(null)
+interface AccordionItem {
+  title: string
+  content: string | React.ReactNode
+}
+
+interface AccordionProps {
+  items: AccordionItem[]
+}
+
+export default function Accordion({ items }: AccordionProps) {
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
     <div className="space-y-2 w-full">

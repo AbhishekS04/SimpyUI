@@ -1,6 +1,15 @@
 import { motion } from 'framer-motion'
+import { type ReactNode } from 'react'
 
-const badgeVariants = {
+type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger'
+
+interface BadgeProps {
+  children: ReactNode
+  variant?: BadgeVariant
+  className?: string
+}
+
+const badgeVariants: Record<BadgeVariant, string> = {
   default: 'bg-dark-500 text-dark-50',
   primary: 'bg-brand-600/20 text-brand-300 border border-brand-600/30',
   success: 'bg-green-600/20 text-green-300 border border-green-600/30',
@@ -8,7 +17,7 @@ const badgeVariants = {
   danger: 'bg-red-600/20 text-red-300 border border-red-600/30',
 }
 
-export default function Badge({ children, variant = 'default', className = '' }) {
+export default function Badge({ children, variant = 'default', className = '' }: BadgeProps) {
   return (
     <motion.span
       initial={{ scale: 0.9, opacity: 0 }}

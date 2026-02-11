@@ -2,10 +2,14 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FiArrowRight, FiSearch } from 'react-icons/fi'
 import { useState } from 'react'
-import { componentRegistry } from '../registry'
+import { componentRegistry, type ComponentRegistryEntry } from '@/registry'
 
 /* ── Component Preview Card ── */
-function ComponentCard({ comp }) {
+interface ComponentCardProps {
+  comp: ComponentRegistryEntry
+}
+
+function ComponentCard({ comp }: ComponentCardProps) {
   return (
     <Link to={`/components/${comp.slug}`} className="block group">
       <div className="bg-[#0f0f0f] border border-white/[0.05] rounded-2xl overflow-hidden hover:border-white/[0.1] transition-all duration-300 hover:-translate-y-0.5">
@@ -38,8 +42,8 @@ export default function Components() {
   const [search, setSearch] = useState('')
 
   // Build categories from registry
-  const categoryOrder = []
-  const categoryMap = {}
+  const categoryOrder: string[] = []
+  const categoryMap: Record<string, ComponentRegistryEntry[]> = {}
   componentRegistry.forEach(comp => {
     if (!categoryMap[comp.category]) {
       categoryMap[comp.category] = []
@@ -100,11 +104,11 @@ export default function Components() {
           <>
             <div className="mb-4 sm:mb-6">
               <p className="text-[11px] sm:text-xs text-white/20">
-                {filteredRegistry.length} result{filteredRegistry.length !== 1 ? 's' : ''} for "{search}"
+                {filteredRegistry!.length} result{filteredRegistry!.length !== 1 ? 's' : ''} for "{search}"
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-              {filteredRegistry.map((comp, i) => (
+              {filteredRegistry!.map((comp, i) => (
                 <motion.div
                   key={comp.slug}
                   initial={{ opacity: 0, y: 10 }}
@@ -115,7 +119,7 @@ export default function Components() {
                 </motion.div>
               ))}
             </div>
-            {filteredRegistry.length === 0 && (
+            {filteredRegistry!.length === 0 && (
               <div className="text-center py-16 sm:py-24">
                 <div className="w-12 h-12 mx-auto mb-4 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center">
                   <FiSearch size={18} className="text-white/15" />

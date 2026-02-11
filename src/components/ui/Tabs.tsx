@@ -1,7 +1,17 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { type ReactNode } from 'react'
 
-export default function Tabs({ tabs }) {
+interface Tab {
+  label: string
+  content: ReactNode
+}
+
+interface TabsProps {
+  tabs: Tab[]
+}
+
+export default function Tabs({ tabs }: TabsProps) {
   const [activeTab, setActiveTab] = useState(0)
 
   return (

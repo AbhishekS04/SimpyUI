@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState, useMemo, useRef, useEffect } from 'react'
+import { useState, useMemo, useRef, useEffect, type ReactNode } from 'react'
 import {
   FiArrowLeft,
   FiArrowRight,
@@ -17,8 +17,8 @@ import { componentRegistry } from '../registry'
 /* ═══════════════════════════════════════════════════
    ANIMATION CONFIG — cinematic stagger system
    ═══════════════════════════════════════════════════ */
-const spring = { type: 'spring', stiffness: 80, damping: 20, mass: 0.8 }
-const smoothEase = [0.22, 1, 0.36, 1]
+const spring = { type: 'spring' as const, stiffness: 80, damping: 20, mass: 0.8 }
+const smoothEase: [number, number, number, number] = [0.22, 1, 0.36, 1]
 
 const stagger = {
   container: {
@@ -66,46 +66,36 @@ const previewCardVariants = {
 }
 
 // Lightweight code colorizer — subtle tints, not full syntax highlighting
-function colorizeCode(code) {
+function colorizeCode(code: string): ReactNode[] {
   const lines = code.split('\n')
   return lines.map((line, i) => {
-    let segments = []
-    let remaining = line
+    const segments: ReactNode[] = []
     let key = 0
 
-    // Process the line character by character through patterns
     const patterns = [
-      // Comments
       { regex: /(^\/\/.*|\/\/.*$)/, cls: 'text-white/20 italic' },
       { regex: /(\/\*[\s\S]*?\*\/)/, cls: 'text-white/20 italic' },
-      // Strings (single/double/backtick)
       { regex: /(`[^`]*`|'[^']*'|"[^"]*")/, cls: 'text-emerald-400/60' },
-      // JSX tags
       { regex: /(<\/?[A-Z][a-zA-Z0-9.]*)/, cls: 'text-cyan-400/70' },
       { regex: /(<\/?[a-z][a-zA-Z0-9-]*)/, cls: 'text-red-400/50' },
-      // Keywords
       {
         regex: /\b(import|from|export|default|const|let|var|function|return|if|else|switch|case|break|new|class|extends|typeof|instanceof|async|await|try|catch|throw|for|while|do|in|of|null|undefined|true|false)\b/,
         cls: 'text-purple-400/70',
       },
-      // Arrow / Operators
       { regex: /(=>|===|!==|&&|\|\||\?\.|\.\.\.|\.\?)/, cls: 'text-amber-400/50' },
-      // Numbers
       { regex: /\b(\d+\.?\d*)\b/, cls: 'text-amber-400/60' },
-      // Braces & parens
       { regex: /([{}()\[\]])/, cls: 'text-white/25' },
     ]
 
-    // Simple pass: split by first matching pattern, recurse
-    function tokenize(text) {
+    function tokenize(text: string) {
       if (!text) return
-      let earliest = null
+      let earliest: (typeof patterns)[number] | null = null
       let earliestIdx = Infinity
-      let matchResult = null
+      let matchResult: RegExpMatchArray | null = null
 
       for (const p of patterns) {
         const m = text.match(p.regex)
-        if (m && m.index < earliestIdx) {
+        if (m && m.index !== undefined && m.index < earliestIdx) {
           earliest = p
           earliestIdx = m.index
           matchResult = m
@@ -121,7 +111,6 @@ function colorizeCode(code) {
         return
       }
 
-      // Text before match
       if (earliestIdx > 0) {
         segments.push(
           <span key={key++} className="text-white/45">
@@ -130,18 +119,16 @@ function colorizeCode(code) {
         )
       }
 
-      // Matched token
       segments.push(
         <span key={key++} className={earliest.cls}>
           {matchResult[0]}
         </span>
       )
 
-      // Continue with rest
       tokenize(text.slice(earliestIdx + matchResult[0].length))
     }
 
-    tokenize(remaining)
+    tokenize(line)
 
     return (
       <div key={i} className="leading-relaxed whitespace-pre">
@@ -151,15 +138,20 @@ function colorizeCode(code) {
   })
 }
 
+interface DepInfo {
+  name: string
+  icon: ReactNode
+}
+
 export default function ComponentDetail() {
-  const { slug } = useParams()
+  const { slug } = useParams<{ slug: string }>()
   const [panelOpen, setPanelOpen] = useState(true)
   const [copied, setCopied] = useState(false)
   const [depsCopied, setDepsCopied] = useState(false)
   const [codeExpanded, setCodeExpanded] = useState(false)
   const CODE_COLLAPSE_LINES = 15
-  const codeContentRef = useRef(null)
-  const mobileCodeContentRef = useRef(null)
+  const codeContentRef = useRef<HTMLDivElement>(null)
+  const mobileCodeContentRef = useRef<HTMLDivElement>(null)
   const [codeHeight, setCodeHeight] = useState(0)
   const [mobileCodeHeight, setMobileCodeHeight] = useState(0)
   const COLLAPSED_HEIGHT = 280
@@ -168,13 +160,11 @@ export default function ComponentDetail() {
   const index = componentRegistry.findIndex((c) => c.slug === slug)
   const comp = componentRegistry[index]
 
-  // Memoize colorized code so it doesn't re-run on every render
   const colorizedCode = useMemo(
     () => (comp ? colorizeCode(comp.code) : null),
     [comp?.code]
   )
 
-  // Measure code content height on mount and when code changes
   useEffect(() => {
     if (codeContentRef.current) {
       setCodeHeight(codeContentRef.current.scrollHeight)
@@ -213,8 +203,7 @@ export default function ComponentDetail() {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  // Extract dependency names from the code — drives both badges AND install command
-  const deps = []
+  const deps: DepInfo[] = []
   if (comp.code.includes('framer-motion'))
     deps.push({ name: 'framer-motion', icon: <SiFramer size={11} className="text-[#e846ff]" /> })
   if (comp.code.includes('react-icons'))
@@ -227,10 +216,8 @@ export default function ComponentDetail() {
     deps.push({ name: 'gsap', icon: <TbPalette size={13} className="text-green-400" /> })
   deps.push({ name: 'react', icon: <SiReact size={12} className="text-[#61dafb]" /> })
 
-  // Deduplicate
   const uniqueDeps = [...new Map(deps.map((d) => [d.name, d])).values()]
 
-  // Build accurate install command from detected deps (exclude react — already in every project)
   const installableDeps = uniqueDeps.filter((d) => d.name !== 'react').map((d) => d.name)
   const depsString = installableDeps.length > 0
     ? `npm install ${installableDeps.join(' ')}`
@@ -265,7 +252,6 @@ export default function ComponentDetail() {
                 className="flex-1 overflow-y-auto p-8 lg:p-12 xl:p-16 scrollbar-hidden"
                 data-lenis-prevent
               >
-                {/* Subtle label */}
                 <motion.span
                   variants={stagger.item}
                   className="inline-block text-[10px] font-mono tracking-[0.3em] uppercase text-white/20 mb-6"
@@ -273,7 +259,6 @@ export default function ComponentDetail() {
                   Component
                 </motion.span>
 
-                {/* Component Name — cinematic scale */}
                 <motion.h1
                   variants={stagger.itemSlow}
                   className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white tracking-[-0.03em] leading-[1.05] mb-8"
@@ -281,13 +266,11 @@ export default function ComponentDetail() {
                   {comp.name}
                 </motion.h1>
 
-                {/* Decorative line */}
                 <motion.div
                   variants={stagger.item}
                   className="w-12 h-[1.5px] bg-gradient-to-r from-white/20 to-transparent mb-10"
                 />
 
-                {/* Description */}
                 <motion.p
                   variants={stagger.item}
                   className="text-base sm:text-lg lg:text-xl text-white/40 leading-[1.8] mb-16 max-w-md font-light"
@@ -418,7 +401,7 @@ export default function ComponentDetail() {
                   </div>
                 </motion.div>
 
-                {/* Prev / Next — elevated card style */}
+                {/* Prev / Next */}
                 <motion.div
                   variants={stagger.item}
                   className="grid grid-cols-2 gap-3 pt-10 border-t border-white/[0.03]"
@@ -481,7 +464,6 @@ export default function ComponentDetail() {
             RIGHT PANEL — Preview card
             ═══════════════════════════════════════════ */}
         <div className="flex-1 flex flex-col min-w-0 p-4 lg:p-6">
-          {/* Top bar — floating controls */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -514,14 +496,12 @@ export default function ComponentDetail() {
             </motion.button>
           </motion.div>
 
-          {/* Preview card */}
           <motion.div
             variants={previewCardVariants}
             initial="initial"
             animate="animate"
             className="flex-1 rounded-3xl bg-[#0f0f0f] border border-white/[0.05] overflow-hidden relative"
           >
-            {/* Subtle ambient glow at top */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
 
             <motion.div
@@ -548,7 +528,6 @@ export default function ComponentDetail() {
         animate="animate"
         className="md:hidden pb-16"
       >
-        {/* Preview Card — full width, at top like reference */}
         <motion.div
           variants={previewCardVariants}
           className="mx-4 sm:mx-5 rounded-3xl bg-[#0f0f0f] border border-white/[0.05] relative mb-10 mt-2"
@@ -564,9 +543,7 @@ export default function ComponentDetail() {
           </div>
         </motion.div>
 
-        {/* Content sections */}
         <div className="px-5 sm:px-6">
-          {/* Title */}
           <motion.h1
             variants={stagger.itemSlow}
             className="text-2xl sm:text-3xl font-bold text-white tracking-[-0.02em] leading-[1.1] mb-3"
@@ -574,13 +551,11 @@ export default function ComponentDetail() {
             {comp.name}
           </motion.h1>
 
-          {/* Decorative line */}
           <motion.div
             variants={stagger.item}
             className="w-10 h-[1.5px] bg-gradient-to-r from-white/20 to-transparent mb-5"
           />
 
-          {/* Description */}
           <motion.p
             variants={stagger.item}
             className="text-sm sm:text-base text-white/35 leading-[1.8] mb-10 font-light"
@@ -707,7 +682,7 @@ export default function ComponentDetail() {
             </div>
           </motion.div>
 
-          {/* Prev / Next — card style */}
+          {/* Prev / Next */}
           <motion.div
             variants={stagger.item}
             className="flex items-center justify-between pt-8 border-t border-white/[0.03]"

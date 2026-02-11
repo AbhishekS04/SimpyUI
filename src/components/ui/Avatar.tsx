@@ -1,19 +1,29 @@
 import { motion } from 'framer-motion'
 
+type AvatarSize = 'sm' | 'md' | 'lg' | 'xl'
+
+interface AvatarProps {
+  src?: string
+  alt?: string
+  fallback?: string
+  size?: AvatarSize
+  className?: string
+}
+
+const sizeClasses: Record<AvatarSize, string> = {
+  sm: 'w-8 h-8 text-xs',
+  md: 'w-10 h-10 text-sm',
+  lg: 'w-14 h-14 text-lg',
+  xl: 'w-20 h-20 text-2xl',
+}
+
 export default function Avatar({
   src,
   alt = '',
   fallback,
   size = 'md',
   className = '',
-}) {
-  const sizes = {
-    sm: 'w-8 h-8 text-xs',
-    md: 'w-10 h-10 text-sm',
-    lg: 'w-14 h-14 text-lg',
-    xl: 'w-20 h-20 text-2xl',
-  }
-
+}: AvatarProps) {
   if (src) {
     return (
       <motion.img
@@ -21,7 +31,7 @@ export default function Avatar({
         src={src}
         alt={alt}
         className={`
-          ${sizes[size]} rounded-full object-cover border-2 border-dark-400
+          ${sizeClasses[size]} rounded-full object-cover border-2 border-dark-400
           ${className}
         `}
       />
@@ -32,7 +42,7 @@ export default function Avatar({
     <motion.div
       whileHover={{ scale: 1.05 }}
       className={`
-        ${sizes[size]} rounded-full bg-brand-600 flex items-center justify-center
+        ${sizeClasses[size]} rounded-full bg-brand-600 flex items-center justify-center
         font-semibold text-white border-2 border-dark-400
         ${className}
       `}

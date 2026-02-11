@@ -4,7 +4,7 @@
  * =============================================
  *
  *  HOW TO ADD A NEW COMPONENT:
- *  1. Create your component in  src/components/ui/YourComponent.jsx
+ *  1. Create your component in  src/components/ui/YourComponent.tsx
  *  2. Add an entry below in the `componentRegistry` array
  *  3. That's it! It will auto-appear in the sidebar & components page.
  *
@@ -19,7 +19,7 @@
  * =============================================
  */
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, type ReactNode } from 'react'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import Input from '../components/ui/Input'
@@ -35,6 +35,17 @@ import Alert from '../components/ui/Alert'
 import Tooltip from '../components/ui/Tooltip'
 import Progress from '../components/ui/Progress'
 import { SocialStories } from '../components/ui/SocialStories'
+
+/* ── Registry entry type ── */
+
+export interface ComponentRegistryEntry {
+  name: string
+  slug: string
+  category: string
+  description: string
+  component: ReactNode
+  code: string
+}
 
 /* ── Demo wrapper components (for stateful previews) ── */
 
@@ -80,7 +91,7 @@ function SocialStoriesDemo() {
   const stories = useMemo(() => [
     {
       id: '1',
-      platform: 'instagram',
+      platform: 'instagram' as const,
       mediaUrl: 'https://rdxqqgntmtzvqsmepmls.supabase.co/storage/v1/object/public/assets/videos/original/d5521455-f668-481c-85a4-2ab10f49d580.mp4',
       linkUrl: 'https://instagram.com',
       caption: '',
@@ -88,7 +99,7 @@ function SocialStoriesDemo() {
     },
     {
       id: '2',
-      platform: 'instagram',
+      platform: 'instagram' as const,
       mediaUrl: 'https://rdxqqgntmtzvqsmepmls.supabase.co/storage/v1/object/public/assets/videos/original/8a98fec1-5439-4cb3-8eb2-f0d605204397.mp4',
       linkUrl: 'https://instagram.com',
       caption: '',
@@ -96,7 +107,7 @@ function SocialStoriesDemo() {
     },
     {
       id: '3',
-      platform: 'instagram',
+      platform: 'instagram' as const,
       mediaUrl: 'https://rdxqqgntmtzvqsmepmls.supabase.co/storage/v1/object/public/assets/videos/original/44fe63af-47e0-4df6-8fc3-0a984c7337da.mp4',
       linkUrl: 'https://instagram.com',
       caption: '',
@@ -114,7 +125,7 @@ function SocialStoriesDemo() {
 
 /* ── THE REGISTRY ── */
 
-export const componentRegistry = [
+export const componentRegistry: ComponentRegistryEntry[] = [
   // ─── GENERAL ──────────────────────────────────
   {
     name: 'Button',

@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion'
 
-export default function Skeleton({
-  width = '100%',
-  height = '20px',
-  rounded = 'lg',
-  className = '',
-}) {
+interface SkeletonProps {
+  width?: string
+  height?: string
+  rounded?: string
+  className?: string
+}
+
+export default function Skeleton({ width = '100%', height = '20px', rounded = 'lg', className = '' }: SkeletonProps) {
   return (
     <motion.div
       animate={{ opacity: [0.5, 1, 0.5] }}

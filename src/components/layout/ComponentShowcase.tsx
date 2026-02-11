@@ -1,11 +1,18 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FiCode, FiEye, FiCopy, FiCheck } from 'react-icons/fi'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
-export default function ComponentShowcase({ title, description, code, children }) {
-  const [activeTab, setActiveTab] = useState('preview')
+interface ComponentShowcaseProps {
+  title?: string
+  description?: string
+  code: string
+  children: ReactNode
+}
+
+export default function ComponentShowcase({ title, description, code, children }: ComponentShowcaseProps) {
+  const [activeTab, setActiveTab] = useState<'preview' | 'code'>('preview')
   const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {

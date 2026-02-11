@@ -1,6 +1,12 @@
 import { motion } from 'framer-motion'
 
-export default function Toggle({ enabled, onChange, label }) {
+interface ToggleProps {
+  enabled: boolean
+  onChange: (value: boolean) => void
+  label?: string
+}
+
+export default function Toggle({ enabled, onChange, label }: ToggleProps) {
   return (
     <button
       onClick={() => onChange(!enabled)}

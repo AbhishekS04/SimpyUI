@@ -1,4 +1,12 @@
-import { motion } from 'framer-motion'
+import { motion, type HTMLMotionProps } from 'framer-motion'
+import { type ReactNode } from 'react'
+
+interface CardProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
+  children: ReactNode
+  className?: string
+  hover?: boolean
+  glow?: boolean
+}
 
 export default function Card({
   children,
@@ -6,7 +14,7 @@ export default function Card({
   hover = true,
   glow = false,
   ...props
-}) {
+}: CardProps) {
   return (
     <motion.div
       whileHover={hover ? { y: -2 } : {}}

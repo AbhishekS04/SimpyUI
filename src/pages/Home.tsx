@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { FiArrowRight, FiCopy, FiCheck, FiChevronDown } from 'react-icons/fi'
 import { componentRegistry } from '../registry'
-import { useState, useRef, useMemo } from 'react'
+import { useState, useRef, useMemo, type ReactNode } from 'react'
 import Button from '../components/ui/Button'
 import Badge from '../components/ui/Badge'
 import Input from '../components/ui/Input'
@@ -113,7 +113,7 @@ function ProgressDemo() {
 }
 
 function AccordionMiniDemo() {
-  const [open, setOpen] = useState(null)
+  const [open, setOpen] = useState<number | null>(null)
   const items = [
     { title: 'What is SimpyUI?', content: 'A beautiful React component library.' },
     { title: 'Is it free?', content: 'Yes, completely free and open source.' },
@@ -187,12 +187,18 @@ function TooltipDemo() {
    BENTO CARD WRAPPER — interactive preview, card bg navigates
    ═══════════════════════════════════════════════════════ */
 
-function BentoCard({ title, children, className = '', link }) {
+interface BentoCardProps {
+  title: string
+  children: ReactNode
+  className?: string
+  link: string
+}
+
+function BentoCard({ title, children, className = '', link }: BentoCardProps) {
   const navigate = useNavigate()
 
-  const handleCardClick = (e) => {
-    // If the click target is inside an interactive element, don't navigate
-    const interactive = e.target.closest('button, input, a, [role="button"], label')
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const interactive = (e.target as HTMLElement).closest('button, input, a, [role="button"], label')
     if (interactive) return
     if (link) navigate(link)
   }
@@ -218,14 +224,11 @@ function BentoCard({ title, children, className = '', link }) {
    ═══════════════════════════════════════════════════════ */
 
 export default function Home() {
-  const heroRef = useRef(null)
+  const heroRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
   })
-  // Parallax scroll — uncomment later when ready to add
-  // const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
-  // const heroY = useTransform(scrollYProgress, [0, 0.8], [0, -60])
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -238,10 +241,6 @@ export default function Home() {
         className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
         style={{ background: '#000' }}
       >
-
-
-        {/* Parallax scroll effect — uncomment later:
-          style={{ opacity: heroOpacity, y: heroY }} */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -422,16 +421,16 @@ export default function Home() {
             Join Us
           </p>
 
-        {/* Heading */}
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.15] mb-10 sm:mb-14 md:mb-20 lg:mb-24">
-                    Unlock your{' '}
-                    <span className="gradient-text-blue">Pro badge</span>
-                    <br />
-                    and join the elite
-                  </h2>
-                </motion.div>
+          {/* Heading */}
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.15] mb-10 sm:mb-14 md:mb-20 lg:mb-24">
+            Unlock your{' '}
+            <span className="gradient-text-blue">Pro badge</span>
+            <br />
+            and join the elite
+          </h2>
+        </motion.div>
 
-                {/* ── Hands + Text — full viewport width ── */}
+        {/* ── Hands + Text — full viewport width ── */}
         <div className="relative w-full select-none">
           <div className="flex items-center w-full">
 

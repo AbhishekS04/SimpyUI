@@ -6,7 +6,7 @@ export default function Sidebar() {
   const location = useLocation()
 
   // Group components by category
-  const categories = {}
+  const categories: Record<string, typeof componentRegistry> = {}
   componentRegistry.forEach(comp => {
     if (!categories[comp.category]) {
       categories[comp.category] = []
