@@ -205,7 +205,6 @@ function BentoCard({ title, children, className = '', link }) {
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' && link) navigate(link) }}
     >
-      <div className="blue-dot" />
       <div className="bento-card-title">{title}</div>
       <div className="bento-card-preview">
         {children}
