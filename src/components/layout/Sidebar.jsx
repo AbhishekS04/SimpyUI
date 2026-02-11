@@ -15,7 +15,7 @@ export default function Sidebar() {
   })
 
   return (
-    <aside className="fixed left-0 top-16 bottom-0 w-64 border-r border-white/5 bg-black/90 backdrop-blur-xl overflow-y-auto hidden lg:block">
+    <aside className="fixed left-0 top-16 bottom-0 w-64 border-r border-white/5 bg-black/90 backdrop-blur-xl overflow-y-auto hidden lg:block" data-lenis-prevent>
       <div className="p-4 space-y-6">
         {/* Getting Started */}
         <div>

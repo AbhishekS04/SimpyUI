@@ -73,6 +73,7 @@ export default function ComponentShowcase({ title, description, code, children }
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             className="max-h-[500px] overflow-auto"
+            data-lenis-prevent
           >
             <SyntaxHighlighter
               language="jsx"
