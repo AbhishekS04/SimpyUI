@@ -2,6 +2,7 @@
   "name": "simpyui",
   "private": true,
   "version": "1.0.0",
+  "description": "Beautiful, animated React components for modern web applications. Copy-paste ready components with zero bloat.",
   "type": "module",
   "scripts": {
     "dev": "vite",
