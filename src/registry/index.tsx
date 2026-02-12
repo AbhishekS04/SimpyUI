@@ -31,6 +31,11 @@ import ToastCode from './toast/toast.tsx?raw'
 import AlertCode from './alert/alert.tsx?raw'
 import TooltipCode from './tooltip/tooltip.tsx?raw'
 import SocialStoriesCode from './social-stories/social-stories.tsx?raw'
+import DockCode from './dock/dock.tsx?raw'
+import MarqueeCode from './marquee/marquee.tsx?raw'
+import TextAnimateCode from './text-animate/text-animate.tsx?raw'
+import TiltCardCode from './tilt-card/tilt-card.tsx?raw'
+import MagneticButtonCode from './magnetic-button/magnetic-button.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -51,6 +56,11 @@ import TooltipDemoCode from './tooltip/tooltip.demo.tsx?raw'
 import SocialStoriesDemoCode from './social-stories/social-stories.demo.tsx?raw'
 import DynamicIslandCode from './dynamic-island/dynamic-island.tsx?raw'
 import DynamicIslandDemoCode from './dynamic-island/dynamic-island.demo.tsx?raw'
+import DockDemoCode from './dock/dock.demo.tsx?raw'
+import MarqueeDemoCode from './marquee/marquee.demo.tsx?raw'
+import TextAnimateDemoCode from './text-animate/text-animate.demo.tsx?raw'
+import TiltCardDemoCode from './tilt-card/tilt-card.demo.tsx?raw'
+import MagneticButtonDemoCode from './magnetic-button/magnetic-button.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -70,6 +80,11 @@ const AlertDemo = lazy(() => import('./alert/alert.demo'))
 const TooltipDemo = lazy(() => import('./tooltip/tooltip.demo'))
 const SocialStoriesDemo = lazy(() => import('./social-stories/social-stories.demo'))
 const DynamicIslandDemo = lazy(() => import('./dynamic-island/dynamic-island.demo'))
+const DockDemo = lazy(() => import('./dock/dock.demo'))
+const MarqueeDemo = lazy(() => import('./marquee/marquee.demo'))
+const TextAnimateDemo = lazy(() => import('./text-animate/text-animate.demo'))
+const TiltCardDemo = lazy(() => import('./tilt-card/tilt-card.demo'))
+const MagneticButtonDemo = lazy(() => import('./magnetic-button/magnetic-button.demo'))
 
 /* ── Registry entry type ── */
 
@@ -123,4 +138,9 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   // ─── ANIMATION ────────────────────────────────
   { name: 'Social Stories', slug: 'social-stories', category: 'Animation', description: 'Instagram/LinkedIn-style stories viewer with progress bars, video support, and swipe navigation.', component: demo(SocialStoriesDemo), code: SocialStoriesCode, demoCode: SocialStoriesDemoCode },
   { name: 'Dynamic Island', slug: 'dynamic-island', category: 'Animation', description: 'Apple-style Dynamic Island with ring, timer, music, call, screen record, and battery modes.', component: demo(DynamicIslandDemo), code: DynamicIslandCode, demoCode: DynamicIslandDemoCode },
+  { name: 'Dock', slug: 'dock', category: 'Animation', description: 'macOS-style dock with magnification effect on hover.', component: demo(DockDemo), code: DockCode, demoCode: DockDemoCode },
+  { name: 'Marquee', slug: 'marquee', category: 'Animation', description: 'Infinite scrolling ticker with pause on hover.', component: demo(MarqueeDemo), code: MarqueeCode, demoCode: MarqueeDemoCode },
+  { name: 'Text Animate', slug: 'text-animate', category: 'Animation', description: 'Letter-by-letter and word-by-word text reveal animations.', component: demo(TextAnimateDemo), code: TextAnimateCode, demoCode: TextAnimateDemoCode },
+  { name: 'Tilt Card', slug: 'tilt-card', category: 'Animation', description: '3D perspective tilt card with glare spotlight on hover.', component: demo(TiltCardDemo), code: TiltCardCode, demoCode: TiltCardDemoCode },
+  { name: 'Magnetic Button', slug: 'magnetic-button', category: 'Animation', description: 'Button that magnetically follows the cursor when nearby.', component: demo(MagneticButtonDemo), code: MagneticButtonCode, demoCode: MagneticButtonDemoCode },
 ]

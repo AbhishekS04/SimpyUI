@@ -143,6 +143,49 @@ interface DepInfo {
   icon: ReactNode
 }
 
+/* ── Props parser — extracts props from raw TypeScript source ── */
+
+interface PropInfo {
+  name: string
+  type: string
+  required: boolean
+  defaultVal?: string
+}
+
+function parsePropsFromCode(code: string): PropInfo[] {
+  const props: PropInfo[] = []
+  // Match exported interfaces that end with "Props"
+  const interfaceRegex = /(?:export\s+)?interface\s+\w*Props\s*\{([^}]*)\}/gs
+  let match: RegExpExecArray | null
+
+  while ((match = interfaceRegex.exec(code)) !== null) {
+    const body = match[1]
+    const lines = body.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('//') && !l.startsWith('/*'))
+
+    for (const line of lines) {
+      // Match: propName?: Type  or  propName: Type
+      const propMatch = line.match(/^(\w+)(\??):\s*(.+?)(?:\s*\/\/.*)?[;,]?\s*$/)
+      if (propMatch) {
+        const [, name, optional, rawType] = propMatch
+        // Try to find default value from destructuring in the component function
+        const defaultRegex = new RegExp(`${name}\\s*=\\s*([^,}]+)`)
+        const defaultMatch = code.match(defaultRegex)
+        let defaultVal = defaultMatch ? defaultMatch[1].trim().replace(/['"`]/g, '') : undefined
+        if (defaultVal && defaultVal.length > 30) defaultVal = defaultVal.slice(0, 30) + '…'
+
+        props.push({
+          name,
+          type: rawType.replace(/;$/, '').trim(),
+          required: !optional,
+          defaultVal,
+        })
+      }
+    }
+  }
+
+  return props
+}
+
 export default function ComponentDetail() {
   const { slug } = useParams<{ slug: string }>()
   const [panelOpen, setPanelOpen] = useState(true)
@@ -218,6 +261,8 @@ export default function ComponentDetail() {
   deps.push({ name: 'react', icon: <SiReact size={12} className="text-[#61dafb]" /> })
 
   const uniqueDeps = [...new Map(deps.map((d) => [d.name, d])).values()]
+
+  const parsedProps = useMemo(() => comp ? parsePropsFromCode(comp.code) : [], [comp?.code])
 
   const installableDeps = uniqueDeps.filter((d) => d.name !== 'react').map((d) => d.name)
   const depsString = installableDeps.length > 0
@@ -315,6 +360,51 @@ export default function ComponentDetail() {
                     </motion.span>
                   </div>
                 </motion.div>
+
+                {/* Props Table */}
+                {parsedProps.length > 0 && (
+                  <motion.div variants={stagger.item} className="mb-16">
+                    <h3 className="text-[10px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono mb-5">
+                      Props
+                    </h3>
+                    <div className="rounded-2xl border border-white/[0.05] overflow-hidden bg-white/[0.01]">
+                      <table className="w-full text-left">
+                        <thead>
+                          <tr className="border-b border-white/[0.05]">
+                            <th className="px-5 py-3 text-[10px] font-mono tracking-wider uppercase text-white/20">Prop</th>
+                            <th className="px-5 py-3 text-[10px] font-mono tracking-wider uppercase text-white/20">Type</th>
+                            <th className="px-5 py-3 text-[10px] font-mono tracking-wider uppercase text-white/20 hidden sm:table-cell">Default</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {parsedProps.map((prop, i) => (
+                            <tr
+                              key={prop.name}
+                              className={`border-b border-white/[0.03] last:border-none hover:bg-white/[0.02] transition-colors duration-200 ${
+                                i % 2 === 0 ? '' : 'bg-white/[0.005]'
+                              }`}
+                            >
+                              <td className="px-5 py-3">
+                                <code className="text-[12px] font-mono text-brand-400/80">{prop.name}</code>
+                                {prop.required && (
+                                  <span className="ml-1.5 text-[9px] text-amber-500/60">*</span>
+                                )}
+                              </td>
+                              <td className="px-5 py-3">
+                                <code className="text-[11px] font-mono text-white/30">{prop.type}</code>
+                              </td>
+                              <td className="px-5 py-3 hidden sm:table-cell">
+                                <code className="text-[11px] font-mono text-white/20">
+                                  {prop.defaultVal || '—'}
+                                </code>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </motion.div>
+                )}
 
                 {/* Install */}
                 <motion.div variants={stagger.item} className="mb-16">
@@ -631,6 +721,45 @@ export default function ComponentDetail() {
               </span>
             </div>
           </motion.div>
+
+          {/* Props Table (mobile) */}
+          {parsedProps.length > 0 && (
+            <motion.div variants={stagger.item} className="mb-10">
+              <h3 className="text-[9px] font-semibold tracking-[0.25em] uppercase text-white/15 font-mono mb-4">
+                Props
+              </h3>
+              <div className="rounded-2xl border border-white/[0.05] overflow-hidden bg-white/[0.01] overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead>
+                    <tr className="border-b border-white/[0.05]">
+                      <th className="px-4 py-2.5 text-[9px] font-mono tracking-wider uppercase text-white/20">Prop</th>
+                      <th className="px-4 py-2.5 text-[9px] font-mono tracking-wider uppercase text-white/20">Type</th>
+                      <th className="px-4 py-2.5 text-[9px] font-mono tracking-wider uppercase text-white/20">Default</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {parsedProps.map((prop, i) => (
+                      <tr
+                        key={prop.name}
+                        className={`border-b border-white/[0.03] last:border-none ${i % 2 === 0 ? '' : 'bg-white/[0.005]'}`}
+                      >
+                        <td className="px-4 py-2.5">
+                          <code className="text-[11px] font-mono text-brand-400/80">{prop.name}</code>
+                          {prop.required && <span className="ml-1 text-[8px] text-amber-500/60">*</span>}
+                        </td>
+                        <td className="px-4 py-2.5">
+                          <code className="text-[10px] font-mono text-white/30">{prop.type}</code>
+                        </td>
+                        <td className="px-4 py-2.5">
+                          <code className="text-[10px] font-mono text-white/20">{prop.defaultVal || '—'}</code>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </motion.div>
+          )}
 
           {/* Install */}
           <motion.div variants={stagger.item} className="mb-10">

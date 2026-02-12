@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { FiGithub, FiCommand, FiMaximize2, FiStar } from 'react-icons/fi'
+import { FiGithub, FiStar } from 'react-icons/fi'
+import CommandPalette from './CommandPalette'
 
 export default function Navbar() {
   const location = useLocation()
@@ -46,14 +47,9 @@ export default function Navbar() {
 
         {/* Right Side Icons */}
         <div className="flex items-center gap-0.5">
-          <button
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-white/40 hover:text-white/80 hover:bg-white/5 transition-all duration-200"
-            title="Command"
-          >
-            <FiCommand size={14} />
-          </button>
+          <CommandPalette />
           <a
-            href="https://github.com"
+            href="https://github.com/AbhishekS04/SimpyUI"
             target="_blank"
             rel="noreferrer"
             className="w-8 h-8 flex items-center justify-center rounded-lg text-white/40 hover:text-white/80 hover:bg-white/5 transition-all duration-200"

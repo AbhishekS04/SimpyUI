@@ -129,6 +129,46 @@
       "files": ["dynamic-island/dynamic-island.tsx"],
       "dependencies": ["framer-motion", "lucide-react"],
       "internal": []
+    },
+    "dock": {
+      "name": "Dock",
+      "category": "Animation",
+      "description": "macOS-style dock with magnification effect on hover.",
+      "files": ["dock/dock.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "marquee": {
+      "name": "Marquee",
+      "category": "Animation",
+      "description": "Infinite scrolling ticker with pause on hover.",
+      "files": ["marquee/marquee.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "text-animate": {
+      "name": "Text Animate",
+      "category": "Animation",
+      "description": "Letter-by-letter and word-by-word text reveal animations.",
+      "files": ["text-animate/text-animate.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "tilt-card": {
+      "name": "Tilt Card",
+      "category": "Animation",
+      "description": "3D perspective tilt card with glare spotlight on hover.",
+      "files": ["tilt-card/tilt-card.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "magnetic-button": {
+      "name": "Magnetic Button",
+      "category": "Animation",
+      "description": "Button that magnetically follows the cursor when nearby.",
+      "files": ["magnetic-button/magnetic-button.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
     }
   }
 }
