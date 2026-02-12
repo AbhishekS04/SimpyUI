@@ -112,4 +112,4 @@ MIT License - feel free to use SimpyUI in your projects!
 
 ---
 
-**Design and Developed by @SimpyUI**
+**Designed and Developed by @SimpyUI**
