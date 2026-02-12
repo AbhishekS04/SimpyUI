@@ -145,6 +145,118 @@ export function ensureUtils(config: SimpyConfig): string[] {
   return depsNeeded
 }
 
+/* ── Tailwind config color injection ── */
+
+const SIMPYUI_COLORS = {
+  brand: {
+    50: '#f0f4ff', 100: '#dbe4ff', 200: '#bac8ff', 300: '#91a7ff', 400: '#748ffc',
+    500: '#5c7cfa', 600: '#4c6ef5', 700: '#4263eb', 800: '#3b5bdb', 900: '#364fc7',
+  },
+  dark: {
+    50: '#C1C2C5', 100: '#A6A7AB', 200: '#909296', 300: '#5C5F66', 400: '#373A40',
+    500: '#2C2E33', 600: '#25262B', 700: '#1A1B1E', 800: '#141517', 900: '#101113',
+  },
+}
+
+export function ensureTailwindColors(): void {
+  const cwd = process.cwd()
+  const candidates = [
+    'tailwind.config.js', 'tailwind.config.ts', 'tailwind.config.mjs', 'tailwind.config.cjs',
+  ]
+
+  let configFile = ''
+  for (const f of candidates) {
+    if (existsSync(join(cwd, f))) { configFile = f; break }
+  }
+
+  if (!configFile) {
+    console.log(yellow('  ⚠ No tailwind.config found — skipping color injection'))
+    console.log(dim('    Add brand & dark color scales manually (see docs)'))
+    return
+  }
+
+  const fullPath = join(cwd, configFile)
+  const content = readFileSync(fullPath, 'utf-8')
+
+  // Check if colors already injected
+  if (content.includes("brand:") && content.includes("dark:")) {
+    return // already present
+  }
+
+  const missing: string[] = []
+  if (!content.includes("brand:")) missing.push('brand')
+  if (!content.includes("dark:")) missing.push('dark')
+
+  // Build the color block to inject
+  let colorBlock = ''
+  for (const key of missing) {
+    const colors = SIMPYUI_COLORS[key as keyof typeof SIMPYUI_COLORS]
+    const entries = Object.entries(colors).map(([k, v]) => `          ${k}: '${v}'`).join(',\n')
+    colorBlock += `        ${key}: {\n${entries},\n        },\n`
+  }
+
+  // Strategy: find "colors:" in extend block and inject after it, or find extend and inject colors block
+  if (content.includes('colors:') && content.includes('extend:')) {
+    // Inject inside existing colors object
+    const injected = content.replace(
+      /(colors\s*:\s*\{)/,
+      `$1\n${colorBlock}`
+    )
+    writeFileSync(fullPath, injected)
+    console.log(green('  ✓ Added ') + dim(`${missing.join(' & ')} colors → ${configFile}`))
+  } else if (content.includes('extend:')) {
+    // No colors key yet — inject colors block inside extend
+    const injected = content.replace(
+      /(extend\s*:\s*\{)/,
+      `$1\n      colors: {\n${colorBlock}      },`
+    )
+    writeFileSync(fullPath, injected)
+    console.log(green('  ✓ Added ') + dim(`${missing.join(' & ')} colors → ${configFile}`))
+  } else {
+    console.log(yellow('  ⚠ Could not auto-inject colors into ' + configFile))
+    console.log(dim('    Add brand & dark color scales manually (see docs)'))
+  }
+}
+
+/* ── Global CSS injection (glow classes) ── */
+
+const SIMPYUI_CSS = `
+/* ============ SimpyUI Glow Effects ============ */
+.glow {
+  box-shadow: 0 0 60px rgba(0, 150, 255, 0.15);
+}
+
+.glow-sm {
+  box-shadow: 0 0 30px rgba(0, 150, 255, 0.1);
+}
+`
+
+export function ensureGlobalCSS(): void {
+  const cwd = process.cwd()
+  const candidates = [
+    'src/index.css', 'src/globals.css', 'src/app/globals.css',
+    'app/globals.css', 'styles/globals.css', 'src/styles/globals.css',
+  ]
+
+  let cssFile = ''
+  for (const f of candidates) {
+    if (existsSync(join(cwd, f))) { cssFile = f; break }
+  }
+
+  if (!cssFile) return // No global CSS found — silently skip
+
+  const fullPath = join(cwd, cssFile)
+  const content = readFileSync(fullPath, 'utf-8')
+
+  // Check if already added
+  if (content.includes('.glow-sm') || content.includes('SimpyUI Glow Effects')) {
+    return
+  }
+
+  writeFileSync(fullPath, content + SIMPYUI_CSS)
+  console.log(green('  ✓ Added ') + dim(`glow utilities → ${cssFile}`))
+}
+
 /* ── Package Manager Detection ── */
 
 export type PackageManager = 'npm' | 'yarn' | 'pnpm' | 'bun'

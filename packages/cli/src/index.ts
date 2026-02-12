@@ -18,6 +18,7 @@ import {
   bold, green, cyan, yellow, red, dim,
   loadConfig, saveConfig, getConfigOrExit,
   getInstalledDeps, installPackages, ensureUtils,
+  ensureTailwindColors, ensureGlobalCSS,
   detectProject, getDefaultConfig,
   fetchFileFromGitHub, spinner,
   prompt, confirm,
@@ -194,6 +195,10 @@ async function cmdAdd(args: string[]) {
   // Create lib/utils.ts if it doesn't exist
   const utilsDeps = ensureUtils(config)
   for (const d of utilsDeps) allDeps.add(d)
+
+  // Inject SimpyUI colors into tailwind config & glow CSS
+  ensureTailwindColors()
+  ensureGlobalCSS()
 
   // Check which are already installed
   const installed = getInstalledDeps()
