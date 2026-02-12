@@ -37,6 +37,7 @@ import TextAnimateCode from './text-animate/text-animate.tsx?raw'
 import TiltCardCode from './tilt-card/tilt-card.tsx?raw'
 import MagneticButtonCode from './magnetic-button/magnetic-button.tsx?raw'
 import FileUploadCode from './file-upload/file-upload.tsx?raw'
+import DitherShaderCode from './DitherShader/dither-shader.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -63,6 +64,7 @@ import TextAnimateDemoCode from './text-animate/text-animate.demo.tsx?raw'
 import TiltCardDemoCode from './tilt-card/tilt-card.demo.tsx?raw'
 import MagneticButtonDemoCode from './magnetic-button/magnetic-button.demo.tsx?raw'
 import FileUploadDemoCode from './file-upload/file-upload.demo.tsx?raw'
+import DitherShaderDemoCode from './DitherShader/dither-shader.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -88,6 +90,7 @@ const TextAnimateDemo = lazy(() => import('./text-animate/text-animate.demo'))
 const TiltCardDemo = lazy(() => import('./tilt-card/tilt-card.demo'))
 const MagneticButtonDemo = lazy(() => import('./magnetic-button/magnetic-button.demo'))
 const FileUploadDemo = lazy(() => import('./file-upload/file-upload.demo'))
+const DitherShaderDemo = lazy(() => import('./DitherShader/dither-shader.demo'))
 
 /* ── Registry entry type ── */
 
@@ -115,29 +118,29 @@ function demo(Component: React.LazyExoticComponent<React.ComponentType>) {
 
 export const componentRegistry: ComponentRegistryEntry[] = [
   // ─── GENERAL ──────────────────────────────────
-  { name: 'Button',    slug: 'button',    category: 'General',      description: 'Animated button with multiple variants and sizes.',     component: demo(ButtonDemo),    code: ButtonCode, demoCode: ButtonDemoCode },
-  { name: 'Card',      slug: 'card',      category: 'General',      description: 'Versatile card container with hover and glow effects.', component: demo(CardDemo),      code: CardCode, demoCode: CardDemoCode },
-  { name: 'Badge',     slug: 'badge',     category: 'General',      description: 'Small status indicators with colorful variants.',       component: demo(BadgeDemo),     code: BadgeCode, demoCode: BadgeDemoCode },
-  { name: 'Avatar',    slug: 'avatar',    category: 'General',      description: 'User avatar with image support and fallback initials.', component: demo(AvatarDemo),    code: AvatarCode, demoCode: AvatarDemoCode },
+  { name: 'Button', slug: 'button', category: 'General', description: 'Animated button with multiple variants and sizes.', component: demo(ButtonDemo), code: ButtonCode, demoCode: ButtonDemoCode },
+  { name: 'Card', slug: 'card', category: 'General', description: 'Versatile card container with hover and glow effects.', component: demo(CardDemo), code: CardCode, demoCode: CardDemoCode },
+  { name: 'Badge', slug: 'badge', category: 'General', description: 'Small status indicators with colorful variants.', component: demo(BadgeDemo), code: BadgeCode, demoCode: BadgeDemoCode },
+  { name: 'Avatar', slug: 'avatar', category: 'General', description: 'User avatar with image support and fallback initials.', component: demo(AvatarDemo), code: AvatarCode, demoCode: AvatarDemoCode },
 
   // ─── INPUTS ───────────────────────────────────
-  { name: 'Input',     slug: 'input',     category: 'Inputs',       description: 'Styled text input with label and error states.',        component: demo(InputDemo),     code: InputCode, demoCode: InputDemoCode },
-  { name: 'Toggle',    slug: 'toggle',    category: 'Inputs',       description: 'Smooth animated toggle switch.',                       component: demo(ToggleDemo),    code: ToggleCode, demoCode: ToggleDemoCode },
+  { name: 'Input', slug: 'input', category: 'Inputs', description: 'Styled text input with label and error states.', component: demo(InputDemo), code: InputCode, demoCode: InputDemoCode },
+  { name: 'Toggle', slug: 'toggle', category: 'Inputs', description: 'Smooth animated toggle switch.', component: demo(ToggleDemo), code: ToggleCode, demoCode: ToggleDemoCode },
   { name: 'File Upload', slug: 'file-upload', category: 'Inputs', description: 'Drag-and-drop file upload with preview and animation.', component: demo(FileUploadDemo), code: FileUploadCode, demoCode: FileUploadDemoCode },
 
   // ─── DATA DISPLAY ─────────────────────────────
-  { name: 'Accordion', slug: 'accordion', category: 'Data Display', description: 'Collapsible content sections with smooth animations.',  component: demo(AccordionDemo), code: AccordionCode, demoCode: AccordionDemoCode },
-  { name: 'Tabs',      slug: 'tabs',      category: 'Data Display', description: 'Animated tab navigation with smooth underline indicator.', component: demo(TabsDemo),  code: TabsCode, demoCode: TabsDemoCode },
-  { name: 'Progress',  slug: 'progress',  category: 'Data Display', description: 'Animated progress bar with multiple colors and sizes.', component: demo(ProgressDemo),  code: ProgressCode, demoCode: ProgressDemoCode },
-  { name: 'Skeleton',  slug: 'skeleton',  category: 'Data Display', description: 'Animated loading placeholder with pulsing effect.',     component: demo(SkeletonDemo),  code: SkeletonCode, demoCode: SkeletonDemoCode },
+  { name: 'Accordion', slug: 'accordion', category: 'Data Display', description: 'Collapsible content sections with smooth animations.', component: demo(AccordionDemo), code: AccordionCode, demoCode: AccordionDemoCode },
+  { name: 'Tabs', slug: 'tabs', category: 'Data Display', description: 'Animated tab navigation with smooth underline indicator.', component: demo(TabsDemo), code: TabsCode, demoCode: TabsDemoCode },
+  { name: 'Progress', slug: 'progress', category: 'Data Display', description: 'Animated progress bar with multiple colors and sizes.', component: demo(ProgressDemo), code: ProgressCode, demoCode: ProgressDemoCode },
+  { name: 'Skeleton', slug: 'skeleton', category: 'Data Display', description: 'Animated loading placeholder with pulsing effect.', component: demo(SkeletonDemo), code: SkeletonCode, demoCode: SkeletonDemoCode },
 
   // ─── FEEDBACK ─────────────────────────────────
-  { name: 'Modal',     slug: 'modal',     category: 'Feedback',     description: 'Animated dialog with backdrop blur.',                  component: demo(ModalDemo),     code: ModalCode, demoCode: ModalDemoCode },
-  { name: 'Toast',     slug: 'toast',     category: 'Feedback',     description: 'Notification toast with animated entrance.',            component: demo(ToastDemo),     code: ToastCode, demoCode: ToastDemoCode },
-  { name: 'Alert',     slug: 'alert',     category: 'Feedback',     description: 'Contextual alert banners with icons.',                 component: demo(AlertDemo),     code: AlertCode, demoCode: AlertDemoCode },
+  { name: 'Modal', slug: 'modal', category: 'Feedback', description: 'Animated dialog with backdrop blur.', component: demo(ModalDemo), code: ModalCode, demoCode: ModalDemoCode },
+  { name: 'Toast', slug: 'toast', category: 'Feedback', description: 'Notification toast with animated entrance.', component: demo(ToastDemo), code: ToastCode, demoCode: ToastDemoCode },
+  { name: 'Alert', slug: 'alert', category: 'Feedback', description: 'Contextual alert banners with icons.', component: demo(AlertDemo), code: AlertCode, demoCode: AlertDemoCode },
 
   // ─── OVERLAY ──────────────────────────────────
-  { name: 'Tooltip',   slug: 'tooltip',   category: 'Overlay',      description: 'Hover tooltip with multiple positions.',               component: demo(TooltipDemo),   code: TooltipCode, demoCode: TooltipDemoCode },
+  { name: 'Tooltip', slug: 'tooltip', category: 'Overlay', description: 'Hover tooltip with multiple positions.', component: demo(TooltipDemo), code: TooltipCode, demoCode: TooltipDemoCode },
 
   // ─── ANIMATION ────────────────────────────────
   { name: 'Social Stories', slug: 'social-stories', category: 'Animation', description: 'Instagram/LinkedIn-style stories viewer with progress bars, video support, and swipe navigation.', component: demo(SocialStoriesDemo), code: SocialStoriesCode, demoCode: SocialStoriesDemoCode },
@@ -147,4 +150,5 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Text Animate', slug: 'text-animate', category: 'Animation', description: 'Letter-by-letter and word-by-word text reveal animations.', component: demo(TextAnimateDemo), code: TextAnimateCode, demoCode: TextAnimateDemoCode },
   { name: 'Tilt Card', slug: 'tilt-card', category: 'Animation', description: '3D perspective tilt card with glare spotlight on hover.', component: demo(TiltCardDemo), code: TiltCardCode, demoCode: TiltCardDemoCode },
   { name: 'Magnetic Button', slug: 'magnetic-button', category: 'Animation', description: 'Button that magnetically follows the cursor when nearby.', component: demo(MagneticButtonDemo), code: MagneticButtonCode, demoCode: MagneticButtonDemoCode },
+  { name: 'Dither Shader', slug: 'dither-shader', category: 'Animation', description: 'Image dithering effect with multiple modes and color options.', component: demo(DitherShaderDemo), code: DitherShaderCode, demoCode: DitherShaderDemoCode },
 ]
