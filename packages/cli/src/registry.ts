@@ -147,6 +147,14 @@ export const registry: Record<string, RegistryComponent> = {
     internal: [],
     description: 'Instagram/LinkedIn-style stories viewer with progress bars and video support.',
   },
+  'dynamic-island': {
+    name: 'Dynamic Island',
+    slug: 'dynamic-island',
+    files: ['dynamic-island/dynamic-island.tsx'],
+    dependencies: ['framer-motion', 'lucide-react'],
+    internal: [],
+    description: 'Apple-style Dynamic Island with ring, timer, music, call, screen record, and battery modes.',
+  },
 }
 
 export const allComponentNames = Object.keys(registry)

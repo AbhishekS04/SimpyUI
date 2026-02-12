@@ -128,6 +128,7 @@ function getCategoryForComponent(slug: string): string {
     modal: 'Feedback', toast: 'Feedback', alert: 'Feedback',
     tooltip: 'Overlay',
     'social-stories': 'Animation',
+    'dynamic-island': 'Animation',
   }
   return map[slug] || 'Other'
 }

@@ -49,6 +49,8 @@ import ToastDemoCode from './toast/toast.demo.tsx?raw'
 import AlertDemoCode from './alert/alert.demo.tsx?raw'
 import TooltipDemoCode from './tooltip/tooltip.demo.tsx?raw'
 import SocialStoriesDemoCode from './social-stories/social-stories.demo.tsx?raw'
+import DynamicIslandCode from './dynamic-island/dynamic-island.tsx?raw'
+import DynamicIslandDemoCode from './dynamic-island/dynamic-island.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -67,6 +69,7 @@ const ToastDemo = lazy(() => import('./toast/toast.demo'))
 const AlertDemo = lazy(() => import('./alert/alert.demo'))
 const TooltipDemo = lazy(() => import('./tooltip/tooltip.demo'))
 const SocialStoriesDemo = lazy(() => import('./social-stories/social-stories.demo'))
+const DynamicIslandDemo = lazy(() => import('./dynamic-island/dynamic-island.demo'))
 
 /* ── Registry entry type ── */
 
@@ -119,4 +122,5 @@ export const componentRegistry: ComponentRegistryEntry[] = [
 
   // ─── ANIMATION ────────────────────────────────
   { name: 'Social Stories', slug: 'social-stories', category: 'Animation', description: 'Instagram/LinkedIn-style stories viewer with progress bars, video support, and swipe navigation.', component: demo(SocialStoriesDemo), code: SocialStoriesCode, demoCode: SocialStoriesDemoCode },
+  { name: 'Dynamic Island', slug: 'dynamic-island', category: 'Animation', description: 'Apple-style Dynamic Island with ring, timer, music, call, screen record, and battery modes.', component: demo(DynamicIslandDemo), code: DynamicIslandCode, demoCode: DynamicIslandDemoCode },
 ]

@@ -542,10 +542,10 @@ export default function ComponentDetail() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="absolute inset-0 flex items-center justify-center p-8 md:p-16 overflow-auto"
+              className="absolute inset-0 flex items-center justify-center overflow-auto"
               data-lenis-prevent
             >
-              <div className="flex flex-col items-center gap-4">
+              <div className="relative w-full h-full flex items-center justify-center p-8 md:p-16">
                 {comp.component}
               </div>
             </motion.div>
