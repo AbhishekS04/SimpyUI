@@ -45,7 +45,7 @@ export default function FileUploadDemo() {
   return (
     <div className="relative w-full h-full min-h-[400px] flex flex-col items-center">
       <div className="flex-1 w-full relative">
-        <div className="w-full max-w-4xl mx-auto min-h-96 border border-dashed border-neutral-200 dark:border-neutral-800 rounded-lg flex flex-col items-center justify-center">
+        <div className="w-full max-w-4xl mx-auto min-h-96 rounded-lg flex flex-col items-center justify-center">
           <FileUpload onChange={handleFileUpload} />
           {files.length > 0 && (
             <ul className="mt-4 text-sm text-neutral-700 dark:text-neutral-200">
