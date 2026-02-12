@@ -1,0 +1,134 @@
+{
+  "$schema": "https://simpyui.vercel.app/registry-schema.json",
+  "baseUrl": "https://raw.githubusercontent.com/AbhishekS04/SimpyUI/main/src/registry",
+  "components": {
+    "button": {
+      "name": "Button",
+      "category": "General",
+      "description": "Animated button with multiple variants and sizes.",
+      "files": ["button/button.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "card": {
+      "name": "Card",
+      "category": "General",
+      "description": "Versatile card container with hover and glow effects.",
+      "files": ["card/card.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "badge": {
+      "name": "Badge",
+      "category": "General",
+      "description": "Small status indicators with colorful variants.",
+      "files": ["badge/badge.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "avatar": {
+      "name": "Avatar",
+      "category": "General",
+      "description": "User avatar with image support and fallback initials.",
+      "files": ["avatar/avatar.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "input": {
+      "name": "Input",
+      "category": "Inputs",
+      "description": "Styled text input with label and error states.",
+      "files": ["input/input.tsx"],
+      "dependencies": [],
+      "internal": []
+    },
+    "toggle": {
+      "name": "Toggle",
+      "category": "Inputs",
+      "description": "Smooth animated toggle switch.",
+      "files": ["toggle/toggle.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "accordion": {
+      "name": "Accordion",
+      "category": "Data Display",
+      "description": "Collapsible content sections with smooth animations.",
+      "files": ["accordion/accordion.tsx"],
+      "dependencies": ["framer-motion", "react-icons"],
+      "internal": []
+    },
+    "tabs": {
+      "name": "Tabs",
+      "category": "Data Display",
+      "description": "Animated tab navigation with smooth underline indicator.",
+      "files": ["tabs/tabs.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "progress": {
+      "name": "Progress",
+      "category": "Data Display",
+      "description": "Animated progress bar with multiple colors and sizes.",
+      "files": ["progress/progress.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "skeleton": {
+      "name": "Skeleton",
+      "category": "Data Display",
+      "description": "Animated loading placeholder with pulsing effect.",
+      "files": ["skeleton/skeleton.tsx"],
+      "dependencies": ["framer-motion"],
+      "internal": []
+    },
+    "modal": {
+      "name": "Modal",
+      "category": "Feedback",
+      "description": "Animated dialog with backdrop blur.",
+      "files": ["modal/modal.tsx"],
+      "dependencies": ["framer-motion", "react-icons"],
+      "internal": []
+    },
+    "toast": {
+      "name": "Toast",
+      "category": "Feedback",
+      "description": "Notification toast with animated entrance.",
+      "files": ["toast/toast.tsx"],
+      "dependencies": ["framer-motion", "react-icons"],
+      "internal": []
+    },
+    "alert": {
+      "name": "Alert",
+      "category": "Feedback",
+      "description": "Contextual alert banners with icons.",
+      "files": ["alert/alert.tsx"],
+      "dependencies": ["framer-motion", "react-icons"],
+      "internal": []
+    },
+    "tooltip": {
+      "name": "Tooltip",
+      "category": "Overlay",
+      "description": "Hover tooltip with multiple positions.",
+      "files": ["tooltip/tooltip.tsx"],
+      "dependencies": [],
+      "internal": []
+    },
+    "social-stories": {
+      "name": "Social Stories",
+      "category": "Animation",
+      "description": "Instagram/LinkedIn-style stories viewer with progress bars and video support.",
+      "files": ["social-stories/social-stories.tsx"],
+      "dependencies": ["framer-motion", "lucide-react"],
+      "internal": []
+    },
+    "dynamic-island": {
+      "name": "Dynamic Island",
+      "category": "Animation",
+      "description": "Apple-style Dynamic Island with ring, timer, music, call, screen record, and battery modes.",
+      "files": ["dynamic-island/dynamic-island.tsx"],
+      "dependencies": ["framer-motion", "lucide-react"],
+      "internal": []
+    }
+  }
+}

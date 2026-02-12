@@ -1,6 +1,6 @@
 /*
  * =============================================
- *  SIMPYUI CLI
+ *  SIMPYUI CLI  (dynamic registry edition)
  * =============================================
  *
  *  Usage:
@@ -8,6 +8,10 @@
  *    npx simpyui add <name>     → add a component + install deps
  *    npx simpyui add --all      → add all components
  *    npx simpyui list           → list available components
+ *
+ *  The component registry is fetched from GitHub at runtime.
+ *  Adding new components only requires updating registry.json
+ *  in the repo — no need to rebuild or republish this CLI.
  *
  * =============================================
  */
@@ -25,8 +29,8 @@ import {
   type SimpyConfig,
 } from './utils.js'
 import {
-  registry, allComponentNames, GITHUB_RAW_BASE,
-  type RegistryComponent,
+  fetchRegistry,
+  type RegistryComponent, type RegistryData,
 } from './registry.js'
 
 /* ── Header ── */
@@ -90,15 +94,19 @@ async function cmdInit() {
 
 /* ── LIST command ── */
 
-function cmdList() {
+async function cmdList() {
   printHeader()
+
+  const s = spinner('Fetching component registry...')
+  const { components } = await fetchRegistry()
+  s.stop()
 
   console.log(`  ${bold('Available components:')}\n`)
 
   // Group by category
   const categories: Record<string, RegistryComponent[]> = {}
-  for (const comp of Object.values(registry)) {
-    const cat = getCategoryForComponent(comp.slug)
+  for (const comp of Object.values(components)) {
+    const cat = comp.category || 'Other'
     if (!categories[cat]) categories[cat] = []
     categories[cat].push(comp)
   }
@@ -106,31 +114,20 @@ function cmdList() {
   for (const [cat, comps] of Object.entries(categories)) {
     console.log(`  ${bold(cyan(cat))}`)
     for (const comp of comps) {
+      const slug = Object.entries(components).find(([, v]) => v === comp)?.[0] || ''
       const deps = comp.dependencies.length
         ? dim(` → ${comp.dependencies.join(', ')}`)
         : ''
-      console.log(`    ${green('•')} ${bold(comp.slug.padEnd(16))} ${dim(comp.description)}${deps}`)
+      console.log(`    ${green('•')} ${bold(slug.padEnd(18))} ${dim(comp.description)}${deps}`)
     }
     console.log()
   }
 
-  console.log(dim(`  Total: ${allComponentNames.length} components`))
+  const total = Object.keys(components).length
+  console.log(dim(`  Total: ${total} components`))
   console.log()
   console.log(`  ${dim('Usage:')} ${cyan('npx simpyui add <name>')}`)
   console.log()
-}
-
-function getCategoryForComponent(slug: string): string {
-  const map: Record<string, string> = {
-    button: 'General', card: 'General', badge: 'General', avatar: 'General',
-    input: 'Inputs', toggle: 'Inputs',
-    accordion: 'Data Display', tabs: 'Data Display', progress: 'Data Display', skeleton: 'Data Display',
-    modal: 'Feedback', toast: 'Feedback', alert: 'Feedback',
-    tooltip: 'Overlay',
-    'social-stories': 'Animation',
-    'dynamic-island': 'Animation',
-  }
-  return map[slug] || 'Other'
 }
 
 /* ── ADD command ── */
@@ -140,6 +137,12 @@ async function cmdAdd(args: string[]) {
 
   const config = getConfigOrExit()
 
+  // Fetch the registry from GitHub
+  const s1 = spinner('Fetching component registry...')
+  const { baseUrl, components } = await fetchRegistry()
+  const allNames = Object.keys(components)
+  s1.stop()
+
   // Parse flags
   const addAll = args.includes('--all')
   const componentArgs = args.filter(a => !a.startsWith('-'))
@@ -147,7 +150,7 @@ async function cmdAdd(args: string[]) {
   let componentsToAdd: string[] = []
 
   if (addAll) {
-    componentsToAdd = [...allComponentNames]
+    componentsToAdd = [...allNames]
     console.log(`  Adding ${bold('all')} ${cyan(String(componentsToAdd.length))} components...\n`)
   } else if (componentArgs.length === 0) {
     console.log(red('  ✗ Please specify component name(s).'))
@@ -160,7 +163,7 @@ async function cmdAdd(args: string[]) {
     process.exit(1)
   } else {
     // Validate names
-    const invalid = componentArgs.filter(n => !registry[n])
+    const invalid = componentArgs.filter(n => !components[n])
     if (invalid.length > 0) {
       console.log(red(`  ✗ Unknown component(s): ${invalid.join(', ')}`))
       console.log()
@@ -175,7 +178,7 @@ async function cmdAdd(args: string[]) {
   const resolved = new Set<string>()
   function resolve(slug: string) {
     if (resolved.has(slug)) return
-    const comp = registry[slug]
+    const comp = components[slug]
     if (!comp) return
     for (const dep of comp.internal) {
       resolve(dep)
@@ -188,7 +191,7 @@ async function cmdAdd(args: string[]) {
   // Collect all npm dependencies
   const allDeps = new Set<string>()
   for (const slug of componentsToAdd) {
-    for (const dep of registry[slug].dependencies) {
+    for (const dep of components[slug].dependencies) {
       allDeps.add(dep)
     }
   }
@@ -206,18 +209,17 @@ async function cmdAdd(args: string[]) {
   const toInstall = [...allDeps].filter(d => !installed.has(d))
 
   // ─── Download files ───
-  const s = spinner('Downloading components...')
+  const s2 = spinner('Downloading components...')
 
   let downloaded = 0
   let skipped = 0
 
   for (const slug of componentsToAdd) {
-    const comp = registry[slug]
+    const comp = components[slug]
 
     for (const file of comp.files) {
-      const url = `${GITHUB_RAW_BASE}/${file}`
+      const url = `${baseUrl}/${file}`
       const filename = file.split('/').pop()!
-      const ext = config.typescript ? '' : filename.replace('.tsx', '.jsx')
       const finalName = config.typescript ? filename : filename.replace('.tsx', '.jsx')
       const targetPath = join(process.cwd(), config.componentDir, finalName)
 
@@ -242,13 +244,13 @@ async function cmdAdd(args: string[]) {
         writeFileSync(targetPath, code)
         downloaded++
       } catch (err) {
-        s.stop(red(`  ✗ Failed to download ${file}`))
+        s2.stop(red(`  ✗ Failed to download ${file}`))
         console.log(dim(`    ${(err as Error).message}`))
       }
     }
   }
 
-  s.stop(green(`  ✓ Downloaded ${downloaded} file(s)`) + (skipped ? dim(` (${skipped} already existed)`) : ''))
+  s2.stop(green(`  ✓ Downloaded ${downloaded} file(s)`) + (skipped ? dim(` (${skipped} already existed)`) : ''))
 
   // ─── Install dependencies ───
   if (toInstall.length > 0) {
@@ -264,7 +266,7 @@ async function cmdAdd(args: string[]) {
   console.log()
   console.log(green('  Done! ') + dim('Components added:'))
   for (const slug of componentsToAdd) {
-    const comp = registry[slug]
+    const comp = components[slug]
     const file = comp.files[0].split('/').pop()
     console.log(`    ${green('•')} ${bold(comp.name)} → ${dim(`${config.componentDir}/${file}`)}`)
   }
@@ -272,7 +274,7 @@ async function cmdAdd(args: string[]) {
 
   // Usage hint
   const first = componentsToAdd[0]
-  const firstComp = registry[first]
+  const firstComp = components[first]
   const importPath = firstComp.files[0].split('/').pop()!.replace('.tsx', '').replace('.jsx', '')
   const filePath = join(process.cwd(), config.componentDir, firstComp.files[0].split('/').pop()!)
 
@@ -323,11 +325,16 @@ function stripTypes(code: string): string {
     .replace(/\n{3,}/g, '\n\n')
 }
 
-/* ── DIFF command (bonus: show what would be added) ── */
+/* ── DIFF command ── */
 
-function cmdDiff(args: string[]) {
+async function cmdDiff(args: string[]) {
   printHeader()
   const config = getConfigOrExit()
+
+  const s = spinner('Fetching component registry...')
+  const { components } = await fetchRegistry()
+  s.stop()
+
   const componentArgs = args.filter(a => !a.startsWith('-'))
 
   if (componentArgs.length === 0) {
@@ -336,7 +343,7 @@ function cmdDiff(args: string[]) {
   }
 
   for (const slug of componentArgs) {
-    const comp = registry[slug]
+    const comp = components[slug]
     if (!comp) {
       console.log(red(`  ✗ Unknown component: ${slug}`))
       continue
@@ -402,10 +409,10 @@ async function main() {
       break
     case 'list':
     case 'ls':
-      cmdList()
+      await cmdList()
       break
     case 'diff':
-      cmdDiff(args.slice(1))
+      await cmdDiff(args.slice(1))
       break
     case 'help':
     case '--help':
@@ -415,12 +422,16 @@ async function main() {
       break
     default:
       // Maybe they typed a component name directly: `npx simpyui button`
-      if (registry[command]) {
-        await cmdAdd(args)
-      } else {
-        console.log(red(`\n  Unknown command: ${command}\n`))
-        cmdHelp()
-      }
+      // Fetch registry to check
+      try {
+        const { components } = await fetchRegistry()
+        if (components[command]) {
+          await cmdAdd(args)
+          break
+        }
+      } catch {}
+      console.log(red(`\n  Unknown command: ${command}\n`))
+      cmdHelp()
   }
 }
 
