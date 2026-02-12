@@ -154,16 +154,50 @@ export default function FileUpload({
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
+        initial={{ y: 0 }}
         animate={{
-          scale: isDragging ? 1.02 : 1,
+          y: isDragging ? 0 : [0, -4, 0],
+          scale: isDragging ? 1.05 : 1,
           borderColor: isDragging
             ? "rgb(59, 130, 246)"
             : error
               ? "rgb(239, 68, 68)"
               : "rgb(64, 64, 64)",
+          boxShadow: isDragging
+            ? "0 0 0 1px rgba(59, 130, 246, 0.3), 0 20px 40px -10px rgba(59, 130, 246, 0.3)"
+            : "0 0 0 0px rgba(0, 0, 0, 0), 0 10px 20px -5px rgba(0, 0, 0, 0.3)",
         }}
-        transition={{ duration: 0.2 }}
-        className="relative border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer group hover:border-neutral-500 transition-colors"
+        transition={{
+          y: {
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+          },
+          scale: {
+            type: "spring",
+            stiffness: 280,
+            damping: 20,
+          },
+          borderColor: {
+            duration: 0.3,
+            ease: "easeInOut",
+          },
+          boxShadow: {
+            duration: 0.3,
+            ease: "easeInOut",
+          },
+        }}
+        whileHover={{
+          y: -6,
+          scale: 1.02,
+          boxShadow: "0 0 0 1px rgba(255, 255, 255, 0.1), 0 20px 40px -10px rgba(0, 0, 0, 0.5)",
+          transition: {
+            type: "spring",
+            stiffness: 260,
+            damping: 18,
+          },
+        }}
+        className="relative border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer group"
         style={{
           background: isDragging
             ? "rgba(59, 130, 246, 0.05)"
@@ -180,49 +214,89 @@ export default function FileUpload({
         />
 
         <motion.div
-          animate={{
-            y: isDragging ? -5 : 0,
-          }}
           className="flex flex-col items-center gap-4"
         >
           <motion.div
             animate={{
-              scale: isDragging ? 1.2 : 1,
-              rotate: isDragging ? 5 : 0,
+              scale: isDragging ? 1.15 : 1,
+              rotate: isDragging ? 0 : 0,
             }}
-            className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center"
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 20,
+            }}
+            className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center relative"
           >
-            <Upload
-              className={`w-8 h-8 ${isDragging ? "text-blue-400" : "text-neutral-400"
-                } transition-colors`}
-            />
+            <motion.div
+              animate={{
+                opacity: isDragging ? 0 : 1,
+              }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <Upload className="w-8 h-8 text-neutral-400" />
+            </motion.div>
+            <motion.div
+              animate={{
+                opacity: isDragging ? 1 : 0,
+              }}
+              transition={{ duration: 0.2 }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <Upload className="w-8 h-8 text-blue-400" />
+            </motion.div>
           </motion.div>
 
-          <div className="space-y-2">
-            <p className="text-lg font-semibold text-neutral-200">
+          <motion.div
+            className="space-y-2"
+            animate={{
+              opacity: isDragging ? 0.6 : 1,
+            }}
+            transition={{ duration: 0.2 }}
+          >
+            <motion.p
+              className="text-lg font-semibold text-neutral-200"
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
+            >
               {isDragging ? "Drop files here" : "Upload files"}
-            </p>
-            <p className="text-sm text-neutral-500">
+            </motion.p>
+            <motion.p
+              className="text-sm text-neutral-500"
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.4 }}
+            >
               Drag and drop or click to browse
-            </p>
-            <p className="text-xs text-neutral-600">
+            </motion.p>
+            <motion.p
+              className="text-xs text-neutral-600"
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+            >
               Max {maxFiles} files • {formatFileSize(maxSize)} per file
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         </motion.div>
 
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="absolute inset-x-0 bottom-4 px-4"
-          >
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-2 text-sm text-red-400">
-              {error}
-            </div>
-          </motion.div>
-        )}
+        <AnimatePresence>
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="absolute inset-x-0 bottom-4 px-4"
+            >
+              <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-2 text-sm text-red-400">
+                {error}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
 
       {/* Selected Files */}
@@ -232,13 +306,28 @@ export default function FileUpload({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
+            transition={{
+              height: {
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+              },
+              opacity: {
+                duration: 0.3,
+              },
+            }}
             className="mt-6 space-y-3"
           >
-            <div className="flex items-center justify-between px-2">
+            <motion.div
+              className="flex items-center justify-between px-2"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
+            >
               <h3 className="text-sm font-semibold text-neutral-300">
                 Selected Files ({selectedFiles.length})
               </h3>
-            </div>
+            </motion.div>
 
             <div className="grid grid-cols-1 gap-3">
               <AnimatePresence mode="popLayout">
@@ -249,48 +338,129 @@ export default function FileUpload({
                     <motion.div
                       key={`${file.name}-${index}`}
                       layout
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.9, x: -100 }}
-                      transition={{ duration: 0.2 }}
-                      className="group relative bg-neutral-900/50 border border-neutral-800 rounded-xl p-4 hover:border-neutral-700 transition-all"
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{
+                        opacity: 0,
+                        scale: 0.9,
+                        x: -100,
+                        transition: {
+                          duration: 0.25,
+                          ease: "easeIn",
+                        },
+                      }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 25,
+                        delay: index * 0.05,
+                      }}
+                      whileHover={{
+                        y: -4,
+                        scale: 1.01,
+                        boxShadow: "0 0 0 1px rgba(255, 255, 255, 0.05), 0 10px 30px -5px rgba(0, 0, 0, 0.4)",
+                        transition: {
+                          type: "spring",
+                          stiffness: 280,
+                          damping: 18,
+                        },
+                      }}
+                      className="group relative bg-neutral-900/50 border border-neutral-800 rounded-xl p-4 cursor-pointer"
                     >
                       <div className="flex items-center gap-4">
                         {/* File Preview or Icon */}
-                        <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-neutral-800 flex items-center justify-center flex-shrink-0">
+                        <motion.div
+                          className="relative w-14 h-14 rounded-lg overflow-hidden bg-neutral-800 flex items-center justify-center flex-shrink-0"
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{
+                            delay: index * 0.05 + 0.1,
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 20,
+                          }}
+                        >
                           {file.preview ? (
-                            <img
+                            <motion.img
                               src={file.preview}
                               alt={file.name}
                               className="w-full h-full object-cover"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ delay: index * 0.05 + 0.2, duration: 0.3 }}
                             />
                           ) : (
-                            <FileIcon className="w-6 h-6 text-neutral-500" />
+                            <motion.div
+                              whileHover={{ rotate: 8 }}
+                              transition={{
+                                type: "spring",
+                                stiffness: 300,
+                                damping: 15,
+                              }}
+                            >
+                              <FileIcon className="w-6 h-6 text-neutral-500" />
+                            </motion.div>
                           )}
-                        </div>
+                        </motion.div>
 
                         {/* File Info */}
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-neutral-200 truncate">
+                          <motion.p
+                            className="text-sm font-medium text-neutral-200 truncate"
+                            initial={{ opacity: 0, x: -5 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{
+                              delay: index * 0.05 + 0.15,
+                              duration: 0.35,
+                            }}
+                          >
                             {file.name}
-                          </p>
-                          <div className="flex items-center gap-3 mt-1">
-                            <p className="text-xs text-neutral-500">
+                          </motion.p>
+                          <motion.div
+                            className="flex items-center gap-3 mt-1"
+                            initial={{ opacity: 0, x: -5 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{
+                              delay: index * 0.05 + 0.2,
+                              duration: 0.35,
+                            }}
+                          >
+                            <motion.p
+                              className="text-xs text-neutral-500"
+                              initial={{ scale: 0.95 }}
+                              animate={{ scale: 1 }}
+                              transition={{
+                                delay: index * 0.05 + 0.25,
+                                type: "spring",
+                                stiffness: 300,
+                                damping: 20,
+                              }}
+                            >
                               {formatFileSize(file.size)}
-                            </p>
+                            </motion.p>
                             <span className="text-xs text-neutral-600">•</span>
                             <p className="text-xs text-neutral-500 capitalize">
                               {file.type.split("/")[0] || "file"}
                             </p>
-                          </div>
+                          </motion.div>
                         </div>
 
                         {/* Remove Button */}
                         <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          whileHover={{
+                            scale: 1.15,
+                            rotate: 90,
+                          }}
+                          whileTap={{ scale: 0.85 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 350,
+                            damping: 18,
+                          }}
                           onClick={() => removeFile(index)}
-                          className="w-8 h-8 rounded-full bg-neutral-800 hover:bg-red-500/20 border border-neutral-700 hover:border-red-500/30 flex items-center justify-center transition-colors group"
+                          className="w-8 h-8 rounded-full bg-neutral-800 hover:bg-red-500/20 border border-neutral-700 hover:border-red-500/30 flex items-center justify-center transition-colors"
                         >
                           <X className="w-4 h-4 text-neutral-400 group-hover:text-red-400 transition-colors" />
                         </motion.button>
