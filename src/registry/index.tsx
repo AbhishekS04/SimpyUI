@@ -36,6 +36,7 @@ import MarqueeCode from './marquee/marquee.tsx?raw'
 import TextAnimateCode from './text-animate/text-animate.tsx?raw'
 import TiltCardCode from './tilt-card/tilt-card.tsx?raw'
 import MagneticButtonCode from './magnetic-button/magnetic-button.tsx?raw'
+import FileUploadCode from './file-upload/file-upload.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -61,6 +62,7 @@ import MarqueeDemoCode from './marquee/marquee.demo.tsx?raw'
 import TextAnimateDemoCode from './text-animate/text-animate.demo.tsx?raw'
 import TiltCardDemoCode from './tilt-card/tilt-card.demo.tsx?raw'
 import MagneticButtonDemoCode from './magnetic-button/magnetic-button.demo.tsx?raw'
+import FileUploadDemoCode from './file-upload/file-upload.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -85,6 +87,7 @@ const MarqueeDemo = lazy(() => import('./marquee/marquee.demo'))
 const TextAnimateDemo = lazy(() => import('./text-animate/text-animate.demo'))
 const TiltCardDemo = lazy(() => import('./tilt-card/tilt-card.demo'))
 const MagneticButtonDemo = lazy(() => import('./magnetic-button/magnetic-button.demo'))
+const FileUploadDemo = lazy(() => import('./file-upload/file-upload.demo'))
 
 /* ── Registry entry type ── */
 
@@ -120,6 +123,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   // ─── INPUTS ───────────────────────────────────
   { name: 'Input',     slug: 'input',     category: 'Inputs',       description: 'Styled text input with label and error states.',        component: demo(InputDemo),     code: InputCode, demoCode: InputDemoCode },
   { name: 'Toggle',    slug: 'toggle',    category: 'Inputs',       description: 'Smooth animated toggle switch.',                       component: demo(ToggleDemo),    code: ToggleCode, demoCode: ToggleDemoCode },
+  { name: 'File Upload', slug: 'file-upload', category: 'Inputs', description: 'Drag-and-drop file upload with preview and animation.', component: demo(FileUploadDemo), code: FileUploadCode, demoCode: FileUploadDemoCode },
 
   // ─── DATA DISPLAY ─────────────────────────────
   { name: 'Accordion', slug: 'accordion', category: 'Data Display', description: 'Collapsible content sections with smooth animations.',  component: demo(AccordionDemo), code: AccordionCode, demoCode: AccordionDemoCode },
