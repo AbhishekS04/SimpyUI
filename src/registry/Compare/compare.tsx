@@ -107,62 +107,43 @@ export function Compare({
                 )}
             </div>
 
-            {/* Slider Handle */}
+            {/* Centered Glass Slider Handle */}
             <motion.div
-                className="absolute top-0 bottom-0 w-1 cursor-ew-resize"
+                className="absolute top-1/2 left-0 w-full flex items-center justify-center pointer-events-none"
                 style={{
-                    left: `${sliderPosition}%`,
-                    transform: "translateX(-50%)",
-                }}
-                animate={{
-                    opacity: isDragging ? 1 : sliderPosition === 50 ? 0.7 : 1,
+                    transform: "translateY(-50%)",
+                    zIndex: 10,
                 }}
             >
-                {/* Slider Line */}
-                <div className="absolute inset-0 bg-white shadow-lg" />
-
-                {/* Slider Circle */}
+                {/* Vertical Line at sliderPosition */}
+                <div
+                    className="absolute h-full w-0.5 bg-gradient-to-b from-blue-500/80 to-purple-600/80 shadow-[0_0_20px_rgba(120,120,255,0.8)]"
+                    style={{ left: `calc(${sliderPosition}% - 1px)` }}
+                />
+                {/* Glass Handle Centered */}
                 <motion.div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center border-4 border-neutral-900"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
+                    className="w-12 h-24 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_0_40px_rgba(120,120,255,0.35)] flex items-center justify-center pointer-events-auto"
+                    initial={{ scale: 1 }}
+                    whileHover={{ scale: 1.08, boxShadow: "0 0 48px 8px #6366f1AA, 0 0 8px 2px #fff" }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 20,
+                        bounce: 0.25,
+                        ease: [0.22, 1, 0.36, 1],
+                    }}
+                    style={{
+                        left: `calc(${sliderPosition}% - 24px)`,
+                        position: "absolute",
+                        top: "50%",
+                        transform: "translate(-50%, -50%)",
+                        zIndex: 20,
+                    }}
                 >
-                    {/* Left Arrow */}
-                    <svg
-                        className="absolute left-2 w-3 h-3 text-neutral-900"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={3}
-                            d="M15 19l-7-7 7-7"
-                        />
-                    </svg>
-
-                    {/* Right Arrow */}
-                    <svg
-                        className="absolute right-2 w-3 h-3 text-neutral-900"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={3}
-                            d="M9 5l7 7-7 7"
-                        />
-                    </svg>
+                    {/* Inner Grip */}
+                    <div className="w-[3px] h-10 bg-white/40 rounded-full" />
                 </motion.div>
-
-                {/* Top Triangle */}
-                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[10px] border-t-white" />
-
-                {/* Bottom Triangle */}
-                <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[10px] border-b-white" />
             </motion.div>
         </div>
     );
