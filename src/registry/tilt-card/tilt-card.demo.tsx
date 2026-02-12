@@ -5,7 +5,7 @@ import TiltCard from "./tilt-card"
 export default function TiltCardDemo() {
   return (
     <div className="flex items-center justify-center w-full">
-      <TiltCard className="w-[320px] cursor-pointer">
+      <TiltCard className="w-full max-w-[320px] cursor-pointer">
         <div className="p-8 flex flex-col gap-4">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white text-lg font-bold">
             S

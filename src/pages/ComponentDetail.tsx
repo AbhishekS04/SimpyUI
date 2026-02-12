@@ -635,7 +635,7 @@ export default function ComponentDetail() {
               className="absolute inset-0 flex items-center justify-center overflow-auto"
               data-lenis-prevent
             >
-              <div className="relative w-full h-full flex items-center justify-center p-8 md:p-16">
+              <div className="relative w-full h-full flex items-center justify-center p-4 sm:p-8 md:p-16">
                 {comp.component}
               </div>
             </motion.div>
@@ -660,8 +660,8 @@ export default function ComponentDetail() {
           }}
         >
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
-          <div className="p-6 sm:p-8 flex flex-col items-center justify-center min-h-[320px] sm:min-h-[380px] overflow-hidden">
-            <div className="flex flex-col items-center gap-4 w-full max-w-full overflow-x-auto">
+          <div className="p-4 sm:p-6 flex flex-col items-center justify-center min-h-[320px] sm:min-h-[380px] overflow-hidden">
+            <div className="flex flex-col items-center gap-4 w-full max-w-full overflow-hidden">
               {comp.component}
             </div>
           </div>

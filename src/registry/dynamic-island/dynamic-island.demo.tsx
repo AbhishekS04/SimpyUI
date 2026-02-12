@@ -1,6 +1,5 @@
 "use client"
 
-import { motion } from "framer-motion"
 import { DynamicIslandProvider, useDynamicIsland, type IslandMode } from './dynamic-island'
 import DynamicIsland from './dynamic-island'
 
@@ -48,10 +47,8 @@ const FloatingControls = () => {
     }
 
     return (
-        <motion.div
-            drag
-            dragMomentum={false}
-            className="absolute bottom-6 right-6 bg-[#1c1c1e] border border-white/5 shadow-2xl rounded-[32px] p-5 z-50 cursor-grab active:cursor-grabbing w-[300px]"
+        <div
+            className="relative sm:absolute sm:bottom-6 sm:right-6 bg-[#1c1c1e] border border-white/5 shadow-2xl rounded-[24px] sm:rounded-[32px] p-4 sm:p-5 z-50 w-full sm:w-[300px] mt-6 sm:mt-0"
         >
             <div className="flex items-center justify-between mb-5 px-1">
                 <div className="flex items-center gap-2 opacity-40">
@@ -65,7 +62,7 @@ const FloatingControls = () => {
             </div>
 
             <div className="flex flex-col gap-3">
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     <ControlButton label="idle" onClick={() => setMode('idle')} isActive={mode === 'idle'} />
                     <ControlButton label="ring" onClick={toggleRingSilent} isActive={mode === 'ring' || mode === 'silent'} />
                     <ControlButton label="timer" onClick={() => set('timer')} isActive={mode === 'timer'} />
@@ -81,15 +78,17 @@ const FloatingControls = () => {
                     <ControlButton label="phone" onClick={() => set('call')} isActive={mode === 'call'} />
                 </div>
             </div>
-        </motion.div>
+        </div>
     )
 }
 
 export default function DynamicIslandDemo() {
     return (
         <DynamicIslandProvider>
-            <div className="relative w-full h-full min-h-[400px]">
-                <DynamicIsland />
+            <div className="relative w-full h-full min-h-[400px] flex flex-col items-center">
+                <div className="flex-1 w-full relative">
+                    <DynamicIsland />
+                </div>
                 <FloatingControls />
             </div>
         </DynamicIslandProvider>
