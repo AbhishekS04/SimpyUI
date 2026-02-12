@@ -38,6 +38,7 @@ import TiltCardCode from './tilt-card/tilt-card.tsx?raw'
 import MagneticButtonCode from './magnetic-button/magnetic-button.tsx?raw'
 import FileUploadCode from './file-upload/file-upload.tsx?raw'
 import DitherShaderCode from './DitherShader/dither-shader.tsx?raw'
+import Compare from './Compare/compare.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -65,6 +66,7 @@ import TiltCardDemoCode from './tilt-card/tilt-card.demo.tsx?raw'
 import MagneticButtonDemoCode from './magnetic-button/magnetic-button.demo.tsx?raw'
 import FileUploadDemoCode from './file-upload/file-upload.demo.tsx?raw'
 import DitherShaderDemoCode from './DitherShader/dither-shader.demo.tsx?raw'
+import CompareDemoCode from './Compare/compare.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -91,6 +93,7 @@ const TiltCardDemo = lazy(() => import('./tilt-card/tilt-card.demo'))
 const MagneticButtonDemo = lazy(() => import('./magnetic-button/magnetic-button.demo'))
 const FileUploadDemo = lazy(() => import('./file-upload/file-upload.demo'))
 const DitherShaderDemo = lazy(() => import('./DitherShader/dither-shader.demo'))
+const CompareDemo = lazy(() => import('./Compare/compare.demo'))
 
 /* ── Registry entry type ── */
 
@@ -151,4 +154,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Tilt Card', slug: 'tilt-card', category: 'Animation', description: '3D perspective tilt card with glare spotlight on hover.', component: demo(TiltCardDemo), code: TiltCardCode, demoCode: TiltCardDemoCode },
   { name: 'Magnetic Button', slug: 'magnetic-button', category: 'Animation', description: 'Button that magnetically follows the cursor when nearby.', component: demo(MagneticButtonDemo), code: MagneticButtonCode, demoCode: MagneticButtonDemoCode },
   { name: 'Dither Shader', slug: 'dither-shader', category: 'Animation', description: 'Image dithering effect with multiple modes and color options.', component: demo(DitherShaderDemo), code: DitherShaderCode, demoCode: DitherShaderDemoCode },
+
+  // ─── UTILITY ──────────────────────────────────
+  { name: 'Compare', slug: 'compare', category: 'Utility', description: 'Image comparison slider component.', component: demo(CompareDemo), code: Compare, demoCode: CompareDemoCode },
 ]

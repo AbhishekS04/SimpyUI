@@ -278,6 +278,16 @@
       ],
       "dependencies": [],
       "internal": []
+    },
+    "compare": {
+      "name": "Compare",
+      "category": "Utility",
+      "description": "Image comparison slider component.",
+      "files": [
+        "Compare/compare.tsx"
+      ],
+      "dependencies": [],
+      "internal": []
     }
   }
 }
