@@ -7,7 +7,7 @@ export default function BackgroundGradientDemo() {
     <div>
       <BackgroundGradient className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-white dark:bg-zinc-900">
         <img
-          src="/jordans.webp"
+          src="https://github.com/AbhishekS04/SimpyUI/blob/main/public/jordans.webp?raw=true"
           alt="jordans"
           height="400"
           width="400"
