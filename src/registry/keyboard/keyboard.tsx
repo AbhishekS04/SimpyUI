@@ -507,7 +507,7 @@ export const Keyboard = ({
       <div
         ref={containerRef}
         className={cn(
-          "mx-auto w-fit [zoom:0.8] sm:[zoom:1.25] md:[zoom:1.5] lg:[zoom:1.75] xl:[zoom:2]",
+          "mx-auto w-fit [zoom:0.6] min-[400px]:[zoom:0.85] sm:[zoom:1.1] md:[zoom:1.5] lg:[zoom:1.75] xl:[zoom:2]",
           className,
         )}
       >
