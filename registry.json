@@ -288,6 +288,18 @@
       ],
       "dependencies": [],
       "internal": []
+    },
+    "background-paths": {
+      "name": "Background Paths",
+      "category": "Animation",
+      "description": "Animated SVG background with customizable paths and colors.",
+      "files": [
+        "Background-Paths/Background_paths.tsx"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "internal": []
     }
   }
 }
