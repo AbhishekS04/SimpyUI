@@ -157,7 +157,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Tilt Card', slug: 'tilt-card', category: 'Animation', description: '3D perspective tilt card with glare spotlight on hover.', component: demo(TiltCardDemo), code: TiltCardCode, demoCode: TiltCardDemoCode },
   { name: 'Magnetic Button', slug: 'magnetic-button', category: 'Animation', description: 'Button that magnetically follows the cursor when nearby.', component: demo(MagneticButtonDemo), code: MagneticButtonCode, demoCode: MagneticButtonDemoCode },
   { name: 'Dither Shader', slug: 'dither-shader', category: 'Animation', description: 'Image dithering effect with multiple modes and color options.', component: demo(DitherShaderDemo), code: DitherShaderCode, demoCode: DitherShaderDemoCode },
-  { name: 'Keyboard', slug: 'keyboard', category: 'Animation', description: 'Interactive MacBook-style keyboard with sound effects and keystroke preview.', component: demo(KeyboardDemo), code: KeyboardCode, demoCode: KeyboardDemoCode },
+  { name: 'Keyboard', slug: 'keyboard', category: 'Animation', description: 'A mac style keyboard component with mechanical keys sound effects.', component: demo(KeyboardDemo), code: KeyboardCode, demoCode: KeyboardDemoCode },
 
   // ─── UTILITY ──────────────────────────────────
   { name: 'Compare', slug: 'compare', category: 'Utility', description: 'Image comparison slider component.', component: demo(CompareDemo), code: Compare, demoCode: CompareDemoCode },

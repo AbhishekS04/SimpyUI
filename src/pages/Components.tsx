@@ -12,26 +12,21 @@ interface ComponentCardProps {
 function ComponentCard({ comp }: ComponentCardProps) {
   return (
     <Link to={`/components/${comp.slug}`} className="block group">
-      <div className="bg-[#0f0f0f] border border-white/[0.05] rounded-2xl overflow-hidden hover:border-white/[0.1] transition-all duration-300 hover:-translate-y-0.5">
+      <div className="bg-[#0f0f0f] border border-white/[0.05] rounded-3xl overflow-hidden hover:border-white/[0.1] transition-all duration-300">
         {/* Large Preview Area */}
-        <div className="relative aspect-[4/3] bg-[#080808] flex items-center justify-center overflow-hidden p-4 sm:p-6">
-          <div className="transform scale-[0.65] sm:scale-75 pointer-events-none select-none">
+        <div className="relative aspect-[4/3] bg-[#000] flex items-center justify-center overflow-hidden p-8 sm:p-10">
+          <div className="transform scale-[0.65] sm:scale-75 pointer-events-none select-none w-full flex items-center justify-center">
             {comp.component}
           </div>
-          {/* Top-right dot */}
-          <div className="absolute top-3 right-3 sm:top-3.5 sm:right-3.5 w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50" />
-          {/* Bottom gradient */}
-          <div className="absolute inset-x-0 bottom-0 h-12 sm:h-16 bg-gradient-to-t from-[#0f0f0f] to-transparent opacity-60" />
         </div>
-        {/* Name */}
-        <div className="px-4 py-3 sm:px-5 sm:py-4 flex items-center justify-between">
-          <span className="text-[12px] sm:text-[13px] font-medium text-white/70 group-hover:text-white transition-colors">
+        {/* Content */}
+        <div className="px-6 py-5 sm:px-8 sm:py-6 flex flex-col gap-2">
+          <h3 className="text-lg font-bold text-white tracking-tight">
             {comp.name}
-          </span>
-          <FiArrowRight
-            size={13}
-            className="text-white/0 group-hover:text-white/40 transition-all duration-200 group-hover:translate-x-0.5"
-          />
+          </h3>
+          <p className="text-sm text-neutral-400 leading-relaxed font-medium">
+            {comp.description}
+          </p>
         </div>
       </div>
     </Link>
@@ -56,10 +51,10 @@ export default function Components() {
   const hasSearch = search.trim().length > 0
   const filteredRegistry = hasSearch
     ? componentRegistry.filter(c =>
-        c.name.toLowerCase().includes(search.toLowerCase()) ||
-        c.description.toLowerCase().includes(search.toLowerCase()) ||
-        c.category.toLowerCase().includes(search.toLowerCase())
-      )
+      c.name.toLowerCase().includes(search.toLowerCase()) ||
+      c.description.toLowerCase().includes(search.toLowerCase()) ||
+      c.category.toLowerCase().includes(search.toLowerCase())
+    )
     : null
 
   return (
