@@ -416,6 +416,11 @@ export const DitherShader: React.FC<DitherShaderProps> = ({
         aria-label="Dithered image"
         role="img"
       />
+      <img
+        src={src}
+        alt="Dithered"
+        className={`w-full h-auto ${className ?? ""}`}
+      />
     </div>
   );
 };

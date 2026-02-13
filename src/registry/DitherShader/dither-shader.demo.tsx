@@ -13,7 +13,7 @@ export default function DitherShaderDemoDuotone() {
           primaryColor="#1e3a5f"
           secondaryColor="#f0e68c"
           threshold={0.45}
-          className="h-72 w-[400px] sm:h-80 sm:w-[500px]"
+          className="h-72 w-full max-w-xs sm:h-80 sm:w-[500px]"
         />
       </div>
     </div>
