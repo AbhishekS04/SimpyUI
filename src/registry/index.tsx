@@ -40,6 +40,7 @@ import FileUploadCode from './file-upload/file-upload.tsx?raw'
 import DitherShaderCode from './DitherShader/dither-shader.tsx?raw'
 import Compare from './Compare/compare.tsx?raw'
 import KeyboardCode from './keyboard/keyboard.tsx?raw'
+import BackgroundGradientCode from './background-gradient/background-gradient.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -69,6 +70,7 @@ import FileUploadDemoCode from './file-upload/file-upload.demo.tsx?raw'
 import DitherShaderDemoCode from './DitherShader/dither-shader.demo.tsx?raw'
 import CompareDemoCode from './Compare/compare.demo.tsx?raw'
 import KeyboardDemoCode from './keyboard/keyboard.demo.tsx?raw'
+import BackgroundGradientDemoCode from './background-gradient/background-gradient.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -97,6 +99,7 @@ const FileUploadDemo = lazy(() => import('./file-upload/file-upload.demo'))
 const DitherShaderDemo = lazy(() => import('./DitherShader/dither-shader.demo'))
 const CompareDemo = lazy(() => import('./Compare/compare.demo'))
 const KeyboardDemo = lazy(() => import('./keyboard/keyboard.demo'))
+const BackgroundGradientDemo = lazy(() => import('./background-gradient/background-gradient.demo'))
 
 /* ── Registry entry type ── */
 
@@ -158,6 +161,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Magnetic Button', slug: 'magnetic-button', category: 'Animation', description: 'Button that magnetically follows the cursor when nearby.', component: demo(MagneticButtonDemo), code: MagneticButtonCode, demoCode: MagneticButtonDemoCode },
   { name: 'Dither Shader', slug: 'dither-shader', category: 'Animation', description: 'Image dithering effect with multiple modes and color options.', component: demo(DitherShaderDemo), code: DitherShaderCode, demoCode: DitherShaderDemoCode },
   { name: 'Keyboard', slug: 'keyboard', category: 'Animation', description: 'A mac style keyboard component with mechanical keys sound effects.', component: demo(KeyboardDemo), code: KeyboardCode, demoCode: KeyboardDemoCode },
+  { name: 'Background Gradient', slug: 'background-gradient', category: 'Animation', description: 'Animated radial gradient background effect.', component: demo(BackgroundGradientDemo), code: BackgroundGradientCode, demoCode: BackgroundGradientDemoCode },
 
   // ─── UTILITY ──────────────────────────────────
   { name: 'Compare', slug: 'compare', category: 'Utility', description: 'Image comparison slider component.', component: demo(CompareDemo), code: Compare, demoCode: CompareDemoCode },

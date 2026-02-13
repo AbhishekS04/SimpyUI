@@ -289,12 +289,25 @@
       "dependencies": [],
       "internal": []
     },
-    "background-paths": {
-      "name": "Background Paths",
-      "category": "Animation",
-      "description": "Animated SVG background with customizable paths and colors.",
+    "keyboard": {
+      "name": "Keyboard",
+      "category": "Utility",
+      "description": "Interactive on-screen keyboard with sound and preview features.",
       "files": [
-        "Background-Paths/Background_paths.tsx"
+        "keyboard/keyboard.tsx"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "use-sound"
+      ],
+      "internal": []
+    },
+    "background-gradient": {
+      "name": "Background Gradient",
+      "category": "Animation",
+      "description": "Animated gradient background with smooth transitions.",
+      "files": [
+        "background-gradient/background-gradient.tsx"
       ],
       "dependencies": [
         "framer-motion"
