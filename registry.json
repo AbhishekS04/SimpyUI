@@ -337,6 +337,18 @@
         "framer-motion"
       ],
       "internal": []
+    },
+    "twostep": {
+      "name": "Two Step",
+      "category": "Inputs",
+      "description": "Two-step verification code input with auto-focus, paste support, and resend timer.",
+      "files": [
+        "Twostep/twostep.tsx"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "internal": []
     }
   }
 }
