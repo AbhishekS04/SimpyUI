@@ -41,6 +41,7 @@ import DitherShaderCode from './DitherShader/dither-shader.tsx?raw'
 import Compare from './Compare/compare.tsx?raw'
 import KeyboardCode from './keyboard/keyboard.tsx?raw'
 import BackgroundGradientCode from './background-gradient/background-gradient.tsx?raw'
+import DrawerCode from './drawer/drawer.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -71,6 +72,7 @@ import DitherShaderDemoCode from './DitherShader/dither-shader.demo.tsx?raw'
 import CompareDemoCode from './Compare/compare.demo.tsx?raw'
 import KeyboardDemoCode from './keyboard/keyboard.demo.tsx?raw'
 import BackgroundGradientDemoCode from './background-gradient/background-gradient.demo.tsx?raw'
+import DrawerDemoCode from './drawer/drawer.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -100,6 +102,7 @@ const DitherShaderDemo = lazy(() => import('./DitherShader/dither-shader.demo'))
 const CompareDemo = lazy(() => import('./Compare/compare.demo'))
 const KeyboardDemo = lazy(() => import('./keyboard/keyboard.demo'))
 const BackgroundGradientDemo = lazy(() => import('./background-gradient/background-gradient.demo'))
+const DrawerDemo = lazy(() => import('./drawer/drawer.demo'))
 
 /* ── Registry entry type ── */
 
@@ -150,6 +153,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
 
   // ─── OVERLAY ──────────────────────────────────
   { name: 'Tooltip', slug: 'tooltip', category: 'Overlay', description: 'Hover tooltip with multiple positions.', component: demo(TooltipDemo), code: TooltipCode, demoCode: TooltipDemoCode },
+  { name: 'Drawer', slug: 'drawer', category: 'Overlay', description: 'Slide-up drawer component for dialogs and menus.', component: demo(DrawerDemo), code: DrawerCode, demoCode: DrawerDemoCode },
 
   // ─── ANIMATION ────────────────────────────────
   { name: 'Social Stories', slug: 'social-stories', category: 'Animation', description: 'Instagram/LinkedIn-style stories viewer with progress bars, video support, and swipe navigation.', component: demo(SocialStoriesDemo), code: SocialStoriesCode, demoCode: SocialStoriesDemoCode },
