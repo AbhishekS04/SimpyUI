@@ -160,6 +160,18 @@
       ],
       "internal": []
     },
+    "drawer": {
+      "name": "Drawer",
+      "category": "Overlay",
+      "description": "Slide-up drawer component for dialogs and menus.",
+      "files": [
+        "drawer/drawer.tsx"
+      ],
+      "dependencies": [
+        "vaul"
+      ],
+      "internal": []
+    },
     "tooltip": {
       "name": "Tooltip",
       "category": "Overlay",
