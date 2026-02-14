@@ -9,10 +9,7 @@ export default function TwoStepDemo() {
 	const [error, setError] = useState('');
 	const phoneNumber = '62*****626';
 
-	// Focus first input on mount
-	useEffect(() => {
-		inputRefs.current[0]?.focus();
-	}, []);
+
 
 	// Handle code completion
 	useEffect(() => {
@@ -111,7 +108,6 @@ export default function TwoStepDemo() {
 							onChange={e => handleChange(idx, e.target.value)}
 							onKeyDown={e => handleKeyDown(idx, e)}
 							onPaste={handlePaste}
-							autoFocus={idx === 0}
 							aria-label={`Digit ${idx + 1}`}
 						/>
 					))}

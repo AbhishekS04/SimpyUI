@@ -8,9 +8,7 @@ export default function TwoStep({ phone = '62*****626', onComplete }: { phone?: 
 	const [resending, setResending] = useState(false);
 	const [error, setError] = useState('');
 
-	useEffect(() => {
-		inputRefs.current[0]?.focus();
-	}, []);
+
 
 	useEffect(() => {
 		const completeCode = code.join('');
@@ -102,7 +100,6 @@ export default function TwoStep({ phone = '62*****626', onComplete }: { phone?: 
 						onChange={e => handleChange(idx, e.target.value)}
 						onKeyDown={e => handleKeyDown(idx, e)}
 						onPaste={handlePaste}
-						autoFocus={idx === 0}
 						aria-label={`Digit ${idx + 1}`}
 					/>
 				))}
