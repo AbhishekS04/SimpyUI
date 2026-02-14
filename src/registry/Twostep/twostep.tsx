@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 
 const LOGO_URL = 'https://github.com/AbhishekS04/SimpyUI/blob/main/public/lock.png?raw=true';
 
-export default function TwoStep({ phone = '**********060', onComplete }: { phone?: string; onComplete?: (code: string) => void }) {
+export default function TwoStep({ phone = '62*****626', onComplete }: { phone?: string; onComplete?: (code: string) => void }) {
 	const [code, setCode] = useState(['', '', '', '', '']);
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 	const [resending, setResending] = useState(false);
