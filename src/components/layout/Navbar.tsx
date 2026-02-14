@@ -2,9 +2,31 @@ import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { FiGithub, FiStar } from 'react-icons/fi'
 import CommandPalette from './CommandPalette'
+import { useRef, useLayoutEffect, useState } from 'react'
 
 export default function Navbar() {
   const location = useLocation()
+  const homeRef = useRef(null)
+  const componentsRef = useRef(null)
+  const containerRef = useRef(null)
+  const [highlight, setHighlight] = useState({ left: 0, width: 0 })
+
+  useLayoutEffect(() => {
+    let activeRef = null
+    if (location.pathname === '/') {
+      activeRef = homeRef
+    } else if (location.pathname.startsWith('/components')) {
+      activeRef = componentsRef
+    }
+    if (activeRef && activeRef.current && containerRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect()
+      const activeRect = activeRef.current.getBoundingClientRect()
+      setHighlight({
+        left: activeRect.left - containerRect.left,
+        width: activeRect.width
+      })
+    }
+  }, [location.pathname])
 
   return (
     <motion.nav
@@ -22,23 +44,39 @@ export default function Navbar() {
         </Link>
 
         {/* Center Nav Links */}
-        <div className="flex items-center gap-0.5 sm:gap-1">
+        <div
+          className="relative flex items-center gap-0.5 sm:gap-1"
+          ref={containerRef}
+          style={{ minWidth: 120 }}
+        >
+          {/* Animated highlight */}
+          <motion.div
+            className="absolute top-0 left-0 h-full rounded-lg bg-white/20 z-0 pointer-events-none"
+            animate={{
+              left: highlight.left,
+              width: highlight.width
+            }}
+            transition={{ type: 'spring', stiffness: 220, damping: 28, mass: 0.7 }}
+            style={{ height: '100%' }}
+          />
           <Link
             to="/"
-            className={`px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-[13px] rounded-lg transition-all duration-200 ${
+            ref={homeRef}
+            className={`relative z-10 px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-[13px] rounded-lg transition-all duration-200 ${
               location.pathname === '/'
-                ? 'text-white bg-white/[0.06]'
-                : 'text-white/50 hover:text-white hover:bg-white/[0.04]'
+                ? 'text-white'
+                : 'text-white/50 hover:text-white'
             }`}
           >
             Home
           </Link>
           <Link
             to="/components"
-            className={`px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-[13px] rounded-lg transition-all duration-200 ${
+            ref={componentsRef}
+            className={`relative z-10 px-2.5 sm:px-3.5 py-1.5 text-xs sm:text-[13px] rounded-lg transition-all duration-200 ${
               location.pathname.startsWith('/components')
-                ? 'text-white bg-white/[0.06]'
-                : 'text-white/50 hover:text-white hover:bg-white/[0.04]'
+                ? 'text-white'
+                : 'text-white/50 hover:text-white'
             }`}
           >
             Components
