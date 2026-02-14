@@ -93,7 +93,7 @@ export default function TwoStep({ phone = '62*****626', onComplete }: { phone?: 
 						inputMode="numeric"
 						maxLength={1}
 						className={
-							'w-12 h-14 sm:w-14 sm:h-16 text-center text-2xl font-semibold rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#0D1117] focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ' +
+							'w-10 h-12 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-semibold rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#0D1117] focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 ' +
 							(digit ? 'text-blue-500' : 'text-gray-400')
 						}
 						value={digit}
