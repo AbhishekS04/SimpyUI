@@ -7,7 +7,7 @@ export default function TwoStepDemo() {
 	const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 	const [resending, setResending] = useState(false);
 	const [error, setError] = useState('');
-	const phoneNumber = '**********060';
+	const phoneNumber = '62*****626';
 
 	// Focus first input on mount
 	useEffect(() => {
