@@ -325,6 +325,18 @@
         "framer-motion"
       ],
       "internal": []
+    },
+    "AI-Prompt-Box": {
+      "name": "AI Prompt Box",
+      "category": "Inputs",
+      "description": "Styled input box for AI prompts with submit animation.",
+      "files": [
+        "AI-Prompt-Box/AI-Prompt-Box.tsx"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "internal": []
     }
   }
 }

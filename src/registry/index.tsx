@@ -42,6 +42,7 @@ import Compare from './Compare/compare.tsx?raw'
 import KeyboardCode from './keyboard/keyboard.tsx?raw'
 import BackgroundGradientCode from './background-gradient/background-gradient.tsx?raw'
 import DrawerCode from './drawer/drawer.tsx?raw'
+import AIPromptBoxCode from './AI-Prompt-Box/ai-prompt-box.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -73,6 +74,7 @@ import CompareDemoCode from './Compare/compare.demo.tsx?raw'
 import KeyboardDemoCode from './keyboard/keyboard.demo.tsx?raw'
 import BackgroundGradientDemoCode from './background-gradient/background-gradient.demo.tsx?raw'
 import DrawerDemoCode from './drawer/drawer.demo.tsx?raw'
+import AIPromptBoxDemoCode from './AI-Prompt-Box/ai-prompt-box.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -103,6 +105,7 @@ const CompareDemo = lazy(() => import('./Compare/compare.demo'))
 const KeyboardDemo = lazy(() => import('./keyboard/keyboard.demo'))
 const BackgroundGradientDemo = lazy(() => import('./background-gradient/background-gradient.demo'))
 const DrawerDemo = lazy(() => import('./drawer/drawer.demo'))
+const AIPromptBoxDemo = lazy(() => import('./AI-Prompt-Box/ai-prompt-box.demo'))
 
 /* ── Registry entry type ── */
 
@@ -139,6 +142,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Input', slug: 'input', category: 'Inputs', description: 'Styled text input with label and error states.', component: demo(InputDemo), code: InputCode, demoCode: InputDemoCode },
   { name: 'Toggle', slug: 'toggle', category: 'Inputs', description: 'Smooth animated toggle switch.', component: demo(ToggleDemo), code: ToggleCode, demoCode: ToggleDemoCode },
   { name: 'File Upload', slug: 'file-upload', category: 'Inputs', description: 'Drag-and-drop file upload with preview and animation.', component: demo(FileUploadDemo), code: FileUploadCode, demoCode: FileUploadDemoCode },
+  { name: 'AI Prompt Box', slug: 'ai-prompt-box', category: 'Inputs', description: 'ChatGPT-style prompt input with file uploads, voice recording, and AI mode toggles.', component: demo(AIPromptBoxDemo), code: AIPromptBoxCode, demoCode: AIPromptBoxDemoCode },
 
   // ─── DATA DISPLAY ─────────────────────────────
   { name: 'Accordion', slug: 'accordion', category: 'Data Display', description: 'Collapsible content sections with smooth animations.', component: demo(AccordionDemo), code: AccordionCode, demoCode: AccordionDemoCode },
