@@ -43,7 +43,8 @@ import KeyboardCode from './keyboard/keyboard.tsx?raw'
 import BackgroundGradientCode from './background-gradient/background-gradient.tsx?raw'
 import DrawerCode from './drawer/drawer.tsx?raw'
 import AIPromptBoxCode from './AI-Prompt-Box/ai-prompt-box.tsx?raw'
-import TwoStep from './Twostep/twostep'
+import TwoStepCode from './Twostep/twostep.tsx?raw'
+import TwoStep from './Twostep/twostep.demo.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -146,7 +147,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Toggle', slug: 'toggle', category: 'Inputs', description: 'Smooth animated toggle switch.', component: demo(ToggleDemo), code: ToggleCode, demoCode: ToggleDemoCode },
   { name: 'File Upload', slug: 'file-upload', category: 'Inputs', description: 'Drag-and-drop file upload with preview and animation.', component: demo(FileUploadDemo), code: FileUploadCode, demoCode: FileUploadDemoCode },
   { name: 'AI Prompt Box', slug: 'ai-prompt-box', category: 'Inputs', description: 'ChatGPT-style prompt input with file uploads, voice recording, and AI mode toggles.', component: demo(AIPromptBoxDemo), code: AIPromptBoxCode, demoCode: AIPromptBoxDemoCode },
-{ name: 'Two Step', slug: 'twostep', category: 'Inputs', description: 'Two-step verification code input with auto-focus, paste support, and resend timer.', component: demo(TwoStepDemo), code: TwoStep, demoCode: TwoStepDemoCode },
+{ name: 'Two Step', slug: 'twostep', category: 'Inputs', description: 'Two-step verification code input with auto-focus, paste support, and resend timer.', component: demo(TwoStepDemo), code: TwoStepCode, demoCode: TwoStepDemoCode },
   // ─── DATA DISPLAY ─────────────────────────────
   { name: 'Accordion', slug: 'accordion', category: 'Data Display', description: 'Collapsible content sections with smooth animations.', component: demo(AccordionDemo), code: AccordionCode, demoCode: AccordionDemoCode },
   { name: 'Tabs', slug: 'tabs', category: 'Data Display', description: 'Animated tab navigation with smooth underline indicator.', component: demo(TabsDemo), code: TabsCode, demoCode: TabsDemoCode },
