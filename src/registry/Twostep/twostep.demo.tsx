@@ -73,7 +73,7 @@ export default function TwoStepDemo() {
 	};
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4">
+		<div className="min-h-screen flex items-center justify-center py-12 px-4">
 			<div className="bg-white dark:bg-[#161B22] border border-gray-200 dark:border-gray-800 p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-md">
 				{/* Mac-style window controls */}
 				<div className="flex gap-2 mb-6">
