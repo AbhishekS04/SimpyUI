@@ -387,6 +387,20 @@
         "framer-motion"
       ],
       "internal": []
+    },
+    "social-card": {
+      "name": "Social Card",
+      "category": "Data Display",
+      "description": "Profile card with social media links and icons.",
+      "files": [
+        "social-card/social-card.tsx",
+        "social-card/social-card.demo.tsx"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "react-icons"
+      ],
+      "internal": []
     }
   }
 }
