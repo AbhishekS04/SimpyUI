@@ -375,6 +375,18 @@
         "lucide-react"
       ],
       "internal": []
+    },
+    "orbit": {
+      "name": "Orbit",
+      "category": "Animation",
+      "description": "Animated orbit visualization with planets.",
+      "files": [
+        "orbit/orbit.tsx"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "internal": []
     }
   }
 }

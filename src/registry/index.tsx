@@ -1,3 +1,4 @@
+
 /*
  * =============================================
  *  SIMPY UI - COMPONENT REGISTRY
@@ -48,6 +49,7 @@ import TwoStepCode from './Twostep/twostep.tsx?raw'
 import TwoStep from './Twostep/twostep.demo.tsx?raw'
 import FolderPreviewCode from './Folder-preview/Folder-preview.tsx?raw'
 import FolderPreviewDemoCode from './Folder-preview/Folder-preview.demo.tsx?raw'
+import OrbitCode from './orbit/orbit.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -84,6 +86,7 @@ import DrawerDemoCode from './drawer/drawer.demo.tsx?raw'
 import AIPromptBoxDemoCode from './AI-Prompt-Box/ai-prompt-box.demo.tsx?raw'
 import TwoStepDemoCode from './Twostep/twostep.demo.tsx?raw'
 const FolderPreviewDemo = lazy(() => import('./Folder-preview/Folder-preview.demo'))
+import OrbitDemoCode from './orbit/orbit.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -116,7 +119,7 @@ const BackgroundGradientDemo = lazy(() => import('./background-gradient/backgrou
 const DrawerDemo = lazy(() => import('./drawer/drawer.demo'))
 const AIPromptBoxDemo = lazy(() => import('./AI-Prompt-Box/ai-prompt-box.demo'))
 const TwoStepDemo = lazy(() => import('./Twostep/twostep.demo'))
-
+const OrbitDemo = lazy(() => import('./orbit/orbit.demo'))
 
 /* ── Registry entry type ── */
 
@@ -182,6 +185,9 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Dither Shader', slug: 'dither-shader', category: 'Animation', description: 'Image dithering effect with multiple modes and color options.', component: demo(DitherShaderDemo), code: DitherShaderCode, demoCode: DitherShaderDemoCode },
   { name: 'Keyboard', slug: 'keyboard', category: 'Animation', description: 'A mac style keyboard component with mechanical keys sound effects.', component: demo(KeyboardDemo), code: KeyboardCode, demoCode: KeyboardDemoCode },
   { name: 'Background Gradient', slug: 'background-gradient', category: 'Animation', description: 'Animated radial gradient background effect.', component: demo(BackgroundGradientDemo), code: BackgroundGradientCode, demoCode: BackgroundGradientDemoCode },
+
+  // ─── VISUALIZATION ──────────────────────────
+  { name: 'Orbit', slug: 'orbit', category: 'Visualization', description: 'Animated orbit visualization with planets, inspired by Inspira UI.', component: demo(OrbitDemo), code: OrbitCode, demoCode: OrbitDemoCode },
 
   // ─── UTILITY ──────────────────────────────────
   { name: 'Compare', slug: 'compare', category: 'Utility', description: 'Image comparison slider component.', component: demo(CompareDemo), code: Compare, demoCode: CompareDemoCode },
