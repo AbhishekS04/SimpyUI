@@ -38,7 +38,7 @@ const teamMembers = [
 	{
 		name: "Hulk",
 		role: "DevOps Engineer",
-		image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+		image: "https://github.com/AbhishekS04/SimpyUI/blob/main/public/Hulk.webp?raw=true",
 		twitter: "https://twitter.com",
 		linkedin: "https://linkedin.com",
 		github: "https://github.com",
