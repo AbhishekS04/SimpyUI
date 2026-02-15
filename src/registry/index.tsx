@@ -50,6 +50,7 @@ import TwoStep from './Twostep/twostep.demo.tsx?raw'
 import FolderPreviewCode from './Folder-preview/Folder-preview.tsx?raw'
 import FolderPreviewDemoCode from './Folder-preview/Folder-preview.demo.tsx?raw'
 import OrbitCode from './orbit/orbit.tsx?raw'
+import SocialCardCode from './social-card/social-card.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -87,6 +88,7 @@ import AIPromptBoxDemoCode from './AI-Prompt-Box/ai-prompt-box.demo.tsx?raw'
 import TwoStepDemoCode from './Twostep/twostep.demo.tsx?raw'
 const FolderPreviewDemo = lazy(() => import('./Folder-preview/Folder-preview.demo'))
 import OrbitDemoCode from './orbit/orbit.demo.tsx?raw'
+import SocialCardDemoCode from './social-card/social-card.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -120,7 +122,7 @@ const DrawerDemo = lazy(() => import('./drawer/drawer.demo'))
 const AIPromptBoxDemo = lazy(() => import('./AI-Prompt-Box/ai-prompt-box.demo'))
 const TwoStepDemo = lazy(() => import('./Twostep/twostep.demo'))
 const OrbitDemo = lazy(() => import('./orbit/orbit.demo'))
-
+const SocialCardDemo = lazy(() => import('./social-card/social-card.demo'))
 /* ── Registry entry type ── */
 
 export interface ComponentRegistryEntry {
@@ -146,6 +148,7 @@ function demo(Component: React.LazyExoticComponent<React.ComponentType>) {
 /* ── THE REGISTRY ── */
 export const componentRegistry: ComponentRegistryEntry[] = [
   // ─── GENERAL ──────────────────────────────────
+  { name: 'Social Card', slug: 'social-card', category: 'General', description: 'Interactive profile card with hover effects and social links.', component: demo(SocialCardDemo), code: SocialCardCode, demoCode: SocialCardDemoCode },
   { name: 'Button', slug: 'button', category: 'General', description: 'Animated button with multiple variants and sizes.', component: demo(ButtonDemo), code: ButtonCode, demoCode: ButtonDemoCode },
   { name: 'Card', slug: 'card', category: 'General', description: 'Versatile card container with hover and glow effects.', component: demo(CardDemo), code: CardCode, demoCode: CardDemoCode },
   { name: 'Badge', slug: 'badge', category: 'General', description: 'Small status indicators with colorful variants.', component: demo(BadgeDemo), code: BadgeCode, demoCode: BadgeDemoCode },
@@ -159,6 +162,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Two Step', slug: 'twostep', category: 'Inputs', description: 'Two-step verification code input with auto-focus, paste support, and resend timer.', component: demo(TwoStepDemo), code: TwoStepCode, demoCode: TwoStepDemoCode },
   // ─── DATA DISPLAY ─────────────────────────────
   { name: 'Folder Preview', slug: 'folder-preview', category: 'Data Display', description: 'Folder/file preview card with icons.', component: demo(FolderPreviewDemo), code: FolderPreviewCode, demoCode: FolderPreviewDemoCode },
+  { name: 'Social Card', slug: 'social-card', category: 'Data Display', description: 'Animated profile card showing name, avatar, and social links on hover.', component: demo(SocialCardDemo), code: SocialCardCode, demoCode: SocialCardDemoCode },
   { name: 'Accordion', slug: 'accordion', category: 'Data Display', description: 'Collapsible content sections with smooth animations.', component: demo(AccordionDemo), code: AccordionCode, demoCode: AccordionDemoCode },
   { name: 'Tabs', slug: 'tabs', category: 'Data Display', description: 'Animated tab navigation with smooth underline indicator.', component: demo(TabsDemo), code: TabsCode, demoCode: TabsDemoCode },
   { name: 'Progress', slug: 'progress', category: 'Data Display', description: 'Animated progress bar with multiple colors and sizes.', component: demo(ProgressDemo), code: ProgressCode, demoCode: ProgressDemoCode },
