@@ -4,7 +4,7 @@ import { TeamCarousel } from "./team-carousel";
 
 const teamMembers = [
 	{
-		name: "Alice Johnson",
+		name: "Spiderman",
 		role: "Frontend Developer",
 		image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
 		twitter: "https://twitter.com",
@@ -12,7 +12,7 @@ const teamMembers = [
 		github: "https://github.com",
 	},
 	{
-		name: "Bob Smith",
+		name: "Thor",
 		role: "Backend Developer",
 		image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
 		twitter: "https://twitter.com",
@@ -20,7 +20,7 @@ const teamMembers = [
 		github: "https://github.com",
 	},
 	{
-		name: "Carol Lee",
+		name: "Captain America",
 		role: "UI/UX Designer",
 		image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
 		twitter: "https://twitter.com",
@@ -28,7 +28,7 @@ const teamMembers = [
 		github: "https://github.com",
 	},
 	{
-		name: "David Kim",
+		name: "Ironman",
 		role: "Project Manager",
 		image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
 		twitter: "https://twitter.com",
@@ -36,7 +36,7 @@ const teamMembers = [
 		github: "https://github.com",
 	},
 	{
-		name: "Eva Martin",
+		name: "Hulk",
 		role: "DevOps Engineer",
 		image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
 		twitter: "https://twitter.com",
