@@ -1,9 +1,13 @@
 "use client";
-import type * as React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+	motion,
+	useMotionTemplate,
+	useMotionValue,
+	useSpring,
+} from "framer-motion";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { useState } from "react";
 import { LuArrowUpRight } from "react-icons/lu";
 
 // Utility function to merge class names
@@ -18,7 +22,7 @@ interface SocialCardProps {
 	name: string;
 	pitch: string;
 	icon?: React.ReactNode;
-	buttons?: Array<{ label: string; icon?: React.ReactNode; link?: string; }>;
+	buttons?: Array<{ label: string; icon?: React.ReactNode; link?: string }>;
 }
 
 const SocialCard = ({
@@ -30,119 +34,145 @@ const SocialCard = ({
 	icon,
 	buttons,
 }: SocialCardProps) => {
-	const [isHovered, setHovered] = useState(false);
+	const mouseX = useMotionValue(0);
+	const mouseY = useMotionValue(0);
+
+	const onMouseMove = useCallback(
+		({ clientX, clientY, currentTarget }: React.MouseEvent) => {
+			const { left, top, width, height } =
+				currentTarget.getBoundingClientRect();
+			mouseX.set(clientX - left - width / 2);
+			mouseY.set(clientY - top - height / 2);
+		},
+		[mouseX, mouseY]
+	);
+
+	const onMouseLeave = useCallback(() => {
+		mouseX.set(0);
+		mouseY.set(0);
+	}, [mouseX, mouseY]);
+
+	const rotateX = useSpring(useMotionValue(0), {
+		stiffness: 150,
+		damping: 20,
+	});
+	const rotateY = useSpring(useMotionValue(0), {
+		stiffness: 150,
+		damping: 20,
+	});
+
+	useEffect(() => {
+		const unsubscribeX = mouseY.on("change", (latest) => {
+			rotateX.set((latest / 20) * -1); // Reverse logic for natural feel
+		});
+		const unsubscribeY = mouseX.on("change", (latest) => {
+			rotateY.set(latest / 20);
+		});
+
+		return () => {
+			unsubscribeX();
+			unsubscribeY();
+		};
+	}, [mouseX, mouseY, rotateX, rotateY]);
+
+	const bgStyle = useMotionTemplate`radial-gradient(
+    400px circle at ${mouseX}px ${mouseY}px,
+    rgba(255, 255, 255, 0.15),
+    transparent 80%
+  )`;
 
 	return (
 		<motion.div
 			className={cn(
-				"group relative h-[350px] w-[280px] overflow-hidden rounded-2xl p-0 md:w-[300px]",
-				"border border-neutral-200/60 bg-white/50 backdrop-blur-sm hover:cursor-pointer",
-				"dark:border-neutral-800/60 dark:bg-neutral-950/50",
-				"shadow-sm transition-shadow duration-300 hover:shadow-lg",
+				"group relative h-[450px] w-[320px] rounded-3xl transition-all duration-300",
+				"bg-neutral-900", // Dark mode default base
 				className
 			)}
-			initial={{ y: 20, opacity: 0 }}
-			animate={{ y: 0, opacity: 1 }}
-			whileHover={{ scale: 1.02 }}
-			onMouseEnter={() => setHovered(true)}
-			onMouseLeave={() => setHovered(false)}
+			onMouseMove={onMouseMove}
+			onMouseLeave={onMouseLeave}
+			style={{
+				transformStyle: "preserve-3d",
+				rotateX,
+				rotateY,
+			}}
 		>
-			<div className="relative mb-2 p-6 pb-4">
-				<div className="flex items-start justify-between">
-					<div className="flex-1">
-						<div className="mb-1 flex items-center gap-3">
-							<div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400">
-								{icon}
-							</div>
-							<div className="h-px flex-1 bg-gradient-to-r from-neutral-200 to-transparent dark:from-neutral-800"></div>
+			{/* Gradient Border & Glow Effect */}
+			<div
+				className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+				style={{
+					background:
+						"radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255,255,255,0.1), transparent 40%)",
+					zIndex: 0,
+				}}
+			/>
+			<motion.div
+				className="absolute inset-0 rounded-3xl opacity-0 duration-500 group-hover:opacity-100"
+				style={{ background: bgStyle }}
+			/>
+
+			{/* Card Content Container */}
+			<div className="absolute inset-[1px] flex flex-col items-center justify-between overflow-hidden rounded-[23px] bg-neutral-950 p-6 shadow-2xl">
+				{/* Background Noise/Texture */}
+				<div className="pointer-events-none absolute inset-0 opacity-20 contrast-125 grayscale filter bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+
+				{/* Header / Top Section */}
+				<div className="relative z-10 flex w-full flex-col items-center pt-8">
+					<div className="relative">
+						<motion.div
+							initial={false}
+							animate={{ y: 0 }}
+							whileHover={{ y: -5, scale: 1.05 }}
+							transition={{ type: "spring", stiffness: 300, damping: 20 }}
+							className="relative h-24 w-24 overflow-hidden rounded-full border-4 border-neutral-800 shadow-2xl"
+						>
+							<img
+								src={image}
+								alt={title}
+								className="h-full w-full object-cover"
+							/>
+						</motion.div>
+						<div className="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg ring-4 ring-neutral-950">
+							{icon}
 						</div>
-						<h3 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100">
+					</div>
+
+					<div className="mt-4 text-center">
+						<h3 className="text-2xl font-bold tracking-tight text-white">
 							{title}
 						</h3>
-						<div className="mt-1 h-0.5 w-12 bg-gradient-to-r from-neutral-400 to-neutral-200 dark:from-neutral-600 dark:to-neutral-800"></div>
+						<p className="text-sm font-medium text-neutral-400">{name}</p>
 					</div>
 				</div>
 
-				{isHovered && (
-					<>
-						<motion.img
-							src={image}
-							alt={title}
-							className="absolute right-4 top-6 h-[72px] w-[72px] rounded-sm shadow-lg ring-2 ring-white dark:ring-neutral-900"
-							width={500}
-							height={500}
-							layoutId="card-image"
-							transition={{ duration: 0.3, ease: "circIn" }}
-						/>
-						<motion.div
-							className="absolute right-[14px] top-[21px] h-[78px] w-[77px] rounded-sm border border-dashed border-neutral-400/80 bg-transparent dark:border-neutral-600/80"
-							initial={{ opacity: 0, scale: 1.6, filter: "blur(4px)" }}
-							animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-							transition={{ delay: 0.35, duration: 0.15, ease: "circIn" }}
-						/>
-					</>
-				)}
-			</div>
-
-			<div className="mb-4 flex flex-col items-center px-6">
-				{!isHovered && (
-					<>
-						<motion.img
-							src={image}
-							alt={title}
-							className="h-[130px] w-[130px] rounded-2xl border-4 border-white shadow-xl ring-1 ring-neutral-200/50 dark:border-neutral-900 dark:ring-neutral-800/50"
-							width={500}
-							height={500}
-							layoutId="card-image"
-							transition={{ duration: 0.3, ease: "circIn" }}
-						/>
-						<div className="mt-4 text-center">
-							<h4 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
-								{name}
-							</h4>
-						</div>
-					</>
-				)}
-			</div>
-
-			<motion.div
-				className="absolute bottom-0 left-0 right-0 rounded-t-2xl border-t border-neutral-200/80 bg-white/95 px-6 pb-5 pt-3 backdrop-blur-sm dark:border-neutral-800/80 dark:bg-neutral-950/95"
-				initial={{ y: "100%" }}
-				animate={{
-					y: isHovered ? 0 : "calc(100% - 43px)",
-				}}
-				transition={{ duration: 0.3, ease: "easeInOut" }}
-			>
-				<div className="text-neutral-900 dark:text-neutral-100">
-					<div className="mb-2 flex items-center justify-between text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-						<span>Connect with me</span>
-						<span>
-							<LuArrowUpRight />
-						</span>
-					</div>
-					<p className="mb-4 text-xs font-medium leading-relaxed text-neutral-600 dark:text-neutral-400">
+				{/* Middle Section - Pitch */}
+				<div className="relative z-10 px-2 py-4">
+					<p className="text-center text-sm leading-relaxed text-neutral-300">
 						{pitch}
 					</p>
-					<div className="space-y-2">
-						{buttons?.map((button, index) => (
-							<a
-								target="_blank"
-								href={button.link ?? ""}
-								key={index}
-								className="flex w-full items-center gap-3 rounded-xl border border-neutral-200/60 bg-neutral-50/80 px-4 py-3 text-sm font-medium text-neutral-700 transition-all duration-200 hover:border-neutral-300 hover:bg-neutral-100/80 hover:text-neutral-900 dark:border-neutral-800/60 dark:bg-neutral-900/80 dark:text-neutral-300 dark:hover:border-neutral-700 dark:hover:bg-neutral-800/80 dark:hover:text-neutral-100"
-								rel="noopener noreferrer"
-							>
-								<span className="flex h-5 w-5 items-center justify-center text-neutral-500 dark:text-neutral-400">
-									{button.icon}
-								</span>
-								{button.label}
-							</a>
-						))}
-					</div>
 				</div>
-			</motion.div>
+
+				{/* Bottom Section - Actions */}
+				<div className="relative z-10 w-full space-y-3 pb-2 transition-all duration-300 ease-out group-hover:translate-y-0">
+					{buttons?.map((button, index) => (
+						<a
+							key={index}
+							href={button.link}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="group/btn relative flex w-full items-center justify-between rounded-xl bg-neutral-900 px-4 py-3 transition-colors hover:bg-neutral-800"
+						>
+							<span className="flex items-center gap-3 text-sm font-medium text-neutral-300 group-hover/btn:text-white">
+								{button.icon}
+								{button.label}
+							</span>
+							<LuArrowUpRight className="text-neutral-500 transition-transform group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5 group-hover/btn:text-white" />
+						</a>
+					))}
+				</div>
+			</div>
 		</motion.div>
 	);
 };
 
 export default SocialCard;
+
