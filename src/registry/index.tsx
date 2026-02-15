@@ -155,7 +155,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'AI Prompt Box', slug: 'ai-prompt-box', category: 'Inputs', description: 'ChatGPT-style prompt input with file uploads, voice recording, and AI mode toggles.', component: demo(AIPromptBoxDemo), code: AIPromptBoxCode, demoCode: AIPromptBoxDemoCode },
   { name: 'Two Step', slug: 'twostep', category: 'Inputs', description: 'Two-step verification code input with auto-focus, paste support, and resend timer.', component: demo(TwoStepDemo), code: TwoStepCode, demoCode: TwoStepDemoCode },
   // ─── DATA DISPLAY ─────────────────────────────
-  { name: 'Folder Preview', slug: 'folder-preview', category: 'Data Display', description: 'Folder/file preview card with icons, inspired by VengenceUI.', component: demo(FolderPreviewDemo), code: FolderPreviewCode, demoCode: FolderPreviewDemoCode },
+  { name: 'Folder Preview', slug: 'folder-preview', category: 'Data Display', description: 'Folder/file preview card with icons.', component: demo(FolderPreviewDemo), code: FolderPreviewCode, demoCode: FolderPreviewDemoCode },
   { name: 'Accordion', slug: 'accordion', category: 'Data Display', description: 'Collapsible content sections with smooth animations.', component: demo(AccordionDemo), code: AccordionCode, demoCode: AccordionDemoCode },
   { name: 'Tabs', slug: 'tabs', category: 'Data Display', description: 'Animated tab navigation with smooth underline indicator.', component: demo(TabsDemo), code: TabsCode, demoCode: TabsDemoCode },
   { name: 'Progress', slug: 'progress', category: 'Data Display', description: 'Animated progress bar with multiple colors and sizes.', component: demo(ProgressDemo), code: ProgressCode, demoCode: ProgressDemoCode },
