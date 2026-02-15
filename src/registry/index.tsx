@@ -31,6 +31,7 @@ import ToastCode from './toast/toast.tsx?raw'
 import AlertCode from './alert/alert.tsx?raw'
 import TooltipCode from './tooltip/tooltip.tsx?raw'
 import SocialStoriesCode from './social-stories/social-stories.tsx?raw'
+import SocialFlipButtonCode from './Social-flip-button/Social-flip-button.tsx?raw'
 import DockCode from './dock/dock.tsx?raw'
 import MarqueeCode from './marquee/marquee.tsx?raw'
 import TextAnimateCode from './text-animate/text-animate.tsx?raw'
@@ -63,6 +64,8 @@ import ToastDemoCode from './toast/toast.demo.tsx?raw'
 import AlertDemoCode from './alert/alert.demo.tsx?raw'
 import TooltipDemoCode from './tooltip/tooltip.demo.tsx?raw'
 import SocialStoriesDemoCode from './social-stories/social-stories.demo.tsx?raw'
+import SocialFlipButtonDemoCode from './Social-flip-button/Social-flip-button.demo.tsx?raw'
+const SocialFlipButtonDemo = lazy(() => import('./Social-flip-button/Social-flip-button.demo'))
 import DynamicIslandCode from './dynamic-island/dynamic-island.tsx?raw'
 import DynamicIslandDemoCode from './dynamic-island/dynamic-island.demo.tsx?raw'
 import DockDemoCode from './dock/dock.demo.tsx?raw'
@@ -171,6 +174,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Text Animate', slug: 'text-animate', category: 'Animation', description: 'Letter-by-letter and word-by-word text reveal animations.', component: demo(TextAnimateDemo), code: TextAnimateCode, demoCode: TextAnimateDemoCode },
   { name: 'Tilt Card', slug: 'tilt-card', category: 'Animation', description: '3D perspective tilt card with glare spotlight on hover.', component: demo(TiltCardDemo), code: TiltCardCode, demoCode: TiltCardDemoCode },
   { name: 'Magnetic Button', slug: 'magnetic-button', category: 'Animation', description: 'Button that magnetically follows the cursor when nearby.', component: demo(MagneticButtonDemo), code: MagneticButtonCode, demoCode: MagneticButtonDemoCode },
+  { name: 'Social Flip Button', slug: 'social-flip-button', category: 'Animation', description: 'Button that flips to reveal social media icons on hover.', component: demo(SocialFlipButtonDemo), code: SocialFlipButtonCode, demoCode: SocialFlipButtonDemoCode },
   { name: 'Dither Shader', slug: 'dither-shader', category: 'Animation', description: 'Image dithering effect with multiple modes and color options.', component: demo(DitherShaderDemo), code: DitherShaderCode, demoCode: DitherShaderDemoCode },
   { name: 'Keyboard', slug: 'keyboard', category: 'Animation', description: 'A mac style keyboard component with mechanical keys sound effects.', component: demo(KeyboardDemo), code: KeyboardCode, demoCode: KeyboardDemoCode },
   { name: 'Background Gradient', slug: 'background-gradient', category: 'Animation', description: 'Animated radial gradient background effect.', component: demo(BackgroundGradientDemo), code: BackgroundGradientCode, demoCode: BackgroundGradientDemoCode },

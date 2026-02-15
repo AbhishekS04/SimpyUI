@@ -349,6 +349,19 @@
         "framer-motion"
       ],
       "internal": []
+    },
+    "Social-flip-button": {
+      "name": "Social Flip Button",
+      "category": "Animation",
+      "description": "Button that flips to reveal social media icons on hover.",
+      "files": [
+        "Social-flip-button/Social-flip-button.tsx"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "internal": []
     }
   }
 }
