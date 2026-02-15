@@ -20,7 +20,7 @@ interface TeamCarouselProps {
 
 export const TeamCarousel: React.FC<TeamCarouselProps> = ({
 	members,
-	autoPlay = true,
+	autoPlay = false,
 	interval = 3000
 }) => {
 	const [current, setCurrent] = useState(0);
