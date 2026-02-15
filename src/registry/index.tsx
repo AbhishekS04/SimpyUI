@@ -51,6 +51,7 @@ import FolderPreviewCode from './Folder-preview/Folder-preview.tsx?raw'
 import FolderPreviewDemoCode from './Folder-preview/Folder-preview.demo.tsx?raw'
 import OrbitCode from './orbit/orbit.tsx?raw'
 import SocialCardCode from './social-card/social-card.tsx?raw'
+import TeamCarouselCode from './team-carousel/team-carousel.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -86,9 +87,9 @@ import BackgroundGradientDemoCode from './background-gradient/background-gradien
 import DrawerDemoCode from './drawer/drawer.demo.tsx?raw'
 import AIPromptBoxDemoCode from './AI-Prompt-Box/ai-prompt-box.demo.tsx?raw'
 import TwoStepDemoCode from './Twostep/twostep.demo.tsx?raw'
-const FolderPreviewDemo = lazy(() => import('./Folder-preview/Folder-preview.demo'))
 import OrbitDemoCode from './orbit/orbit.demo.tsx?raw'
 import SocialCardDemoCode from './social-card/social-card.demo.tsx?raw'
+import TeamCarouselDemoCode from './team-carousel/team-carousel.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -123,6 +124,9 @@ const AIPromptBoxDemo = lazy(() => import('./AI-Prompt-Box/ai-prompt-box.demo'))
 const TwoStepDemo = lazy(() => import('./Twostep/twostep.demo'))
 const OrbitDemo = lazy(() => import('./orbit/orbit.demo'))
 const SocialCardDemo = lazy(() => import('./social-card/social-card.demo'))
+const FolderPreviewDemo = lazy(() => import('./Folder-preview/Folder-preview.demo'))
+const TeamCarouselDemo = lazy(() => import('./team-carousel/team-carousel.demo'))
+
 /* ── Registry entry type ── */
 
 export interface ComponentRegistryEntry {
@@ -152,7 +156,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Card', slug: 'card', category: 'General', description: 'Versatile card container with hover and glow effects.', component: demo(CardDemo), code: CardCode, demoCode: CardDemoCode },
   { name: 'Badge', slug: 'badge', category: 'General', description: 'Small status indicators with colorful variants.', component: demo(BadgeDemo), code: BadgeCode, demoCode: BadgeDemoCode },
   { name: 'Avatar', slug: 'avatar', category: 'General', description: 'User avatar with image support and fallback initials.', component: demo(AvatarDemo), code: AvatarCode, demoCode: AvatarDemoCode },
-
+  { name: 'Team Carousel', slug: 'team-carousel', category: 'General', description: 'Animated team member carousel with navigation controls.', component: demo(TeamCarouselDemo), code: TeamCarouselCode, demoCode: TeamCarouselDemoCode },
   // ─── INPUTS ───────────────────────────────────
   { name: 'Input', slug: 'input', category: 'Inputs', description: 'Styled text input with label and error states.', component: demo(InputDemo), code: InputCode, demoCode: InputDemoCode },
   { name: 'Toggle', slug: 'toggle', category: 'Inputs', description: 'Smooth animated toggle switch.', component: demo(ToggleDemo), code: ToggleCode, demoCode: ToggleDemoCode },
