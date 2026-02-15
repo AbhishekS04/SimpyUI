@@ -47,9 +47,6 @@ const teamMembers = [
 
 export default function TeamCarouselDemo() {
 	return (
-		<div className="min-h-screen w-full flex items-center justify-center overflow-hidden relative bg-black">
-			<div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-black/80 pointer-events-none z-0" />
 			<TeamCarousel members={teamMembers} />
-		</div>
 	);
 }
