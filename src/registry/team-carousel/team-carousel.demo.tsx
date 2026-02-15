@@ -22,7 +22,7 @@ const teamMembers = [
 	{
 		name: "Captain America",
 		role: "UI/UX Designer",
-		image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+		image: "https://github.com/AbhishekS04/SimpyUI/blob/main/public/cap.png?raw=true",
 		twitter: "https://twitter.com",
 		linkedin: "https://linkedin.com",
 		github: "https://github.com",
