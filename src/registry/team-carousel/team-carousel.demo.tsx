@@ -14,7 +14,7 @@ const teamMembers = [
 	{
 		name: "Thor",
 		role: "Backend Developer",
-		image: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+		image: "https://github.com/AbhishekS04/SimpyUI/blob/main/public/Thor.png?raw=true",
 		twitter: "https://twitter.com",
 		linkedin: "https://linkedin.com",
 		github: "https://github.com",
