@@ -16,13 +16,13 @@ const demoButtons = [
 ];
 
 const SocialCardDemo: React.FC = () => (
-	<div className="flex items-center justify-center min-h-[500px] w-full py-16 bg-neutral-100 dark:bg-neutral-900 perspective-[1000px]">
+	<div className="flex items-center justify-center min-h-screen w-full py-24">
 		<SocialCard
 			image="https://github.com/AbhishekS04/SimpyUI/blob/main/public/pikachu.jpeg?raw=true"
-			title="Tushar.dev"
+			title="tushardevx01"
 			name="Tushar kanti Dey"
-			pitch="Building digital experiences that matter. Full-stack developer passionate about UI/UX and performance."
-			icon={<FaGithub className="h-4 w-4" />}
+			pitch="Explore my latest projects and connect for collaboration opportunities"
+			icon={null} // Removed the Github logo
 			buttons={demoButtons}
 		/>
 	</div>

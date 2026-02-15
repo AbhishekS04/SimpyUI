@@ -131,9 +131,7 @@ const SocialCard = ({
 								className="h-full w-full object-cover"
 							/>
 						</motion.div>
-						<div className="absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg ring-4 ring-neutral-950">
-							{icon}
-						</div>
+						{/* Remove the blue circle */}
 					</div>
 
 					<div className="mt-4 text-center">
