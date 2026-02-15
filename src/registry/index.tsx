@@ -148,7 +148,6 @@ function demo(Component: React.LazyExoticComponent<React.ComponentType>) {
 /* ── THE REGISTRY ── */
 export const componentRegistry: ComponentRegistryEntry[] = [
   // ─── GENERAL ──────────────────────────────────
-  { name: 'Social Card', slug: 'social-card', category: 'General', description: 'Interactive profile card with hover effects and social links.', component: demo(SocialCardDemo), code: SocialCardCode, demoCode: SocialCardDemoCode },
   { name: 'Button', slug: 'button', category: 'General', description: 'Animated button with multiple variants and sizes.', component: demo(ButtonDemo), code: ButtonCode, demoCode: ButtonDemoCode },
   { name: 'Card', slug: 'card', category: 'General', description: 'Versatile card container with hover and glow effects.', component: demo(CardDemo), code: CardCode, demoCode: CardDemoCode },
   { name: 'Badge', slug: 'badge', category: 'General', description: 'Small status indicators with colorful variants.', component: demo(BadgeDemo), code: BadgeCode, demoCode: BadgeDemoCode },
