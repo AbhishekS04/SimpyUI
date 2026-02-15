@@ -26,12 +26,17 @@ export const TeamCarousel: React.FC<TeamCarouselProps> = ({
 	const [current, setCurrent] = useState(0);
 	const [isHovered, setIsHovered] = useState(false);
 
+	// Helper to handle circular indices
+	const getIndex = (index: number) => {
+		return (index + members.length) % members.length;
+	};
+
 	const next = () => {
-		setCurrent((prev) => (prev + 1) % members.length);
+		setCurrent((prev) => getIndex(prev + 1));
 	};
 
 	const prev = () => {
-		setCurrent((prev) => (prev - 1 + members.length) % members.length);
+		setCurrent((prev) => getIndex(prev - 1));
 	};
 
 	useEffect(() => {
@@ -40,169 +45,169 @@ export const TeamCarousel: React.FC<TeamCarouselProps> = ({
 		return () => clearInterval(timer);
 	}, [autoPlay, interval, isHovered, members.length]);
 
-	const variants = {
-		enter: (direction: number) => ({
-			x: direction > 0 ? 1000 : -1000,
-			opacity: 0,
-			scale: 0.5,
-			rotateY: direction > 0 ? 45 : -45,
-		}),
-		center: {
-			zIndex: 1,
-			x: 0,
-			opacity: 1,
-			scale: 1,
-			rotateY: 0,
-		},
-		exit: (direction: number) => ({
-			zIndex: 0,
-			x: direction < 0 ? 1000 : -1000,
-			opacity: 0,
-			scale: 0.5,
-			rotateY: direction < 0 ? 45 : -45,
-		}),
+	// We'll render 3 visible cards: prev, current, next.
+	// Actually, to get the effect in the image, we likely want to render all but style based on position.
+
+	const getPositionStyles = (index: number) => {
+		const diff = (index - current + members.length) % members.length;
+
+		// Determine the "visual" position relative to current
+		// We treat the carousel as circular.
+		// If diff is 0 -> center
+		// If diff is 1 or length-1 -> immediate neighbors
+		// etc.
+
+		// Simplified logic for "center", "left", "right", "hidden"
+		// We need to handle the wrap-around correctly for determining visual distance.
+
+		let visualDist = index - current;
+		// Adjust for shortest path
+		if (visualDist > members.length / 2) visualDist -= members.length;
+		if (visualDist < -members.length / 2) visualDist += members.length;
+
+		// Configuration for the styles
+		if (visualDist === 0) {
+			// CENTER
+			return {
+				x: 0,
+				scale: 1.1,
+				zIndex: 50,
+				opacity: 1,
+				filter: "grayscale(0%)",
+				rotateY: 0,
+				pointerEvents: "auto" as const
+			};
+		} else if (visualDist === -1) {
+			// LEFT
+			return {
+				x: -220, // Adjust overlap
+				scale: 0.85,
+				zIndex: 40,
+				opacity: 0.7,
+				filter: "grayscale(100%)",
+				rotateY: 15, // Slight tilt inward
+				pointerEvents: "auto" as const
+			};
+		} else if (visualDist === 1) {
+			// RIGHT
+			return {
+				x: 220,
+				scale: 0.85,
+				zIndex: 40,
+				opacity: 0.7,
+				filter: "grayscale(100%)",
+				rotateY: -15, // Slight tilt inward
+				pointerEvents: "auto" as const
+			};
+		} else {
+			// HIDDEN / BACK
+			return {
+				x: visualDist < 0 ? -400 : 400,
+				scale: 0.5,
+				zIndex: 10,
+				opacity: 0, // Hide others or fade them out deeply
+				filter: "grayscale(100%)",
+				rotateY: visualDist < 0 ? 30 : -30,
+				pointerEvents: "none" as const
+			};
+		}
 	};
 
 	return (
 		<div
-			className="relative w-full max-w-4xl mx-auto h-[600px] flex items-center justify-center perspective-1000"
+			className="relative w-full max-w-6xl mx-auto h-[600px] flex items-center justify-center perspective-1000 overflow-hidden"
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
 		>
-			<div className="absolute inset-0 flex items-center justify-center">
-				<AnimatePresence initial={false} mode="popLayout" custom={current}>
-					<motion.div
-						key={current}
-						custom={current}
-						variants={variants}
-						initial="enter"
-						animate="center"
-						exit="exit"
-						transition={{
-							x: { type: "spring", stiffness: 300, damping: 30 },
-							opacity: { duration: 0.2 },
-							rotateY: { duration: 0.4 },
-						}}
-						className="absolute w-[300px] md:w-[350px] h-[450px] bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl flex flex-col items-center justify-center p-6 text-center cursor-grab active:cursor-grabbing hover:border-white/20 transition-all duration-500 group/card"
-						style={{ transformStyle: "preserve-3d" }}
-						drag="x"
-						dragConstraints={{ left: 0, right: 0 }}
-						dragElastic={1}
-						onDragEnd={(e, { offset, velocity }) => {
-							const swipe = Math.abs(offset.x) * velocity.x;
-							if (swipe < -10000) next();
-							else if (swipe > 10000) prev();
-						}}
-					>
-						{/* Image with animated gradient glow */}
-						<div className="relative mb-6 group">
-							<div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 to-purple-600 rounded-full blur opacity-25 group-hover:opacity-100 transition duration-500 animate-tilt"></div>
-							<img
-								src={members[current].image}
-								alt={members[current].name}
-								className="relative w-32 h-32 rounded-full object-cover border-4 border-white/10 group-hover:border-white/30 transition-colors shadow-lg pointer-events-none"
-							/>
-						</div>
+			<div className="relative w-full h-full flex items-center justify-center">
+				{members.map((member, index) => {
+					const style = getPositionStyles(index);
+					// Only render if visible (opacity > 0) to save resources, or keep them for animations
+					// For smooth animation, we render all but animate them.
 
-						{/* Text Content */}
-						<motion.h3
-							initial={{ y: 20, opacity: 0 }}
-							animate={{ y: 0, opacity: 1 }}
-							transition={{ delay: 0.2 }}
-							className="text-2xl font-bold text-white mb-1 pointer-events-none"
-						>
-							{members[current].name}
-						</motion.h3>
-						<motion.p
-							initial={{ y: 20, opacity: 0 }}
-							animate={{ y: 0, opacity: 1 }}
-							transition={{ delay: 0.3 }}
-							className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 text-sm mb-6 uppercase tracking-widest font-bold pointer-events-none"
-						>
-							{members[current].role}
-						</motion.p>
+					const isCenter = index === current;
 
-						<div className="px-4 mb-6 relative">
-							<p className="text-white/70 text-sm line-clamp-3 italic leading-relaxed">
-								"Passionate about creating beautiful user experiences and writing clean, maintainable code."
-							</p>
-						</div>
-
-
-						{/* Social Links */}
+					return (
 						<motion.div
-							initial={{ y: 20, opacity: 0 }}
-							animate={{ y: 0, opacity: 1 }}
-							transition={{ delay: 0.4 }}
-							className="flex gap-4 mt-auto"
+							key={index}
+							className="absolute"
+							initial={false}
+							animate={style}
+							transition={{
+								type: "spring",
+								stiffness: 200,
+								damping: 25,
+								mass: 1
+							}}
+							onClick={() => {
+
+								if (index === getIndex(current - 1)) prev();
+								else if (index === getIndex(current + 1)) next();
+							}}
 						>
-							{members[current].twitter && (
-								<a
-									href={members[current].twitter}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="p-2.5 bg-white/5 rounded-full hover:bg-[#1DA1F2] hover:text-white hover:scale-110 transition-all duration-300 text-white/50 group"
-								>
-									<Twitter className="w-4 h-4" />
-								</a>
-							)}
-							{members[current].linkedin && (
-								<a
-									href={members[current].linkedin}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="p-2.5 bg-white/5 rounded-full hover:bg-[#0077B5] hover:text-white hover:scale-110 transition-all duration-300 text-white/50 group"
-								>
-									<Linkedin className="w-4 h-4" />
-								</a>
-							)}
-							{members[current].github && (
-								<a
-									href={members[current].github}
-									target="_blank"
-									rel="noopener noreferrer"
-									className="p-2.5 bg-white/5 rounded-full hover:bg-[#333] hover:text-white hover:scale-110 transition-all duration-300 text-white/50 group"
-								>
-									<Github className="w-4 h-4" />
-								</a>
-							)}
+							<div
+								className={`
+                    relative w-[280px] h-[400px] md:w-[320px] md:h-[460px] 
+                    rounded-2xl overflow-hidden shadow-2xl 
+                    transition-all duration-300
+                    cursor-pointer
+                    ${isCenter ? 'border-4 border-white/20' : 'border-0'}
+                  `}
+							>
+								{/* Image takes full height */}
+								<img
+									src={member.image}
+									alt={member.name}
+									className="w-full h-full object-cover"
+								/>
+
+								{/* Gradient Overlay for Text Visibility */}
+								<div className={`absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 ${isCenter ? 'opacity-100' : ''}`} />
+
+								{/* Content - Visible only on center card */}
+								<div className={`
+                        absolute bottom-0 left-0 right-0 p-6 transform transition-all duration-300
+                        ${isCenter ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}
+                    `}>
+									<h3 className="text-2xl font-bold text-white mb-1">{member.name}</h3>
+									<p className="text-purple-300 font-medium tracking-wide uppercase text-sm mb-4">{member.role}</p>
+
+									<div className="flex gap-4">
+										{member.twitter && (
+											<a href={member.twitter} target="_blank" className="text-white/60 hover:text-white transition-colors"><Twitter size={18} /></a>
+										)}
+										{member.linkedin && (
+											<a href={member.linkedin} target="_blank" className="text-white/60 hover:text-white transition-colors"><Linkedin size={18} /></a>
+										)}
+										{member.github && (
+											<a href={member.github} target="_blank" className="text-white/60 hover:text-white transition-colors"><Github size={18} /></a>
+										)}
+									</div>
+								</div>
+							</div>
 						</motion.div>
-					</motion.div>
-				</AnimatePresence>
+					);
+				})}
 			</div>
 
-			{/* Navigation Buttons with Gradient Border Effect */}
-			<div className="absolute bottom-10 flex gap-8 z-20">
-				<button
-					onClick={prev}
-					className="relative px-4 py-4 rounded-full bg-black/50 hover:bg-black/80 text-white transition-all duration-300 group overflow-hidden"
-				>
-					<div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
-					<div className="absolute inset-0 rounded-full border border-white/10 group-hover:border-white/30 transition-colors" />
-					<ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-				</button>
-				<button
-					onClick={next}
-					className="relative px-4 py-4 rounded-full bg-black/50 hover:bg-black/80 text-white transition-all duration-300 group overflow-hidden"
-				>
-					<div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
-					<div className="absolute inset-0 rounded-full border border-white/10 group-hover:border-white/30 transition-colors" />
-					<ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-				</button>
-			</div>
+			{/* Navigation Buttons - Styled as floating circles */}
+			<button
+				onClick={prev}
+				className="absolute left-[10%] top-1/2 -translate-y-1/2 p-4 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md text-white/80 hover:text-white transition-all z-50 border border-white/10"
+			>
+				<ChevronLeft className="w-8 h-8" />
+			</button>
+			<button
+				onClick={next}
+				className="absolute right-[10%] top-1/2 -translate-y-1/2 p-4 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md text-white/80 hover:text-white transition-all z-50 border border-white/10"
+			>
+				<ChevronRight className="w-8 h-8" />
+			</button>
 
 			{/* Custom Styles */}
 			<style>{`
         .perspective-1000 {
             perspective: 1000px;
-        }
-        @keyframes shimmer {
-          100% {
-            transform: translateX(100%);
-          }
-        }
-        .animate-shimmer {
-          animation: shimmer 1s infinite;
         }
         `}</style>
 		</div>
