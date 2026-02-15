@@ -174,13 +174,46 @@ export const TeamCarousel: React.FC<TeamCarouselProps> = ({
 
 									<div className="flex gap-4">
 										{member.twitter && (
-											<a href={member.twitter} target="_blank" className="text-white/60 hover:text-white transition-colors"><Twitter size={18} /></a>
+											<motion.a
+												href={member.twitter}
+												target="_blank"
+												className="group relative text-white/60 hover:text-[#1DA1F2] transition-colors"
+												whileHover={{ scale: 1.3, rotate: 10 }}
+												whileTap={{ scale: 0.95, rotate: -10 }}
+												initial={{ scale: 1 }}
+												animate={{ scale: 1 }}
+											>
+												<span className="absolute -inset-2 rounded-full bg-[#1DA1F2]/20 opacity-0 group-hover:opacity-80 transition-all duration-300 blur-sm"></span>
+												<Twitter size={22} className="relative z-10 drop-shadow-lg" />
+											</motion.a>
 										)}
 										{member.linkedin && (
-											<a href={member.linkedin} target="_blank" className="text-white/60 hover:text-white transition-colors"><Linkedin size={18} /></a>
+											<motion.a
+												href={member.linkedin}
+												target="_blank"
+												className="group relative text-white/60 hover:text-[#0077B5] transition-colors"
+												whileHover={{ scale: 1.3, rotate: 10 }}
+												whileTap={{ scale: 0.95, rotate: -10 }}
+												initial={{ scale: 1 }}
+												animate={{ scale: 1 }}
+											>
+												<span className="absolute -inset-2 rounded-full bg-[#0077B5]/20 opacity-0 group-hover:opacity-80 transition-all duration-300 blur-sm"></span>
+												<Linkedin size={22} className="relative z-10 drop-shadow-lg" />
+											</motion.a>
 										)}
 										{member.github && (
-											<a href={member.github} target="_blank" className="text-white/60 hover:text-white transition-colors"><Github size={18} /></a>
+											<motion.a
+												href={member.github}
+												target="_blank"
+												className="group relative text-white/60 hover:text-[#333] transition-colors"
+												whileHover={{ scale: 1.3, rotate: 10 }}
+												whileTap={{ scale: 0.95, rotate: -10 }}
+												initial={{ scale: 1 }}
+												animate={{ scale: 1 }}
+											>
+												<span className="absolute -inset-2 rounded-full bg-[#333]/20 opacity-0 group-hover:opacity-80 transition-all duration-300 blur-sm"></span>
+												<Github size={22} className="relative z-10 drop-shadow-lg" />
+											</motion.a>
 										)}
 									</div>
 								</div>
