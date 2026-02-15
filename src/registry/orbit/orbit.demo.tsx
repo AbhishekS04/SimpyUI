@@ -31,7 +31,7 @@ export default function OrbitDemo() {
 	return (
 		<div
 			className="flex items-center justify-center min-h-[300px] sm:min-h-[400px] md:min-h-[500px] p-4 sm:p-8 rounded-xl w-full"
-			style={{ maxWidth: "100vw", overflowX: "auto" }}
+			style={{ maxWidth: "100vw" }}
 		>
 			<Orbit
 				size={orbitSize}
