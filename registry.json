@@ -362,6 +362,19 @@
         "lucide-react"
       ],
       "internal": []
+    },
+    "Folder-preview": {
+      "name": "Folder Preview",
+      "category": "Data Display",
+      "description": "Folder/file preview card with icons.",
+      "files": [
+        "Folder-preview/Folder-preview.tsx"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "lucide-react"
+      ],
+      "internal": []
     }
   }
 }
