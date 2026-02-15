@@ -21,7 +21,7 @@ const SocialCardDemo: React.FC = () => (
 			image="https://github.com/AbhishekS04/SimpyUI/blob/main/public/pikachu.jpeg?raw=true"
 			title="tushardevx01"
 			name="Tushar kanti Dey"
-			pitch="Crafting clean interfaces and seamless user experiences. Building with clarity, purpose, and performance."
+			pitch="Crafting clean interfaces and seamless user experiences."
 			icon={null} // Removed the Github logo
 			buttons={demoButtons}
 		/>
