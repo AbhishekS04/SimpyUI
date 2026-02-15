@@ -401,6 +401,19 @@
         "react-icons"
       ],
       "internal": []
+    },
+    "team-carousel": {
+      "name": "Team Carousel",
+      "category": "Data Display",
+      "description": "Carousel showcasing team members with photos and bios.",
+      "files": [
+        "team-carousel/team-carousel.tsx"
+      ],
+      "dependencies": [
+        "framer-motion",
+        "react-icons"
+      ],
+      "internal": []
     }
   }
 }
