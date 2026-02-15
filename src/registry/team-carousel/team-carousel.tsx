@@ -191,8 +191,6 @@ export const TeamCarousel: React.FC<TeamCarouselProps> = ({
 				</button>
 			</div>
 
-
-
 			{/* Custom Styles */}
 			<style>{`
         .perspective-1000 {

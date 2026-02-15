@@ -156,7 +156,6 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Card', slug: 'card', category: 'General', description: 'Versatile card container with hover and glow effects.', component: demo(CardDemo), code: CardCode, demoCode: CardDemoCode },
   { name: 'Badge', slug: 'badge', category: 'General', description: 'Small status indicators with colorful variants.', component: demo(BadgeDemo), code: BadgeCode, demoCode: BadgeDemoCode },
   { name: 'Avatar', slug: 'avatar', category: 'General', description: 'User avatar with image support and fallback initials.', component: demo(AvatarDemo), code: AvatarCode, demoCode: AvatarDemoCode },
-  { name: 'Team Carousel', slug: 'team-carousel', category: 'General', description: 'Animated team member carousel with navigation controls.', component: demo(TeamCarouselDemo), code: TeamCarouselCode, demoCode: TeamCarouselDemoCode },
   // ─── INPUTS ───────────────────────────────────
   { name: 'Input', slug: 'input', category: 'Inputs', description: 'Styled text input with label and error states.', component: demo(InputDemo), code: InputCode, demoCode: InputDemoCode },
   { name: 'Toggle', slug: 'toggle', category: 'Inputs', description: 'Smooth animated toggle switch.', component: demo(ToggleDemo), code: ToggleCode, demoCode: ToggleDemoCode },
@@ -169,6 +168,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Accordion', slug: 'accordion', category: 'Data Display', description: 'Collapsible content sections with smooth animations.', component: demo(AccordionDemo), code: AccordionCode, demoCode: AccordionDemoCode },
   { name: 'Tabs', slug: 'tabs', category: 'Data Display', description: 'Animated tab navigation with smooth underline indicator.', component: demo(TabsDemo), code: TabsCode, demoCode: TabsDemoCode },
   { name: 'Progress', slug: 'progress', category: 'Data Display', description: 'Animated progress bar with multiple colors and sizes.', component: demo(ProgressDemo), code: ProgressCode, demoCode: ProgressDemoCode },
+  { name: 'Team Carousel', slug: 'team-carousel', category: 'General', description: 'Animated team member carousel with navigation controls.', component: demo(TeamCarouselDemo), code: TeamCarouselCode, demoCode: TeamCarouselDemoCode },
   { name: 'Skeleton', slug: 'skeleton', category: 'Data Display', description: 'Animated loading placeholder with pulsing effect.', component: demo(SkeletonDemo), code: SkeletonCode, demoCode: SkeletonDemoCode },
 
   // ─── FEEDBACK ─────────────────────────────────
