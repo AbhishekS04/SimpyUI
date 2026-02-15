@@ -73,10 +73,10 @@ export const Orbit: React.FC<OrbitProps> = ({
               height: 0,
               left: "50%",
               top: "50%",
-              transform: `translate(-50%, -50%) rotate(${angle}deg)`,
-              transformOrigin: `0 0`,
+              transform: `translate(-50%, -50%)`,
+              transformOrigin: `50% 50%`,
             }}
-            animate={{ rotate: angle + 360 }}
+            animate={{ rotate: [angle, angle + 360] }}
             initial={{ rotate: angle }}
             transition={{ repeat: Infinity, ease: "linear", duration: planet.speed }}
           >
@@ -86,8 +86,8 @@ export const Orbit: React.FC<OrbitProps> = ({
                 width: planet.size,
                 height: planet.size,
                 position: "absolute",
-                left: `calc(${planet.orbit}px - ${planet.size / 2}px)`,
-                top: `-${planet.size / 2}px`,
+                left: `calc(0px + ${planet.orbit}px - ${planet.size / 2}px)`,
+                top: `calc(-${planet.size / 2}px)`,
               }}
             >
               {planet.image ? (
