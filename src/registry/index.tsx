@@ -46,6 +46,8 @@ import DrawerCode from './drawer/drawer.tsx?raw'
 import AIPromptBoxCode from './AI-Prompt-Box/ai-prompt-box.tsx?raw'
 import TwoStepCode from './Twostep/twostep.tsx?raw'
 import TwoStep from './Twostep/twostep.demo.tsx?raw'
+import FolderPreviewCode from './Folder-preview/Folder-preview.tsx?raw'
+import FolderPreviewDemoCode from './Folder-preview/Folder-preview.demo.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -81,6 +83,7 @@ import BackgroundGradientDemoCode from './background-gradient/background-gradien
 import DrawerDemoCode from './drawer/drawer.demo.tsx?raw'
 import AIPromptBoxDemoCode from './AI-Prompt-Box/ai-prompt-box.demo.tsx?raw'
 import TwoStepDemoCode from './Twostep/twostep.demo.tsx?raw'
+const FolderPreviewDemo = lazy(() => import('./Folder-preview/Folder-preview.demo'))
 
 /* ── Lazy-loaded demos ── */
 
@@ -114,6 +117,7 @@ const DrawerDemo = lazy(() => import('./drawer/drawer.demo'))
 const AIPromptBoxDemo = lazy(() => import('./AI-Prompt-Box/ai-prompt-box.demo'))
 const TwoStepDemo = lazy(() => import('./Twostep/twostep.demo'))
 
+
 /* ── Registry entry type ── */
 
 export interface ComponentRegistryEntry {
@@ -137,7 +141,6 @@ function demo(Component: React.LazyExoticComponent<React.ComponentType>) {
 }
 
 /* ── THE REGISTRY ── */
-
 export const componentRegistry: ComponentRegistryEntry[] = [
   // ─── GENERAL ──────────────────────────────────
   { name: 'Button', slug: 'button', category: 'General', description: 'Animated button with multiple variants and sizes.', component: demo(ButtonDemo), code: ButtonCode, demoCode: ButtonDemoCode },
@@ -150,8 +153,9 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Toggle', slug: 'toggle', category: 'Inputs', description: 'Smooth animated toggle switch.', component: demo(ToggleDemo), code: ToggleCode, demoCode: ToggleDemoCode },
   { name: 'File Upload', slug: 'file-upload', category: 'Inputs', description: 'Drag-and-drop file upload with preview and animation.', component: demo(FileUploadDemo), code: FileUploadCode, demoCode: FileUploadDemoCode },
   { name: 'AI Prompt Box', slug: 'ai-prompt-box', category: 'Inputs', description: 'ChatGPT-style prompt input with file uploads, voice recording, and AI mode toggles.', component: demo(AIPromptBoxDemo), code: AIPromptBoxCode, demoCode: AIPromptBoxDemoCode },
-{ name: 'Two Step', slug: 'twostep', category: 'Inputs', description: 'Two-step verification code input with auto-focus, paste support, and resend timer.', component: demo(TwoStepDemo), code: TwoStepCode, demoCode: TwoStepDemoCode },
+  { name: 'Two Step', slug: 'twostep', category: 'Inputs', description: 'Two-step verification code input with auto-focus, paste support, and resend timer.', component: demo(TwoStepDemo), code: TwoStepCode, demoCode: TwoStepDemoCode },
   // ─── DATA DISPLAY ─────────────────────────────
+  { name: 'Folder Preview', slug: 'folder-preview', category: 'Data Display', description: 'Folder/file preview card with icons, inspired by VengenceUI.', component: demo(FolderPreviewDemo), code: FolderPreviewCode, demoCode: FolderPreviewDemoCode },
   { name: 'Accordion', slug: 'accordion', category: 'Data Display', description: 'Collapsible content sections with smooth animations.', component: demo(AccordionDemo), code: AccordionCode, demoCode: AccordionDemoCode },
   { name: 'Tabs', slug: 'tabs', category: 'Data Display', description: 'Animated tab navigation with smooth underline indicator.', component: demo(TabsDemo), code: TabsCode, demoCode: TabsDemoCode },
   { name: 'Progress', slug: 'progress', category: 'Data Display', description: 'Animated progress bar with multiple colors and sizes.', component: demo(ProgressDemo), code: ProgressCode, demoCode: ProgressDemoCode },
@@ -182,3 +186,4 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   // ─── UTILITY ──────────────────────────────────
   { name: 'Compare', slug: 'compare', category: 'Utility', description: 'Image comparison slider component.', component: demo(CompareDemo), code: Compare, demoCode: CompareDemoCode },
 ]
+export const registry = componentRegistry;
