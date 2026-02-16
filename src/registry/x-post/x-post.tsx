@@ -77,7 +77,7 @@ export const XPost: React.FC<XPostProps> = ({
 
     return (
         <div
-            className={`w-full max-w-[500px] mx-auto border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 font-sans ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"
+            className={`w-full max-w-[500px] mx-auto border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 font-sans ${theme === "dark" ? "text-white" : "text-black"
                 }`}
         >
             {/* Header */}

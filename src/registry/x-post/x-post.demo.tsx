@@ -2,9 +2,9 @@ import { XPost } from "./x-post";
 
 export default function XPostDemo() {
     return (
-        <div className="p-8 w-full min-h-screen bg-neutral-900 flex items-center justify-center">
+        <div className="p-8 w-full min-h-screen flex items-center justify-center">
             <div className="w-full max-w-lg">
-                
+
 
                 <div className="mt-8">
                     <XPost
