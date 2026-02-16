@@ -17,7 +17,7 @@ export default function InstagramPostDemo() {
 					media: [
 						{
 							type: "image",
-							url: "www.instagram.com/p/DRZlspkEkqW/?w=800&h=800&fit=crop",
+							url: "https://github.com/AbhishekS04/SimpyUI/blob/main/public/post.jpg?raw=true/?w=800&h=800&fit=crop",
 							alt: "City skyline at golden hour",
 						},
 					],
