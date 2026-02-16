@@ -414,6 +414,18 @@
         "react-icons"
       ],
       "internal": []
+    },
+    "message-draft": {
+      "name": "Message Draft",
+      "category": "Data Display",
+      "description": "Chat message draft component with auto-saving and character count.",
+      "files": [
+        "message-draft/message-draft.tsx"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "internal": []
     }
   }
 }

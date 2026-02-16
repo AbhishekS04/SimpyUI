@@ -52,6 +52,7 @@ import FolderPreviewDemoCode from './Folder-preview/Folder-preview.demo.tsx?raw'
 import OrbitCode from './orbit/orbit.tsx?raw'
 import SocialCardCode from './social-card/social-card.tsx?raw'
 import TeamCarouselCode from './team-carousel/team-carousel.tsx?raw'
+import MessageDraftCode from './message-draft/message-draft.tsx?raw'
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -90,6 +91,7 @@ import TwoStepDemoCode from './Twostep/twostep.demo.tsx?raw'
 import OrbitDemoCode from './orbit/orbit.demo.tsx?raw'
 import SocialCardDemoCode from './social-card/social-card.demo.tsx?raw'
 import TeamCarouselDemoCode from './team-carousel/team-carousel.demo.tsx?raw'
+import MessageDraftDemoCode from './message-draft/message-draft.demo.tsx?raw'
 
 /* ── Lazy-loaded demos ── */
 
@@ -126,6 +128,7 @@ const OrbitDemo = lazy(() => import('./orbit/orbit.demo'))
 const SocialCardDemo = lazy(() => import('./social-card/social-card.demo'))
 const FolderPreviewDemo = lazy(() => import('./Folder-preview/Folder-preview.demo'))
 const TeamCarouselDemo = lazy(() => import('./team-carousel/team-carousel.demo'))
+const MessageDraftDemo = lazy(() => import('./message-draft/message-draft.demo'))
 
 /* ── Registry entry type ── */
 
@@ -175,6 +178,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Modal', slug: 'modal', category: 'Feedback', description: 'Animated dialog with backdrop blur.', component: demo(ModalDemo), code: ModalCode, demoCode: ModalDemoCode },
   { name: 'Toast', slug: 'toast', category: 'Feedback', description: 'Notification toast with animated entrance.', component: demo(ToastDemo), code: ToastCode, demoCode: ToastDemoCode },
   { name: 'Alert', slug: 'alert', category: 'Feedback', description: 'Contextual alert banners with icons.', component: demo(AlertDemo), code: AlertCode, demoCode: AlertDemoCode },
+  { name: 'Message Draft', slug: 'message-draft', category: 'Feedback', description: 'Draft a message for the user to review before sending (Email/Slack).', component: demo(MessageDraftDemo), code: MessageDraftCode, demoCode: MessageDraftDemoCode },
 
   // ─── OVERLAY ──────────────────────────────────
   { name: 'Tooltip', slug: 'tooltip', category: 'Overlay', description: 'Hover tooltip with multiple positions.', component: demo(TooltipDemo), code: TooltipCode, demoCode: TooltipDemoCode },
