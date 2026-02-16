@@ -56,6 +56,7 @@ import TeamCarouselCode from './team-carousel/team-carousel.tsx?raw'
 import MessageDraftCode from './message-draft/message-draft.tsx?raw'
 import InstagramPostCode from './instagram-post/instagram-post.tsx?raw';
 import LinkedlnpostCode from './linkedin-post/linkedin-post.tsx?raw';
+import XPostCode from './x-post/x-post.tsx?raw';
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -97,6 +98,7 @@ import TeamCarouselDemoCode from './team-carousel/team-carousel.demo.tsx?raw'
 import MessageDraftDemoCode from './message-draft/message-draft.demo.tsx?raw'
 import InstagramPostDemoCode from './instagram-post/instagram-post.demo.tsx?raw';
 import LinkedlnPostDemoCode from './linkedin-post/linkedin-post.demo.tsx?raw';
+import XPostDemoCode from './x-post/x-post.demo.tsx?raw';
 
 /* ── Lazy-loaded demos ── */
 
@@ -136,6 +138,7 @@ const TeamCarouselDemo = lazy(() => import('./team-carousel/team-carousel.demo')
 const MessageDraftDemo = lazy(() => import('./message-draft/message-draft.demo'))
 const InstagramPostDemo = lazy(() => import('./instagram-post/instagram-post.demo'));
 const LinkedlnPostDemo = lazy(() => import('./linkedin-post/linkedin-post.demo'));
+const XPostDemo = lazy(() => import('./x-post/x-post.demo'));
 
 /* ── Registry entry type ── */
 
@@ -183,6 +186,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Skeleton', slug: 'skeleton', category: 'Data Display', description: 'Animated loading placeholder with pulsing effect.', component: demo(SkeletonDemo), code: SkeletonCode, demoCode: SkeletonDemoCode },
   { name: 'Instagram Post', slug: 'instagram-post', category: 'Data Display', description: 'Instagram-style post card with author, media, and stats.', component: demo(InstagramPostDemo), code: InstagramPostCode, demoCode: InstagramPostDemoCode },
   { name: 'Linkedln Post', slug: 'linkedin-post', category: 'Data Display', description: 'LinkedIn-style post card with author, content, media, and stats.', component: demo(LinkedlnPostDemo), code: LinkedlnpostCode, demoCode: LinkedlnPostDemoCode },
+  { name: 'X Post', slug: 'x-post', category: 'Data Display', description: 'X (Twitter) style post card.', component: demo(XPostDemo), code: XPostCode, demoCode: XPostDemoCode },
 
 
   // ─── FEEDBACK ─────────────────────────────────
