@@ -452,6 +452,19 @@
         "framer-motion"
       ],
       "internal": []
+    },
+    "twitter-post": {
+      "name": "Twitter Post",
+      "category": "Data Display",
+      "description": "Twitter-style post card with author, content, media, and stats.",
+      "files": [
+        "twitter-post/twitter-post.tsx",
+        "twitter-post/twitter-post.demo.tsx"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "internal": []
     }
   }
 }
