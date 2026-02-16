@@ -80,7 +80,7 @@ export const TeamCarousel: React.FC<TeamCarouselProps> = ({
 		} else if (visualDist === -1) {
 			// LEFT
 			return {
-				x: -220, // Adjust overlap
+				x: "-60%", // Adjust overlap to percentage
 				scale: 0.85,
 				zIndex: 40,
 				opacity: 0.7,
@@ -91,7 +91,7 @@ export const TeamCarousel: React.FC<TeamCarouselProps> = ({
 		} else if (visualDist === 1) {
 			// RIGHT
 			return {
-				x: 220,
+				x: "60%", // Adjust overlap to percentage
 				scale: 0.85,
 				zIndex: 40,
 				opacity: 0.7,
@@ -102,7 +102,7 @@ export const TeamCarousel: React.FC<TeamCarouselProps> = ({
 		} else {
 			// HIDDEN / BACK
 			return {
-				x: visualDist < 0 ? -400 : 400,
+				x: visualDist < 0 ? "-100%" : "100%",
 				scale: 0.5,
 				zIndex: 10,
 				opacity: 0, // Hide others or fade them out deeply
@@ -130,9 +130,9 @@ export const TeamCarousel: React.FC<TeamCarouselProps> = ({
 					return (
 						<motion.div
 							key={index}
-							className="absolute"
+							className="absolute w-[280px] md:w-[320px]" // extracted width to class
 							initial={false}
-							animate={style}
+							animate={style as any} // Cast to any to allow string values for x
 							transition={{
 								type: "spring",
 								stiffness: 200,
@@ -147,7 +147,7 @@ export const TeamCarousel: React.FC<TeamCarouselProps> = ({
 						>
 							<div
 								className={`
-                    relative w-[280px] h-[400px] md:w-[320px] md:h-[460px] 
+                    relative w-full h-[400px] md:h-[460px] 
                     rounded-2xl overflow-hidden shadow-2xl 
                     transition-all duration-300
                     cursor-pointer

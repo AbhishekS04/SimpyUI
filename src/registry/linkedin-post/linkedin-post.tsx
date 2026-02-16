@@ -40,7 +40,7 @@ export const LinkedinPost: React.FC<LinkedinPostProps> = ({ post, className }) =
     };
 
     return (
-        <div className={`w-full max-w-[555px] bg-white dark:bg-[#1b1f23] border border-zinc-200 dark:border-zinc-700 sm:rounded-lg overflow-hidden font-sans ${className}`}>
+        <div className={`w-full max-w-[555px] mx-auto bg-white dark:bg-[#1b1f23] border border-zinc-200 dark:border-zinc-700 sm:rounded-lg rounded-none overflow-hidden font-sans ${className}`}>
             {/* Header */}
             <div className="px-3 py-3 flex items-start justify-between">
                 <div className="flex gap-3">

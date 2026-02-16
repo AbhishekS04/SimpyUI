@@ -89,7 +89,7 @@ export const InstagramPost: React.FC<InstagramPostProps> = ({ post, className })
 	return (
 		<div
 			className={cn(
-				"max-w-[370px] w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md rounded-3xl shadow-xl overflow-hidden font-sans border border-zinc-100 dark:border-zinc-900 user-select-none",
+				"max-w-[370px] w-full mx-auto bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md rounded-3xl shadow-xl overflow-hidden font-sans border border-zinc-100 dark:border-zinc-900 user-select-none",
 				className
 			)}
 		>
