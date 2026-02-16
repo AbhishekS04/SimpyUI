@@ -10,14 +10,14 @@ export default function InstagramPostDemo() {
 					author: {
 						name: "Tushar kanti Dey",
 						handle: "tushardevx01",
-						avatarUrl: "https://images.unsplash.com/photo-1695840358933-16dd7baa6dfb?w=200&h=200&fit=crop",
+						avatarUrl: "https://github.com/AbhishekS04/SimpyUI/blob/main/public/tushardevx01.jpg?raw=true",
 						verified: true,
 					},
 					text: "Golden hour in the city. Sometimes you just have to stop and appreciate the view.",
 					media: [
 						{
 							type: "image",
-							url: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=800&fit=crop",
+							url: "www.instagram.com/p/DRZlspkEkqW/?w=800&h=800&fit=crop",
 							alt: "City skyline at golden hour",
 						},
 					],
