@@ -2,9 +2,10 @@
 
 import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { X, Send, Check, Paperclip, Smile, Loader2 } from "lucide-react"
+import { X, Send, Check, Paperclip, Smile, FileText } from "lucide-react"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react"
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -16,7 +17,7 @@ interface MessageDraftProps {
     initialBody?: string
     placeholder?: string
     maxLength?: number
-    onSend?: (body: string) => void
+    onSend?: (body: string, attachments: string[]) => void
     onCancel?: () => void
     undoGracePeriod?: number // in ms, default 5000
     outcome?: "sent" | "cancelled"
@@ -40,17 +41,32 @@ export function MessageDraft({
     const [status, setStatus] = React.useState<DraftStatus>(outcome || "idle")
     const [body, setBody] = React.useState(initialBody)
     const [progress, setProgress] = React.useState(0)
+    const [attachments, setAttachments] = React.useState<string[]>([])
+    const [showEmojiPicker, setShowEmojiPicker] = React.useState(false)
 
     const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
     const startTimeRef = React.useRef<number | null>(null)
     const animationFrameRef = React.useRef<number | null>(null)
     const textareaRef = React.useRef<HTMLTextAreaElement>(null)
+    const emojiPickerContainerRef = React.useRef<HTMLDivElement>(null)
+    const fileInputRef = React.useRef<HTMLInputElement>(null)
 
     React.useEffect(() => {
         if (outcome) {
             setStatus(outcome)
         }
     }, [outcome])
+
+    // Close emoji picker when clicking outside
+    React.useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (emojiPickerContainerRef.current && !emojiPickerContainerRef.current.contains(event.target as Node)) {
+                setShowEmojiPicker(false)
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside)
+        return () => document.removeEventListener("mousedown", handleClickOutside)
+    }, [])
 
     // Auto-resize textarea
     React.useEffect(() => {
@@ -71,7 +87,7 @@ export function MessageDraft({
     }
 
     const handleSend = () => {
-        if (!body.trim()) return
+        if (!body.trim() && attachments.length === 0) return
 
         setStatus("sending")
         startTimeRef.current = Date.now()
@@ -91,7 +107,7 @@ export function MessageDraft({
 
         timerRef.current = setTimeout(() => {
             setStatus("sent")
-            onSend?.(body)
+            onSend?.(body, attachments)
         }, undoGracePeriod)
     }
 
@@ -111,6 +127,31 @@ export function MessageDraft({
     const handleCancel = () => {
         setStatus("cancelled")
         onCancel?.()
+    }
+
+    const handleAttachClick = () => {
+        fileInputRef.current?.click()
+    }
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const newFiles = Array.from(e.target.files).map(file => file.name)
+            setAttachments(prev => [...prev, ...newFiles])
+            e.target.value = ''
+        }
+    }
+
+    const removeAttachment = (index: number) => {
+        setAttachments(attachments.filter((_, i) => i !== index))
+    }
+
+    const onEmojiClick = (emojiData: EmojiClickData) => {
+        const newBody = body + emojiData.emoji
+        if (newBody.length <= maxLength) {
+            setBody(newBody)
+        }
+        setShowEmojiPicker(false)
+        textareaRef.current?.focus()
     }
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -140,6 +181,7 @@ export function MessageDraft({
                     onClick={() => {
                         setStatus("idle")
                         setBody("")
+                        setAttachments([])
                     }}
                     className="ml-auto text-xs font-medium text-dark-400 hover:text-dark-900 dark:hover:text-dark-100"
                 >
@@ -163,7 +205,7 @@ export function MessageDraft({
 
     return (
         <div className={cn(
-            "group relative overflow-hidden rounded-xl border border-dark-200 bg-white transition-all duration-200 focus-within:border-dark-300 focus-within:shadow-md dark:border-dark-800 dark:bg-dark-950 dark:focus-within:border-dark-700",
+            "group relative overflow-visible rounded-xl border border-dark-200 bg-white transition-all duration-200 focus-within:border-dark-300 focus-within:shadow-md dark:border-dark-800 dark:bg-dark-950 dark:focus-within:border-dark-700",
             className
         )}>
             {/* Undo Progress Line */}
@@ -204,17 +246,75 @@ export function MessageDraft({
                     className="w-full resize-none bg-transparent text-sm leading-relaxed text-dark-900 placeholder:text-dark-400 focus:outline-none disabled:opacity-50 dark:text-dark-100"
                     spellCheck={false}
                 />
+
+                {/* Attachments */}
+                {attachments.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                        {attachments.map((file, i) => (
+                            <div key={i} className="group/file flex items-center gap-2 rounded-md border border-dark-200 bg-dark-50 px-2.5 py-1.5 pr-1.5 text-xs dark:border-dark-800 dark:bg-dark-900">
+                                <FileText className="h-3.5 w-3.5 text-dark-400" />
+                                <span className="max-w-[120px] truncate font-medium text-dark-700 dark:text-dark-300">{file}</span>
+                                <button
+                                    onClick={() => removeAttachment(i)}
+                                    className="rounded p-0.5 text-dark-400 opacity-0 transition-opacity hover:bg-dark-200 hover:text-dark-900 group-hover/file:opacity-100 dark:hover:bg-dark-800 dark:hover:text-dark-100"
+                                >
+                                    <X className="h-3 w-3" />
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* Footer / Toolbar */}
             <div className="flex items-center justify-between px-2 pb-2">
-                <div className="flex items-center gap-1">
-                    <button className="rounded p-2 text-dark-400 transition-colors hover:bg-dark-100 hover:text-dark-900 dark:hover:bg-dark-900 dark:hover:text-dark-100">
+                <div className="relative flex items-center gap-1" ref={emojiPickerContainerRef}>
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        className="hidden"
+                        multiple
+                    />
+                    <button
+                        onClick={handleAttachClick}
+                        title="Attach file"
+                        className="rounded p-2 text-dark-400 transition-colors hover:bg-dark-100 hover:text-dark-900 dark:hover:bg-dark-900 dark:hover:text-dark-100"
+                    >
                         <Paperclip className="h-4 w-4" />
                     </button>
-                    <button className="rounded p-2 text-dark-400 transition-colors hover:bg-dark-100 hover:text-dark-900 dark:hover:bg-dark-900 dark:hover:text-dark-100">
+                    <button
+                        onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                        title="Add emoji"
+                        className={cn(
+                            "rounded p-2 text-dark-400 transition-colors hover:bg-dark-100 hover:text-dark-900 dark:hover:bg-dark-900 dark:hover:text-dark-100",
+                            showEmojiPicker && "bg-dark-100 text-dark-900 dark:bg-dark-900 dark:text-dark-100"
+                        )}
+                    >
                         <Smile className="h-4 w-4" />
                     </button>
+
+                    {/* Emoji Picker Popover */}
+                    <AnimatePresence>
+                        {showEmojiPicker && (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                                className="absolute bottom-full left-0 mb-2 z-50 origin-bottom-left"
+                            >
+                                <div className="shadow-2xl rounded-xl overflow-hidden border border-dark-200 dark:border-dark-800">
+                                    <EmojiPicker
+                                        onEmojiClick={onEmojiClick}
+                                        theme={Theme.AUTO}
+                                        lazyLoadEmojis={true}
+                                        width={300}
+                                        height={400}
+                                    />
+                                </div>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
 
                 <div className="flex items-center gap-3 pr-2">
@@ -246,7 +346,7 @@ export function MessageDraft({
                             )}
                             <button
                                 onClick={handleSend}
-                                disabled={!body.trim()}
+                                disabled={!body.trim() && attachments.length === 0}
                                 className={cn(
                                     "flex items-center gap-1.5 rounded-lg bg-dark-900 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition-all hover:bg-black active:scale-95 disabled:opacity-50 disabled:shadow-none dark:bg-white dark:text-black dark:hover:bg-dark-100",
                                 )}
