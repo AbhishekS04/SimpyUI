@@ -178,7 +178,7 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Modal', slug: 'modal', category: 'Feedback', description: 'Animated dialog with backdrop blur.', component: demo(ModalDemo), code: ModalCode, demoCode: ModalDemoCode },
   { name: 'Toast', slug: 'toast', category: 'Feedback', description: 'Notification toast with animated entrance.', component: demo(ToastDemo), code: ToastCode, demoCode: ToastDemoCode },
   { name: 'Alert', slug: 'alert', category: 'Feedback', description: 'Contextual alert banners with icons.', component: demo(AlertDemo), code: AlertCode, demoCode: AlertDemoCode },
-  { name: 'Message Draft', slug: 'message-draft', category: 'Feedback', description: 'Draft a message for the user to review before sending (Email/Slack).', component: demo(MessageDraftDemo), code: MessageDraftCode, demoCode: MessageDraftDemoCode },
+  { name: 'Message Draft', slug: 'message-draft', category: 'Feedback', description: 'Chat message draft component with auto-saving and character count.', component: demo(MessageDraftDemo), code: MessageDraftCode, demoCode: MessageDraftDemoCode },
 
   // ─── OVERLAY ──────────────────────────────────
   { name: 'Tooltip', slug: 'tooltip', category: 'Overlay', description: 'Hover tooltip with multiple positions.', component: demo(TooltipDemo), code: TooltipCode, demoCode: TooltipDemoCode },
