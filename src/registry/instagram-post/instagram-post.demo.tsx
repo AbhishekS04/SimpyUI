@@ -13,16 +13,16 @@ export default function InstagramPostDemo() {
 						avatarUrl: "https://github.com/AbhishekS04/SimpyUI/blob/main/public/tushardevx01.jpg?raw=true",
 						verified: true,
 					},
-					text: "Golden hour in the city. Sometimes you just have to stop and appreciate the view.",
+					text: "Quiet grind. Loud results. 🖤 #hustle #grind #success",
 					media: [
 						{
 							type: "image",
 							url: "https://github.com/AbhishekS04/SimpyUI/blob/main/public/post.jpg?raw=true/?w=800&h=800&fit=crop",
-							alt: "City skyline at golden hour",
+							alt: "Quiet grind. Loud results. 🖤",
 						},
 					],
 					stats: { likes: 8421 },
-					createdAt: "2025-01-05T18:00:00.000Z",
+					createdAt: "2026-02-16T00:00:00.000Z",
 				}}
 			/>
 		</div>
