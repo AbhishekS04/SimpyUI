@@ -136,7 +136,7 @@ export const InstagramPost: React.FC<InstagramPostProps> = ({ post, className })
 
 			{/* Media Carousel */}
 			<div
-				   className="relative w-full aspect-square overflow-hidden"
+				className="relative w-full aspect-square overflow-hidden"
 				onDoubleClick={handleDoubleClick}
 			>
 				<AnimatePresence initial={false} mode="popLayout">
@@ -282,7 +282,7 @@ export const InstagramPost: React.FC<InstagramPostProps> = ({ post, className })
 				{/* Add Comment Input */}
 				<div className="flex items-center gap-2">
 					<div className="w-6 h-6 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
-						<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7yD_eZ8j5w5s7o7Lz_H3e6n4a0i3n3b6c2g&s" alt="User avatar" className="w-full h-full object-cover" />
+						<img src="https://github.com/AbhishekS04/SimpyUI/blob/main/public/Spiderman.png?raw=true" alt="User avatar" className="w-full h-full object-cover" />
 					</div>
 					<input
 						type="text"
