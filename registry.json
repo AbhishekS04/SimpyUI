@@ -426,6 +426,19 @@
         "framer-motion"
       ],
       "internal": []
+    },
+    "instagram-post": {
+      "name": "Instagram Post",
+      "category": "Data Display",
+      "description": "Instagram-style post card with author, media, and stats.",
+      "files": [
+        "instagram-post/instagram-post.tsx",
+        "instagram-post/instagram-post.demo.tsx"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "internal": []
     }
   }
 }
