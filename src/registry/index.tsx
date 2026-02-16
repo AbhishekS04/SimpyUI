@@ -55,6 +55,7 @@ import SocialCardCode from './social-card/social-card.tsx?raw'
 import TeamCarouselCode from './team-carousel/team-carousel.tsx?raw'
 import MessageDraftCode from './message-draft/message-draft.tsx?raw'
 import InstagramPostCode from './instagram-post/instagram-post.tsx?raw';
+import LinkedlnpostCode from './linkedin-post/linkedin-post.tsx?raw';
 
 /* ── Raw demo code (Vite ?raw imports) ── */
 
@@ -95,6 +96,8 @@ import SocialCardDemoCode from './social-card/social-card.demo.tsx?raw'
 import TeamCarouselDemoCode from './team-carousel/team-carousel.demo.tsx?raw'
 import MessageDraftDemoCode from './message-draft/message-draft.demo.tsx?raw'
 import InstagramPostDemoCode from './instagram-post/instagram-post.demo.tsx?raw';
+import LinkedlnPostDemoCode from './linkedin-post/linkedin-post.demo.tsx?raw';
+
 /* ── Lazy-loaded demos ── */
 
 const ButtonDemo = lazy(() => import('./button/button.demo'))
@@ -132,6 +135,7 @@ const FolderPreviewDemo = lazy(() => import('./Folder-preview/Folder-preview.dem
 const TeamCarouselDemo = lazy(() => import('./team-carousel/team-carousel.demo'))
 const MessageDraftDemo = lazy(() => import('./message-draft/message-draft.demo'))
 const InstagramPostDemo = lazy(() => import('./instagram-post/instagram-post.demo'));
+const LinkedlnPostDemo = lazy(() => import('./linkedin-post/linkedin-post.demo'));
 
 /* ── Registry entry type ── */
 
@@ -178,6 +182,8 @@ export const componentRegistry: ComponentRegistryEntry[] = [
   { name: 'Team Carousel', slug: 'team-carousel', category: 'Data Display', description: 'Animated team member carousel with navigation controls.', component: demo(TeamCarouselDemo), code: TeamCarouselCode, demoCode: TeamCarouselDemoCode },
   { name: 'Skeleton', slug: 'skeleton', category: 'Data Display', description: 'Animated loading placeholder with pulsing effect.', component: demo(SkeletonDemo), code: SkeletonCode, demoCode: SkeletonDemoCode },
   { name: 'Instagram Post', slug: 'instagram-post', category: 'Data Display', description: 'Instagram-style post card with author, media, and stats.', component: demo(InstagramPostDemo), code: InstagramPostCode, demoCode: InstagramPostDemoCode },
+  { name: 'Linkedln Post', slug: 'linkedin-post', category: 'Data Display', description: 'LinkedIn-style post card with author, content, media, and stats.', component: demo(LinkedlnPostDemo), code: LinkedlnpostCode, demoCode: LinkedlnPostDemoCode },
+
 
   // ─── FEEDBACK ─────────────────────────────────
   { name: 'Modal', slug: 'modal', category: 'Feedback', description: 'Animated dialog with backdrop blur.', component: demo(ModalDemo), code: ModalCode, demoCode: ModalDemoCode },

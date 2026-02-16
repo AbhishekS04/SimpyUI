@@ -439,6 +439,19 @@
         "framer-motion"
       ],
       "internal": []
+    },
+    "linkedin-post": {
+      "name": "LinkedIn Post",
+      "category": "Data Display",
+      "description": "LinkedIn-style post card with author, content, media, and stats.",
+      "files": [
+        "linkedin-post/linkedin-post.tsx",
+        "linkedin-post/linkedin-post.demo.tsx"
+      ],
+      "dependencies": [
+        "framer-motion"
+      ],
+      "internal": []
     }
   }
 }
