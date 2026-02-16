@@ -3,10 +3,10 @@ import { InstagramPost } from "./instagram-post";
 
 export default function InstagramPostDemo() {
 	return (
-		<div className="flex justify-center items-center min-h-screen bg-gray-100">
+		<div className="flex justify-center items-center min-h-screen p-4">
 			<InstagramPost
 				post={{
-					id: "ig-post-1",
+					id: "post-1",
 					author: {
 						name: "Tushar kanti Dey",
 						handle: "tushardevx01",
@@ -21,8 +21,11 @@ export default function InstagramPostDemo() {
 							alt: "Quiet grind. Loud results. 🖤",
 						},
 					],
-					stats: { likes: 8421 },
-					createdAt: "2026-02-16T00:00:00.000Z",
+					stats: {
+						likes: 8421,
+						comments: 124,
+					},
+					createdAt: new Date().toISOString(),
 				}}
 			/>
 		</div>
