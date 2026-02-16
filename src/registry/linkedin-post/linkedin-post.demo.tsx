@@ -3,7 +3,7 @@ import { LinkedinPost } from "./linkedin-post";
 
 export default function LinkedinPostDemo() {
     return (
-        <div className="flex justify-center items-center min-h-screen bg-[#f3f2ef] dark:bg-black p-4">
+        <div className="flex justify-center items-center min-h-screen p-4">
             <LinkedinPost
                 post={{
                     id: "li-post-1",
