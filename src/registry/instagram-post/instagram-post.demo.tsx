@@ -3,7 +3,7 @@ import { InstagramPost } from "./instagram-post";
 
 export default function InstagramPostDemo() {
 	return (
-		<div className="flex justify-center items-center min-h-screen p-4 sm:p-8 bg-[#F5F5F7] dark:bg-black font-sans">
+		<div className="flex justify-center items-center min-h-screen p-8 font-sans text-gray-950 dark:text-gray-50 scale-90 origin-center bg-transparent">
 			<div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
 				<InstagramPost
 					post={{

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useState } from "react";
 import { MoreHorizontal, Heart, ChevronLeft, ChevronRight, MessageCircle, Send, Bookmark } from "lucide-react";
@@ -90,7 +89,7 @@ export const InstagramPost: React.FC<InstagramPostProps> = ({ post, className })
 	return (
 		<div
 			className={cn(
-				"max-w-[370px] w-full rounded-3xl shadow-xl overflow-hidden font-sans border border-zinc-100 dark:border-zinc-900",
+				"max-w-[370px] w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md rounded-3xl shadow-xl overflow-hidden font-sans border border-zinc-100 dark:border-zinc-900 user-select-none",
 				className
 			)}
 		>
@@ -99,7 +98,7 @@ export const InstagramPost: React.FC<InstagramPostProps> = ({ post, className })
 				<div className="flex items-center gap-3">
 					<div className="relative group cursor-pointer">
 						<div className="absolute -inset-0.5 bg-gradient-to-tr from-yellow-400 to-fuchsia-600 rounded-full opacity-70 group-hover:opacity-100 transition-opacity blur-[1px]"></div>
-						<div className="relative p-[2px] bg-white dark:bg-zinc-950 rounded-full">
+						<div className="relative p-[2px] bg-white dark:bg-black rounded-full">
 							<img
 								src={post.author.avatarUrl}
 								alt={post.author.name}
@@ -308,4 +307,3 @@ export const InstagramPost: React.FC<InstagramPostProps> = ({ post, className })
 		</div>
 	);
 };
-
